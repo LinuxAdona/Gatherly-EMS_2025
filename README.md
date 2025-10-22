@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+# How to Setup GEMS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Make sure that you have installed the latest version of [Node.js](https://nodejs.org/en/download).
 
-Currently, two official plugins are available:
+1. Go to the folder where you want to place the project and Open CMD or Git Bash:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+git clone https://github.com/LinuxAdona/
+Gatherly-EMS_2025.git
+git fetch
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. After cloning the repository, go ahead and enter the directory and open VSCode with:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+cd Gatherly-EMS_2025
+code .
+```
+
+3. In VSCode, go ahead and open a terminal from the top: Terminal > New Terminal and run:
+
+```
+git fetch
+```
+
+4. Now run this command:
+
+```
+Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned
+npm install
+npm run dev
+```
+
+5. You should be able to see this from the terminal:
+
+```
+> gems@0.0.0 dev
+> vite
+
+  VITE v7.1.11  ready in #### ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+```
+
+# How to setup Github
+
+1. Open VSCode > Extensions and search for GitLens
+
+2. A new icon will appear on the left sidebar and in there, you can add your new files and commit them. (Make sure you include a comment to the commit or else it won't accept it.)
+
+If there are issues in the process, please message [Linux Adona](https://www.facebook.com/Linux.Sale.Adona).
