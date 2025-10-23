@@ -28,18 +28,20 @@ const Login = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col w-full gap-2 mt-8">
+          <div className="flex flex-col w-full gap-1 mt-8">
             <InputForm label="Username and E-mail" />
             <InputForm label="Password" type="password" />
           </div>
-          <Button>Sign in</Button>
+          <Button className="mt-4">Sign in</Button>
           <div className="flex items-center my-4">
             <hr className="border-t border-gray-400 grow" />
             <span className="mx-2 text-gray-500">or</span>
             <hr className="border-t border-gray-400 grow" />
           </div>
-          <Button auth="google">Continue with Google</Button>
-          <Button auth="facebook">Continue with Facebook</Button>
+          <div className="flex flex-col gap-2">
+            <Button auth="google">Continue with Google</Button>
+            <Button auth="facebook">Continue with Facebook</Button>
+          </div>
           <div className="mt-2 text-center">
             <span className="text-sm text-gray-500">
               Don't have an account?{" "}

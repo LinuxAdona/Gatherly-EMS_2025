@@ -325,3 +325,10 @@
     inset: -1px;
   }
 }
+
+.btn-primary:focus {
+  background: none;
+  color: var(--color-blue-600);
+  font-weight: 600;
+  transition: 0.15s all ease;
+}
