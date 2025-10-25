@@ -29,7 +29,7 @@ const Login = () => {
             </div>
           </div>
           <div className="flex flex-col w-full gap-2 mt-8">
-            <InputForm label="Username and E-mail" />
+            <InputForm label="Username and Email" />
             <InputForm label="Password" type="password" />
           </div>
           <Button>Sign in</Button>
