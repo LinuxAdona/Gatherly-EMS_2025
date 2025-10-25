@@ -24,7 +24,7 @@ const InputForm = ({ label, type }: Props) => {
         <label className="mt-2 text-sm font-medium">{label}</label>
       )}
 
-      <div className="relative mt-1">
+      <div className="relative">
         <input
           type={inputType}
           className="w-full p-2 pr-10 bg-white border border-gray-300 rounded-md text-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
