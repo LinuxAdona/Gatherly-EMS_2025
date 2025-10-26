@@ -1,8 +1,5 @@
-<?php
-
-$navbar = <<<EOD
 <!-- Navbar -->
-<nav class="sticky font-['Roboto'] top-0 z-50 w-full bg-white/50 backdrop-blur-lg shadow">
+<nav class="sticky top-0 z-50 w-full shadow bg-white/60 backdrop-blur-lg">
     <div>
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -12,23 +9,22 @@ $navbar = <<<EOD
                         <span class="text-xl font-bold text-gray-800">Gatherly</span>
                     </a>
                     <div class="hidden md:block">
-                        <div class="flex items-baseline ml-10 space-x-4">
+                        <div class="flex items-baseline ml-10 space-x-2">
                             <a href="#home"
-                                class="px-3 py-2 text-sm font-semibold text-gray-700 bg-blue-500 rounded-lg">Home</a>
+                                class="px-3 py-2 text-sm font-semibold text-white bg-indigo-500 rounded-lg">Home</a>
                             <a href="#features"
-                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all border-b border-transparent hover:border-b-sky-600 hover:border-gray-900">Features</a>
+                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all rounded-lg hover:bg-gray-200">Features</a>
                             <a href="#pricing"
-                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all border-b border-transparent hover:text-sky-600 hover:border-b-sky-600 hover:border-gray-900">Pricing</a>
+                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all rounded-lg hover:bg-gray-200"></a>
                             <a href="#contact"
-                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all border-b border-transparent hover:text-sky-600 hover:border-b-sky-600 hover:border-gray-900">Contact</a>
-
+                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all rounded-lg hover:bg-gray-200"></a>
                         </div>
                     </div>
                 </div>
+                <button
+                    class="px-4 py-2 font-medium text-white transition-all bg-indigo-500 rounded-lg cursor-pointer hover:bg-indigo-600">Sign
+                    in</button>
             </div>
         </div>
     </div>
 </nav>
-EOD;
-
-echo $navbar;
