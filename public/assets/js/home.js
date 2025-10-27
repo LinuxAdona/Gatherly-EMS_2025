@@ -50,6 +50,37 @@
     }
 })();
 
+// Set CSS variable --nav-height so hero can size to (100vh - navHeight)
+(function () {
+    'use strict';
+
+    function setNavHeightVar() {
+        const nav = document.querySelector('nav');
+        const fallback = '4rem';
+        if (!nav) {
+            document.documentElement.style.setProperty('--nav-height', fallback);
+            return;
+        }
+        const h = Math.ceil(nav.getBoundingClientRect().height) + 'px';
+        document.documentElement.style.setProperty('--nav-height', h);
+    }
+
+    // Initialize and update on resize (debounce lightly)
+    let resizeTimer = null;
+    setNavHeightVar();
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(setNavHeightVar, 80);
+    });
+
+    // Also observe navbar size changes if available
+    const navEl = document.querySelector('nav');
+    if (navEl && 'ResizeObserver' in window) {
+        const navRo = new ResizeObserver(setNavHeightVar);
+        navRo.observe(navEl);
+    }
+})();
+
 // Smooth scrolling / snapping for internal navbar links
 (function () {
     'use strict';
@@ -60,7 +91,38 @@
         return nav ? nav.getBoundingClientRect().height : 0;
     }
 
+    // Smooth animator: duration in ms, easing function
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animateScrollTo(targetY, duration = 700, easingFn = easeInOutCubic) {
+        const startY = window.scrollY || window.pageYOffset;
+        const change = targetY - startY;
+        const startTime = performance.now();
+
+        return new Promise((resolve) => {
+            function step(now) {
+                const elapsed = now - startTime;
+                const t = Math.min(1, elapsed / duration);
+                const eased = easingFn(t);
+                window.scrollTo(0, Math.round(startY + change * eased));
+                if (t < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    resolve();
+                }
+            }
+            requestAnimationFrame(step);
+        });
+    }
+
+    // Classes to toggle on active/inactive links
+    const ACTIVE_CLASSES = ['bg-indigo-500', 'text-white', 'hover:bg-indigo-600'];
+    const INACTIVE_CLASSES = ['text-gray-700', 'hover:bg-gray-200'];
+
     // Intercept clicks on internal anchors and perform a smooth scroll that accounts for the sticky nav
+    // Note: listener must NOT be passive because we call preventDefault()
     document.addEventListener('click', function (e) {
         const anchor = e.target.closest('a[href^="#"]');
         if (!anchor) return;
@@ -72,20 +134,33 @@
         const target = document.querySelector(hash);
         if (!target) return;
 
+        // Apply active styling immediately to the clicked link
+        try {
+            const navAnchors = document.querySelectorAll('nav a[href^="#"]');
+            navAnchors.forEach(a => {
+                a.classList.remove(...ACTIVE_CLASSES);
+                a.classList.add(...INACTIVE_CLASSES);
+            });
+        } catch (err) {
+            // noop
+        }
+        anchor.classList.add(...ACTIVE_CLASSES);
+        anchor.classList.remove(...INACTIVE_CLASSES);
+
         e.preventDefault();
 
         const navHeight = getNavHeight();
         const offset = 8; // small gap below nav
         const targetY = target.getBoundingClientRect().top + window.scrollY - navHeight - offset;
 
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
-
-        // update the address bar without causing an immediate jump
-        if (history.pushState) {
-            history.pushState(null, '', hash);
-        } else {
-            // fallback (may cause jump in very old browsers, but those are rare)
-            location.hash = hash;
-        }
-    }, { passive: true });
+        // Use animated scroll with easing
+        animateScrollTo(targetY, 700).then(() => {
+            // update the address bar without causing an immediate jump
+            if (history.pushState) {
+                history.pushState(null, '', hash);
+            } else {
+                location.hash = hash;
+            }
+        });
+    }, { passive: false });
 })();
