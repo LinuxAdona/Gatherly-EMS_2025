@@ -20,9 +20,9 @@
                         class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all rounded-lg hover:bg-gray-200"></a>
                 </div>
             </div>
-            <button
+            <a href="src/pages/signin.php"
                 class="px-4 py-2 font-medium text-white transition-all bg-indigo-500 rounded-lg cursor-pointer hover:bg-indigo-600">Sign
-                in</button>
+                in</a>
         </div>
     </div>
 </nav>
