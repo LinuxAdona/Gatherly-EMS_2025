@@ -11,6 +11,15 @@
 </head>
 
 <body>
+    <?php
+    session_start();
+    $error = null;
+    if (isset($_SESSION['error'])) {
+        $error = $_SESSION['error'];
+        unset($_SESSION['error']);
+    }
+    ?>
+
     <div class="grid grid-rows-[1fr_auto] items-center min-h-screen bg-gray-100 font-['Montserrat']">
         <div class="flex flex-col items-center w-full">
             <a class="flex flex-col items-center text-2xl font-bold" href="home.php">
@@ -18,8 +27,11 @@
                 Sign in to your account
             </a>
             <div class="flex flex-col items-center w-full mt-8">
-                <form action="#" method="POST" class="w-full max-w-md px-4 md:max-w-lg">
+                <form action="../services/signin-handler.php" method="POST" class="w-full max-w-md px-4 md:max-w-lg">
                     <div class="flex flex-col w-full p-12 bg-white border border-gray-300 rounded-lg h-max">
+                        <?php if (!empty($error)): ?>
+                            <div class="p-3 mb-4 text-sm text-red-600 border border-red-100 rounded bg-red-50"><?= htmlspecialchars($error) ?></div>
+                        <?php endif; ?>
                         <label for="email" class="mb-2 font-medium text-gray-700">Email address</label>
                         <input type="email" id="email" name="email" required
                             class="w-full px-4 py-2 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
