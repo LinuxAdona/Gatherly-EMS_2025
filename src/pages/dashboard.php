@@ -2,9 +2,10 @@
 include 'dbconnect.php';
 
 // Fetch Data
-function safeQuery($conn, $sql, $default = 0) {
-    $res = $conn->query($sql);
-    return ($res && $row = $res->fetch_assoc()) ? reset($row) : $default;
+function safeQuery($conn, $sql, $default = 0)
+{
+  $res = $conn->query($sql);
+  return ($res && $row = $res->fetch_assoc()) ? reset($row) : $default;
 }
 
 $totalBookings = safeQuery($conn, "SELECT COUNT(*) FROM events WHERE status IN ('confirmed','completed')");
@@ -42,6 +43,7 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,9 +52,12 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    canvas { max-height: 250px !important; }
+    canvas {
+      max-height: 250px !important;
+    }
   </style>
 </head>
+
 <body class="bg-gray-50 text-gray-900">
 
   <!-- Navbar -->
@@ -81,7 +86,7 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
           <i data-lucide="dollar-sign" class="w-5 h-5"></i>
         </div>
         <h3 class="text-xs text-gray-500">Revenue</h3>
-        <p class="text-2xl font-bold text-green-600">₱<?= number_format($totalRevenue,2) ?></p>
+        <p class="text-2xl font-bold text-green-600">₱<?= number_format($totalRevenue, 2) ?></p>
       </div>
 
       <!-- Avg. Match Score -->
@@ -135,7 +140,7 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
           <i data-lucide="building" class="w-4 h-4 text-gray-500"></i> Top 3 Most Booked Venues
         </h3>
         <ul class="space-y-1 text-sm">
-          <?php while($v = array_shift($topVenuesData)): ?>
+          <?php while ($v = array_shift($topVenuesData)): ?>
             <li class="flex justify-between">
               <span><?= $v['venue_name'] ?></span>
               <span class="font-semibold text-indigo-600"><?= $v['total_booked'] ?>x</span>
@@ -150,10 +155,10 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
           <i data-lucide="wallet" class="w-4 h-4 text-gray-500"></i> Average Budget per Event Type
         </h3>
         <ul class="space-y-1 text-sm">
-          <?php while($b = array_shift($avgBudgetData)): ?>
+          <?php while ($b = array_shift($avgBudgetData)): ?>
             <li class="flex justify-between">
               <span><?= $b['event_type'] ?></span>
-              <span class="font-semibold text-green-600">₱<?= number_format($b['avg_budget'],2) ?></span>
+              <span class="font-semibold text-green-600">₱<?= number_format($b['avg_budget'], 2) ?></span>
             </li>
           <?php endwhile; ?>
         </ul>
@@ -171,14 +176,21 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
 
   <script>
     lucide.createIcons();
-    const chartOptions = { responsive: true, maintainAspectRatio: false };
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false
+    };
 
     // Booking Trends
     new Chart(document.getElementById('bookingChart'), {
       type: 'bar',
       data: {
-        labels: [<?php foreach($bookingTrendsData as $r) echo "'{$r['month']}',"; ?>],
-        datasets: [{ label: 'Bookings', data: [<?php foreach($bookingTrendsData as $r) echo "{$r['count']},"; ?>], backgroundColor: '#6366f1' }]
+        labels: [<?php foreach ($bookingTrendsData as $r) echo "'{$r['month']}',"; ?>],
+        datasets: [{
+          label: 'Bookings',
+          data: [<?php foreach ($bookingTrendsData as $r) echo "{$r['count']},"; ?>],
+          backgroundColor: '#6366f1'
+        }]
       },
       options: chartOptions
     });
@@ -187,8 +199,11 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
     new Chart(document.getElementById('eventTypeChart'), {
       type: 'pie',
       data: {
-        labels: [<?php foreach($eventTypeData as $r) echo "'{$r['event_type']}',"; ?>],
-        datasets: [{ data: [<?php foreach($eventTypeData as $r) echo "{$r['total']},"; ?>], backgroundColor: ['#3b82f6','#22c55e','#f59e0b','#8b5cf6'] }]
+        labels: [<?php foreach ($eventTypeData as $r) echo "'{$r['event_type']}',"; ?>],
+        datasets: [{
+          data: [<?php foreach ($eventTypeData as $r) echo "{$r['total']},"; ?>],
+          backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#8b5cf6']
+        }]
       },
       options: chartOptions
     });
@@ -197,8 +212,14 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
     new Chart(document.getElementById('revenueChart'), {
       type: 'line',
       data: {
-        labels: [<?php foreach($revenueData as $r) echo "'{$r['month']}',"; ?>],
-        datasets: [{ label: 'Revenue', data: [<?php foreach($revenueData as $r) echo "{$r['revenue']},"; ?>], borderColor: '#22c55e', fill: false, tension: 0.3 }]
+        labels: [<?php foreach ($revenueData as $r) echo "'{$r['month']}',"; ?>],
+        datasets: [{
+          label: 'Revenue',
+          data: [<?php foreach ($revenueData as $r) echo "{$r['revenue']},"; ?>],
+          borderColor: '#22c55e',
+          fill: false,
+          tension: 0.3
+        }]
       },
       options: chartOptions
     });
@@ -207,15 +228,20 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
     new Chart(document.getElementById('occupancyChart'), {
       type: 'line',
       data: {
-        labels: [<?php foreach($occupancyData as $r) echo "'{$r['month']}',"; ?>],
+        labels: [<?php foreach ($occupancyData as $r) echo "'{$r['month']}',"; ?>],
         datasets: [{
           label: 'Occupancy (%)',
-          data: [<?php foreach($occupancyData as $r) echo round(($r['booked_venues'] / $r['total_venues']) * 100, 2) . ","; ?>],
-          borderColor: '#4f46e5', fill: false, tension: 0.3
+          data: [
+            <?php foreach ($occupancyData as $r) echo round(($r['booked_venues'] / $r['total_venues']) * 100, 2) . ","; ?>
+          ],
+          borderColor: '#4f46e5',
+          fill: false,
+          tension: 0.3
         }]
       },
       options: chartOptions
     });
   </script>
 </body>
+
 </html>
