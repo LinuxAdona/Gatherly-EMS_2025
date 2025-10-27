@@ -1,6 +1,6 @@
 <!-- Hero Section -->
 <div id="home" class="relative pt-16 overflow-hidden bg-center bg-no-repeat bg-cover hero-section"
-    style="background-image: url('public/assets/images/hero-bg.png'); will-change: background-position; height: calc(100vh - var(--nav-height, 4rem));"
+    style="background-image: url('../../public/assets/images/hero-bg.png'); will-change: background-position; height: calc(100vh - var(--nav-height, 4rem));"
     data-pan-speed="0.45">
     <div class="flex flex-col justify-center h-full mx-auto max-w-7xl">
         <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
