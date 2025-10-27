@@ -30,7 +30,6 @@
       padding: 12px 40px;
       border-bottom: 1px solid #ddd;
       height: 60px;
-      transition: background 0.3s;
     }
 
     .navbar-left {
@@ -139,7 +138,6 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      transition: background 0.3s, color 0.3s;
     }
 
     .sidebar h3 {
@@ -213,7 +211,6 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-      transition: background 0.3s, color 0.3s;
     }
 
     .chat-header {
@@ -237,7 +234,6 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       gap: 15px;
       overflow-y: auto;
     }
@@ -306,8 +302,8 @@
     }
 
     .chat-input button {
-      background: #0059ff; /* Blue background */
-      color: white;         /* White icon */
+      background: #0059ff;
+      color: white;
       border: none;
       padding: 8px 14px;
       border-radius: 6px;
@@ -317,54 +313,10 @@
       align-items: center;
       justify-content: center; 
       transition: 0.2s;
-}
+    }
 
     .chat-input button i {
-      color: white; /* White icon */
-}
-
-    body.dark {
-      background-color: #1e1e1e;
       color: white;
-    }
-
-    body.dark .navbar {
-      background: #2b2b2b;
-      border-color: #444;
-    }
-
-    body.dark .sidebar,
-    body.dark .chat-area {
-      background: #2b2b2b;
-      border-color: #444;
-    }
-
-    body.dark .conversation:hover,
-    body.dark .conversation.active {
-      background: #3a3a3a;
-    }
-
-    body.dark .nav-links a {
-      color: #ddd;
-    }
-
-    body.dark .message p {
-      background: #3a3a3a;
-      color: white;
-    }
-
-    body.dark .sent p {
-      background: #0059ff;
-      color: white;
-    }
-
-    body.dark .chat-input input {
-      background: #3a3a3a;
-      color: white;
-    }
-
-    body.dark .toggle-mode {
-      color: #ddd;
     }
   </style>
 </head>
@@ -397,7 +349,7 @@
       <div class="sidebar">
         <h3>Conversations</h3>
 
-        <div class="conversation active">
+        <div class="conversation active" data-chat="ballroom">
           <div class="conv-left">
             <div class="circle">SA</div>
             <div class="conv-text">
@@ -408,7 +360,7 @@
           <span class="badge">2</span>
         </div>
 
-        <div class="conversation">
+        <div class="conversation" data-chat="garden">
           <div class="conv-left">
             <div class="circle">MI</div>
             <div class="conv-text">
@@ -418,7 +370,7 @@
           </div>
         </div>
 
-        <div class="conversation">
+        <div class="conversation" data-chat="skyline">
           <div class="conv-left">
             <div class="circle">EM</div>
             <div class="conv-text">
@@ -430,20 +382,20 @@
         </div>
       </div>
 
-      <div class="chat-area">
+      <div class="chat-area" id="chatArea">
         <div class="chat-header">
           <h4>Grand Ballroom Manager</h4>
           <span>Usually replies within an hour</span>
         </div>
 
-        <div class="chat-messages">
+        <div class="chat-messages" id="chatMessages">
           <div class="message received">
-            <p>Hello! Thank you for your interest in our venue. I’d be happy to answer any questions you have.</p>
+            <p>Yes, we have several dates available in March</p>
             <div class="timestamp">09:49 AM</div>
           </div>
 
           <div class="message sent">
-            <p>Hi! I'm interested in booking for a corporate event in March. Do you have availability?</p>
+            <p>Hi! I'm interested in booking for a corporate event in March.</p>
             <div class="timestamp">09:59 AM</div>
           </div>
         </div>
@@ -466,6 +418,71 @@
       body.classList.toggle('dark');
       icon.classList.toggle('fa-sun');
       icon.classList.toggle('fa-moon');
+    });
+
+    // Messages data
+    const chats = {
+      ballroom: {
+        name: "Grand Ballroom Manager",
+        status: "Usually replies within an hour",
+        messages: `
+          <div class="message received">
+            <p>Hello! Thank you for your interest in our venue. I’d be happy to answer any questions you have.</p>
+            <div class="timestamp">09:49 AM</div>
+          </div>
+          <div class="message sent">
+            <p>Hi! I'm interested in booking for a corporate event in March. Do you have availability?</p>
+            <div class="timestamp">09:59 AM</div>
+          </div>
+        `
+      },
+      garden: {
+        name: "Garden Paradise Manager",
+        status: "Active now",
+        messages: `
+          <div class="message received">
+            <p>Hi! The catering package includes food, drinks, and basic table setup.</p>
+            <div class="timestamp">10:05 AM</div>
+          </div>
+          <div class="message sent">
+            <p>Sounds great! Can I see a sample menu?</p>
+            <div class="timestamp">10:07 AM</div>
+          </div>
+        `
+      },
+      skyline: {
+        name: "Skyline Rooftop Manager",
+        status: "Online",
+        messages: `
+          <div class="message received">
+            <p>I can send you the contract today. Please confirm your preferred date.</p>
+            <div class="timestamp">11:22 AM</div>
+          </div>
+          <div class="message sent">
+            <p>Thanks! I'll confirm by this afternoon.</p>
+            <div class="timestamp">11:24 AM</div>
+          </div>
+        `
+      }
+    };
+
+    const conversations = document.querySelectorAll('.conversation');
+    const chatHeader = document.querySelector('.chat-header h4');
+    const chatStatus = document.querySelector('.chat-header span');
+    const chatMessages = document.getElementById('chatMessages');
+
+    conversations.forEach(conv => {
+      conv.addEventListener('click', () => {
+        conversations.forEach(c => c.classList.remove('active'));
+        conv.classList.add('active');
+
+        const chatKey = conv.getAttribute('data-chat');
+        const chatData = chats[chatKey];
+
+        chatHeader.textContent = chatData.name;
+        chatStatus.textContent = chatData.status;
+        chatMessages.innerHTML = chatData.messages;
+      });
     });
   </script>
 </body>
