@@ -1,5 +1,5 @@
 <!-- Features -->
-<div class="py-16 bg-gray-50">
+<div id="features" class="py-16 bg-gray-50">
     <div class="mx-auto max-w-7xl">
         <div class="flex flex-col items-center">
             <h2 class="text-4xl font-bold text-center text-gray-900">Why Choose Gatherly?</h2>

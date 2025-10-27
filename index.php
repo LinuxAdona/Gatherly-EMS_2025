@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <script src="public/assets/js/hero.js"></script>
+    <script src="public/assets/js/home.js"></script>
 </body>
 
 </html>
