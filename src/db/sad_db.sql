@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2025 at 06:48 AM
+-- Generation Time: Oct 27, 2025 at 04:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -226,9 +226,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `fullname`, `email`, `phone`, `role`) VALUES
-(1, 'admin123', 'password123', 'System Admin', 'admin@example.com', '09171234567', 'administrator'),
-(2, 'coord_linux', 'password123', 'Linux Coordinator', 'linux@events.com', '09181234567', 'coordinator'),
-(3, 'client_dore', 'password123', 'Dore Client', 'dore@client.com', '09191234567', 'client');
+(1, 'admin123', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'System Admin', 'admin@example.com', '09171234567', 'administrator'),
+(2, 'coord_linux', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Linux Adona', 'linux@gmail.com', '09181234567', 'coordinator'),
+(3, 'client_dore', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Dore Cables', 'dore@gmail.com', '09191234567', 'client'),
+(4, 'adrian', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Adrian Cornado', 'adrian@gmail.com', '', 'client');
 
 -- --------------------------------------------------------
 
@@ -431,7 +432,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `venues`
