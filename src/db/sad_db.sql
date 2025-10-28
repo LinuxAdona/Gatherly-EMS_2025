@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2025 at 04:26 PM
+-- Generation Time: Oct 28, 2025 at 03:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -215,7 +215,8 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `fullname` varchar(100) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `role` enum('administrator','coordinator','client') NOT NULL
@@ -225,11 +226,12 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `fullname`, `email`, `phone`, `role`) VALUES
-(1, 'admin123', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'System Admin', 'admin@example.com', '09171234567', 'administrator'),
-(2, 'coord_linux', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Linux Adona', 'linux@gmail.com', '09181234567', 'coordinator'),
-(3, 'client_dore', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Dore Cables', 'dore@gmail.com', '09191234567', 'client'),
-(4, 'adrian', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Adrian Cornado', 'adrian@gmail.com', '', 'client');
+INSERT INTO `users` (`user_id`, `username`, `password`, `first_name`, `last_name`, `email`, `phone`, `role`) VALUES
+(1, 'admin123', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'System', 'Admin', 'admin@example.com', '09171234567', 'administrator'),
+(2, 'coord_linux', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Linux', 'Adona', 'linux@gmail.com', '09181234567', 'coordinator'),
+(3, 'client_dore', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Dore', 'Cables', 'dore@gmail.com', '09191234567', 'client'),
+(4, 'adrian', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Adrian', 'Cornado', 'adrian@gmail.com', '', 'client'),
+(5, '', '$2y$10$gJEMUmIOIhyudk7xVjK3KO/J9Dswbk7/tYXUkspSMvxP7vhVL2P0.', 'Aeron', 'Salanguit', 'aeron@gmail.com', NULL, 'administrator');
 
 -- --------------------------------------------------------
 
@@ -432,7 +434,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `venues`
