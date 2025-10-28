@@ -28,7 +28,7 @@
                             </p>
                         </div>
                     </div>
-                    <form action="../services/signup-handler.php" method="POST" class="w-full mt-10">
+                    <form action="../../src/services/signup-handler.php" method="POST" class="w-full mt-10">
                         <div class="flex flex-col w-full h-max ">
                             <div class="grid w-full grid-cols-2 gap-4 mb-6">
                                 <div class="flex flex-col">
