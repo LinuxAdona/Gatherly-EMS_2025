@@ -4,6 +4,6 @@ module.exports = {
     "./index.php",
     "./signin.php",
     "./src/**/*.php",
-    "./public/**/*.{html,js}",
+    "./public/**/*.{html,js,php}",
   ],
 }
