@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in to Gatherly | Gatherly</title>
-    <link rel="icon" type="image/x-icon" href="../../public/assets/images/logo.png">
-    <link rel="stylesheet" href="../output.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
+    <link rel="stylesheet" href="../../src/output.css">
     <script src=" https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous">
     </script>
 </head>
@@ -15,7 +15,7 @@
     <div class="grid grid-rows-[1fr_auto] items-center min-h-screen bg-gray-100 font-['Montserrat']">
         <div class="flex flex-col items-center w-full">
             <a class="flex flex-col items-center text-2xl font-bold" href="home.php">
-                <img class="w-16 mb-8" src="../../public/assets/images/logo.png" alt="Logo">
+                <img class="w-16 mb-8" src="../assets/images/logo.png" alt="Logo">
                 Sign in to your account
             </a>
             <div class="flex flex-col items-center w-full mt-8">
@@ -51,7 +51,7 @@
                 </p>
             </div>
         </div>
-        <?php include '../components/Footer.php'; ?>
+        <?php include '../../src/components/Footer.php'; ?>
     </div>
 </body>
 
