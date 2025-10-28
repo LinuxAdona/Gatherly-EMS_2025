@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         // Registration successful
-        header("Location: ../pages/signin.php");
+        header("Location: ../../public/pages/signin.php");
         exit();
     } else {
         die("Error during registration: " . $stmt->error);

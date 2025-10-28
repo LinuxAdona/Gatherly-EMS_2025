@@ -1,5 +1,5 @@
 <?php
-include '../services/dbconnect.php';
+include '../../src/services/dbconnect.php';
 
 // Fetch Data
 function safeQuery($conn, $sql, $default = 0)
@@ -45,203 +45,203 @@ while ($r = $occupancy->fetch_assoc()) $occupancyData[] = $r;
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GEMS Dashboard | Analytics</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEMS Dashboard | Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
     canvas {
-      max-height: 250px !important;
+        max-height: 250px !important;
     }
-  </style>
+    </style>
 </head>
 
 <body class="bg-gray-50 text-gray-900">
 
-  <!-- Navbar -->
-  <nav class="flex items-center justify-between px-10 py-4 bg-white shadow">
-    <h1 class="text-2xl font-bold text-indigo-600">GEMS Dashboard</h1>
-  </nav>
+    <!-- Navbar -->
+    <nav class="flex items-center justify-between px-10 py-4 bg-white shadow">
+        <h1 class="text-2xl font-bold text-indigo-600">GEMS Dashboard</h1>
+    </nav>
 
-  <!-- Dashboard Section -->
-  <section class="max-w-7xl mx-auto mt-8 p-6">
-    <h2 class="text-2xl font-bold mb-6">Analytics Dashboard</h2>
+    <!-- Dashboard Section -->
+    <section class="max-w-7xl mx-auto mt-8 p-6">
+        <h2 class="text-2xl font-bold mb-6">Analytics Dashboard</h2>
 
-    <!-- Stat Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
-      <!-- Total Bookings -->
-      <div class="relative p-4 bg-white shadow rounded-xl text-center">
-        <div class="absolute top-3 right-3 text-gray-400">
-          <i data-lucide="calendar-check" class="w-5 h-5"></i>
+        <!-- Stat Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+            <!-- Total Bookings -->
+            <div class="relative p-4 bg-white shadow rounded-xl text-center">
+                <div class="absolute top-3 right-3 text-gray-400">
+                    <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-xs text-gray-500">Total Bookings</h3>
+                <p class="text-2xl font-bold text-indigo-600"><?= $totalBookings ?></p>
+            </div>
+
+            <!-- Revenue -->
+            <div class="relative p-4 bg-white shadow rounded-xl text-center">
+                <div class="absolute top-3 right-3 text-gray-400">
+                    <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-xs text-gray-500">Revenue</h3>
+                <p class="text-2xl font-bold text-green-600">₱<?= number_format($totalRevenue, 2) ?></p>
+            </div>
+
+            <!-- Avg. Match Score -->
+            <div class="relative p-4 bg-white shadow rounded-xl text-center">
+                <div class="absolute top-3 right-3 text-gray-400">
+                    <i data-lucide="star" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-xs text-gray-500">Avg. Match Score</h3>
+                <p class="text-2xl font-bold text-blue-600"><?= $avgMatchScore ?>%</p>
+            </div>
+
+            <!-- Active Venues -->
+            <div class="relative p-4 bg-white shadow rounded-xl text-center">
+                <div class="absolute top-3 right-3 text-gray-400">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-xs text-gray-500">Active Venues</h3>
+                <p class="text-2xl font-bold text-purple-600"><?= $activeVenues ?></p>
+            </div>
         </div>
-        <h3 class="text-xs text-gray-500">Total Bookings</h3>
-        <p class="text-2xl font-bold text-indigo-600"><?= $totalBookings ?></p>
-      </div>
 
-      <!-- Revenue -->
-      <div class="relative p-4 bg-white shadow rounded-xl text-center">
-        <div class="absolute top-3 right-3 text-gray-400">
-          <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+        <!-- Charts and Lists -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Booking Trends -->
+            <div class="p-5 bg-white rounded-xl shadow">
+                <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-gray-500"></i> Booking Trends
+                </h3>
+                <canvas id="bookingChart"></canvas>
+            </div>
+
+            <!-- Event Type Distribution -->
+            <div class="p-5 bg-white rounded-xl shadow">
+                <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
+                    <i data-lucide="pie-chart" class="w-4 h-4 text-gray-500"></i> Event Type Distribution
+                </h3>
+                <canvas id="eventTypeChart"></canvas>
+            </div>
+
+            <!-- Revenue Forecast -->
+            <div class="md:col-span-2 p-5 bg-white rounded-xl shadow">
+                <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
+                    <i data-lucide="line-chart" class="w-4 h-4 text-gray-500"></i> Revenue Forecast
+                </h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+
+            <!-- Top Venues -->
+            <div class="p-5 bg-white rounded-xl shadow">
+                <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
+                    <i data-lucide="building" class="w-4 h-4 text-gray-500"></i> Top 3 Most Booked Venues
+                </h3>
+                <ul class="space-y-1 text-sm">
+                    <?php while ($v = array_shift($topVenuesData)): ?>
+                    <li class="flex justify-between">
+                        <span><?= $v['venue_name'] ?></span>
+                        <span class="font-semibold text-indigo-600"><?= $v['total_booked'] ?>x</span>
+                    </li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
+
+            <!-- Avg Budget per Type -->
+            <div class="p-5 bg-white rounded-xl shadow">
+                <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
+                    <i data-lucide="wallet" class="w-4 h-4 text-gray-500"></i> Average Budget per Event Type
+                </h3>
+                <ul class="space-y-1 text-sm">
+                    <?php while ($b = array_shift($avgBudgetData)): ?>
+                    <li class="flex justify-between">
+                        <span><?= $b['event_type'] ?></span>
+                        <span class="font-semibold text-green-600">₱<?= number_format($b['avg_budget'], 2) ?></span>
+                    </li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
+
+            <!-- Venue Occupancy -->
+            <div class="md:col-span-2 p-5 bg-white rounded-xl shadow">
+                <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
+                    <i data-lucide="activity" class="w-4 h-4 text-gray-500"></i> Monthly Venue Occupancy Rate
+                </h3>
+                <canvas id="occupancyChart"></canvas>
+            </div>
         </div>
-        <h3 class="text-xs text-gray-500">Revenue</h3>
-        <p class="text-2xl font-bold text-green-600">₱<?= number_format($totalRevenue, 2) ?></p>
-      </div>
+    </section>
 
-      <!-- Avg. Match Score -->
-      <div class="relative p-4 bg-white shadow rounded-xl text-center">
-        <div class="absolute top-3 right-3 text-gray-400">
-          <i data-lucide="star" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-xs text-gray-500">Avg. Match Score</h3>
-        <p class="text-2xl font-bold text-blue-600"><?= $avgMatchScore ?>%</p>
-      </div>
-
-      <!-- Active Venues -->
-      <div class="relative p-4 bg-white shadow rounded-xl text-center">
-        <div class="absolute top-3 right-3 text-gray-400">
-          <i data-lucide="map-pin" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-xs text-gray-500">Active Venues</h3>
-        <p class="text-2xl font-bold text-purple-600"><?= $activeVenues ?></p>
-      </div>
-    </div>
-
-    <!-- Charts and Lists -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Booking Trends -->
-      <div class="p-5 bg-white rounded-xl shadow">
-        <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
-          <i data-lucide="bar-chart-2" class="w-4 h-4 text-gray-500"></i> Booking Trends
-        </h3>
-        <canvas id="bookingChart"></canvas>
-      </div>
-
-      <!-- Event Type Distribution -->
-      <div class="p-5 bg-white rounded-xl shadow">
-        <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
-          <i data-lucide="pie-chart" class="w-4 h-4 text-gray-500"></i> Event Type Distribution
-        </h3>
-        <canvas id="eventTypeChart"></canvas>
-      </div>
-
-      <!-- Revenue Forecast -->
-      <div class="md:col-span-2 p-5 bg-white rounded-xl shadow">
-        <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
-          <i data-lucide="line-chart" class="w-4 h-4 text-gray-500"></i> Revenue Forecast
-        </h3>
-        <canvas id="revenueChart"></canvas>
-      </div>
-
-      <!-- Top Venues -->
-      <div class="p-5 bg-white rounded-xl shadow">
-        <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
-          <i data-lucide="building" class="w-4 h-4 text-gray-500"></i> Top 3 Most Booked Venues
-        </h3>
-        <ul class="space-y-1 text-sm">
-          <?php while ($v = array_shift($topVenuesData)): ?>
-            <li class="flex justify-between">
-              <span><?= $v['venue_name'] ?></span>
-              <span class="font-semibold text-indigo-600"><?= $v['total_booked'] ?>x</span>
-            </li>
-          <?php endwhile; ?>
-        </ul>
-      </div>
-
-      <!-- Avg Budget per Type -->
-      <div class="p-5 bg-white rounded-xl shadow">
-        <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
-          <i data-lucide="wallet" class="w-4 h-4 text-gray-500"></i> Average Budget per Event Type
-        </h3>
-        <ul class="space-y-1 text-sm">
-          <?php while ($b = array_shift($avgBudgetData)): ?>
-            <li class="flex justify-between">
-              <span><?= $b['event_type'] ?></span>
-              <span class="font-semibold text-green-600">₱<?= number_format($b['avg_budget'], 2) ?></span>
-            </li>
-          <?php endwhile; ?>
-        </ul>
-      </div>
-
-      <!-- Venue Occupancy -->
-      <div class="md:col-span-2 p-5 bg-white rounded-xl shadow">
-        <h3 class="text-md font-semibold mb-3 flex items-center gap-2">
-          <i data-lucide="activity" class="w-4 h-4 text-gray-500"></i> Monthly Venue Occupancy Rate
-        </h3>
-        <canvas id="occupancyChart"></canvas>
-      </div>
-    </div>
-  </section>
-
-  <script>
+    <script>
     lucide.createIcons();
     const chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false
+        responsive: true,
+        maintainAspectRatio: false
     };
 
     // Booking Trends
     new Chart(document.getElementById('bookingChart'), {
-      type: 'bar',
-      data: {
-        labels: [<?php foreach ($bookingTrendsData as $r) echo "'{$r['month']}',"; ?>],
-        datasets: [{
-          label: 'Bookings',
-          data: [<?php foreach ($bookingTrendsData as $r) echo "{$r['count']},"; ?>],
-          backgroundColor: '#6366f1'
-        }]
-      },
-      options: chartOptions
+        type: 'bar',
+        data: {
+            labels: [<?php foreach ($bookingTrendsData as $r) echo "'{$r['month']}',"; ?>],
+            datasets: [{
+                label: 'Bookings',
+                data: [<?php foreach ($bookingTrendsData as $r) echo "{$r['count']},"; ?>],
+                backgroundColor: '#6366f1'
+            }]
+        },
+        options: chartOptions
     });
 
     // Event Type Distribution
     new Chart(document.getElementById('eventTypeChart'), {
-      type: 'pie',
-      data: {
-        labels: [<?php foreach ($eventTypeData as $r) echo "'{$r['event_type']}',"; ?>],
-        datasets: [{
-          data: [<?php foreach ($eventTypeData as $r) echo "{$r['total']},"; ?>],
-          backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#8b5cf6']
-        }]
-      },
-      options: chartOptions
+        type: 'pie',
+        data: {
+            labels: [<?php foreach ($eventTypeData as $r) echo "'{$r['event_type']}',"; ?>],
+            datasets: [{
+                data: [<?php foreach ($eventTypeData as $r) echo "{$r['total']},"; ?>],
+                backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#8b5cf6']
+            }]
+        },
+        options: chartOptions
     });
 
     // Revenue Forecast
     new Chart(document.getElementById('revenueChart'), {
-      type: 'line',
-      data: {
-        labels: [<?php foreach ($revenueData as $r) echo "'{$r['month']}',"; ?>],
-        datasets: [{
-          label: 'Revenue',
-          data: [<?php foreach ($revenueData as $r) echo "{$r['revenue']},"; ?>],
-          borderColor: '#22c55e',
-          fill: false,
-          tension: 0.3
-        }]
-      },
-      options: chartOptions
+        type: 'line',
+        data: {
+            labels: [<?php foreach ($revenueData as $r) echo "'{$r['month']}',"; ?>],
+            datasets: [{
+                label: 'Revenue',
+                data: [<?php foreach ($revenueData as $r) echo "{$r['revenue']},"; ?>],
+                borderColor: '#22c55e',
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: chartOptions
     });
 
     // Venue Occupancy
     new Chart(document.getElementById('occupancyChart'), {
-      type: 'line',
-      data: {
-        labels: [<?php foreach ($occupancyData as $r) echo "'{$r['month']}',"; ?>],
-        datasets: [{
-          label: 'Occupancy (%)',
-          data: [
-            <?php foreach ($occupancyData as $r) echo round(($r['booked_venues'] / $r['total_venues']) * 100, 2) . ","; ?>
-          ],
-          borderColor: '#4f46e5',
-          fill: false,
-          tension: 0.3
-        }]
-      },
-      options: chartOptions
+        type: 'line',
+        data: {
+            labels: [<?php foreach ($occupancyData as $r) echo "'{$r['month']}',"; ?>],
+            datasets: [{
+                label: 'Occupancy (%)',
+                data: [
+                    <?php foreach ($occupancyData as $r) echo round(($r['booked_venues'] / $r['total_venues']) * 100, 2) . ","; ?>
+                ],
+                borderColor: '#4f46e5',
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: chartOptions
     });
-  </script>
+    </script>
 </body>
 
 </html>

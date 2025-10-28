@@ -26,14 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $stmt->close();
             $conn->close();
-            header("Location: ../pages/dashboard.php");
+            header("Location: ../../public/pages/dashboard.php");
             exit();
         } else {
             // Invalid credentials
             $_SESSION['error'] = "Invalid email or password.";
             $stmt->close();
             $conn->close();
-            header("Location: ../pages/signin.php");
+            header("Location: ../../public/pages/signin.php");
             exit();
         }
     } else {
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Invalid email or password.";
         $stmt->close();
         $conn->close();
-        header("Location: ../pages/signin.php");
+        header("Location: ../../public/pages/signin.php");
         exit();
     }
 }
