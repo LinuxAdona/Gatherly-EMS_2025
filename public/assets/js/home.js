@@ -119,7 +119,7 @@
 
     // Classes to toggle on active/inactive links
     const ACTIVE_CLASSES = ['bg-indigo-500', 'text-white', 'hover:bg-indigo-600'];
-    const INACTIVE_CLASSES = ['text-gray-700', 'hover:bg-gray-100/80'];
+    const INACTIVE_CLASSES = ['text-gray-700', 'hover:text-indigo-600'];
 
     // Intercept clicks on internal anchors and perform a smooth scroll that accounts for the sticky nav
     // Note: listener must NOT be passive because we call preventDefault()

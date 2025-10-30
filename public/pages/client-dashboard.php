@@ -21,7 +21,7 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
     <!-- Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,9 +31,12 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                     <span class="text-xl sm:text-2xl font-bold text-gray-800">Gatherly</span>
                 </div>
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="client-dashboard.php" class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Dashboard</a>
-                    <a href="venue/search.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Search Venues</a>
-                    <a href="chat/ai-chat.php" class="text-gray-700 hover:text-indigo-600 transition-colors">AI Assistant</a>
+                    <a href="client-dashboard.php"
+                        class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Dashboard</a>
+                    <a href="venue/search.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Search
+                        Venues</a>
+                    <a href="chat/ai-chat.php" class="text-gray-700 hover:text-indigo-600 transition-colors">AI
+                        Assistant</a>
                     <a href="suppliers.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Suppliers</a>
                     <a href="my-events.php" class="text-gray-700 hover:text-indigo-600 transition-colors">My Events</a>
                     <div class="relative group">
@@ -42,9 +45,11 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="fas fa-chevron-down text-xs"></i>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
+                        <div
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
-                            <a href="../../src/services/signout-handler.php" class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
+                            <a href="../../src/services/signout-handler.php"
+                                class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
                 </div>
@@ -72,13 +77,15 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Welcome back, <?php echo htmlspecialchars($first_name); ?>! 👋</h1>
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Welcome back,
+                <?php echo htmlspecialchars($first_name); ?>! 👋</h1>
             <p class="text-gray-600">Let's plan your perfect event together</p>
         </div>
 
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <a href="venue/search.php" class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-indigo-200">
+            <a href="venue/search.php"
+                class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-indigo-200">
                 <div class="flex items-center justify-between mb-3">
                     <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-search text-2xl text-indigo-600"></i>
@@ -88,7 +95,8 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                 <p class="text-sm text-gray-600">Search and compare venues with AI recommendations</p>
             </a>
 
-            <a href="chat/ai-chat.php" class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-purple-200">
+            <a href="chat/ai-chat.php"
+                class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-purple-200">
                 <div class="flex items-center justify-between mb-3">
                     <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-robot text-2xl text-purple-600"></i>
@@ -98,7 +106,8 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                 <p class="text-sm text-gray-600">Chat with our AI to get venue recommendations</p>
             </a>
 
-            <a href="suppliers.php" class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-green-200">
+            <a href="suppliers.php"
+                class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-green-200">
                 <div class="flex items-center justify-between mb-3">
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-store text-2xl text-green-600"></i>
@@ -108,7 +117,8 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                 <p class="text-sm text-gray-600">Browse event services and suppliers</p>
             </a>
 
-            <a href="coordinators.php" class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-orange-200">
+            <a href="coordinators.php"
+                class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-transparent hover:border-orange-200">
                 <div class="flex items-center justify-between mb-3">
                     <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-users text-2xl text-orange-600"></i>
@@ -125,7 +135,8 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-bold text-gray-800">My Upcoming Events</h2>
-                    <a href="my-events.php" class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">View All</a>
+                    <a href="my-events.php" class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">View
+                        All</a>
                 </div>
                 <div class="space-y-3">
                     <div class="p-4 border border-gray-200 rounded-lg hover:border-indigo-200 transition-colors">
@@ -147,9 +158,11 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                     <div class="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
                         <p class="text-sm text-gray-700 mb-2">
                             <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
-                            <strong>Pro Tip:</strong> Use our AI chatbot to find the perfect venue based on your specific needs!
+                            <strong>Pro Tip:</strong> Use our AI chatbot to find the perfect venue based on your
+                            specific needs!
                         </p>
-                        <a href="chat/ai-chat.php" class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">Try AI Chat →</a>
+                        <a href="chat/ai-chat.php"
+                            class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">Try AI Chat →</a>
                     </div>
                     <div class="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
                         <p class="text-sm text-gray-700 mb-2">
@@ -165,13 +178,13 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
     <?php include '../../src/components/Footer.php'; ?>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
     </script>
 </body>
 

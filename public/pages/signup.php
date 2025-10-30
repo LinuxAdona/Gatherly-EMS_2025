@@ -11,18 +11,19 @@
 </head>
 
 <body>
-    <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
+    <div class="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
         <div class="flex flex-col min-h-screen lg:flex-row">
             <!-- Form Section -->
             <div class="flex flex-col items-center justify-center w-full p-4 lg:w-5/12 sm:p-8">
                 <div class="flex flex-col w-full max-w-md">
                     <div class="flex flex-col items-start justify-center w-full">
-                        <a class="flex flex-col items-start text-xl font-bold transition-transform sm:text-2xl hover:scale-105"
-                            href="home.php">
-                            <img class="w-12 mb-6 sm:w-16 sm:mb-10 drop-shadow-lg" src="../assets/images/logo.png"
-                                alt="Logo">
-                            <span class="text-gray-800">Create your new account</span>
-                        </a>
+                        <div class="flex flex-col items-start text-xl font-bold sm:text-2xl">
+                            <a class="flex flex-col group" href="home.php">
+                                <img class="w-12 mb-6 sm:w-16 sm:mb-10 drop-shadow-lg transition-transform group-hover:scale-110"
+                                    src="../assets/images/logo.png" alt="Logo">
+                                <span class="text-gray-800">Create your new account</span>
+                            </a>
+                        </div>
                         <div class="flex items-center mt-3 sm:mt-4">
                             <p class="text-xs text-gray-600 sm:text-sm">Already have an account?
                                 <a href="signin.php">
@@ -78,7 +79,7 @@
             <div class="relative hidden overflow-hidden lg:block lg:w-7/12">
                 <img src="../assets/images/signup.png" alt="Side Image"
                     class="absolute inset-0 object-cover w-full h-full">
-                <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-purple-600/20"></div>
+                <div class="absolute inset-0 bg-linear-to-br from-indigo-600/20 to-purple-600/20"></div>
             </div>
         </div>
     </div>
