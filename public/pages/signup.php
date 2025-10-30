@@ -60,7 +60,7 @@
                                     a lowercase letter. </p>
                             </div>
                             <label for="name" class="mb-2 font-medium text-gray-700">Re-enter Password</label>
-                            <input type="password2" id="password2" name="password2" required
+                            <input type="password" id="password2" name="password2" required
                                 class="w-full px-4 py-2 mb-6 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <button type="submit"
                                 class="px-4 py-2 font-medium text-white transition-all bg-indigo-500 rounded-lg cursor-pointer hover:bg-indigo-600">Sign
