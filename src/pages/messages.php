@@ -409,81 +409,124 @@
     </div>
   </div>
 
-  <script>
-    const toggleBtn = document.getElementById('toggleMode');
-    const body = document.body;
-    const icon = toggleBtn.querySelector('i');
+<script>
+  const toggleBtn = document.getElementById('toggleMode');
+  const body = document.body;
+  const icon = toggleBtn.querySelector('i');
 
-    toggleBtn.addEventListener('click', () => {
-      body.classList.toggle('dark');
-      icon.classList.toggle('fa-sun');
-      icon.classList.toggle('fa-moon');
+  toggleBtn.addEventListener('click', () => {
+    body.classList.toggle('dark');
+    icon.classList.toggle('fa-sun');
+    icon.classList.toggle('fa-moon');
+  });
+  
+  const chats = {
+    ballroom: {
+      name: "Grand Ballroom Manager",
+      status: "Usually replies within an hour",
+      messages: `
+        <div class="message received">
+          <p>Hello! Thank you for your interest in our venue. I’d be happy to answer any questions you have.</p>
+          <div class="timestamp">09:49 AM</div>
+        </div>
+        <div class="message sent">
+          <p>Hi! I'm interested in booking for a corporate event in March. Do you have availability?</p>
+          <div class="timestamp">09:59 AM</div>
+        </div>
+      `
+    },
+    garden: {
+      name: "Garden Paradise Manager",
+      status: "Active now",
+      messages: `
+        <div class="message received">
+          <p>Hi! The catering package includes food, drinks, and basic table setup.</p>
+          <div class="timestamp">10:05 AM</div>
+        </div>
+        <div class="message sent">
+          <p>Sounds great! Can I see a sample menu?</p>
+          <div class="timestamp">10:07 AM</div>
+        </div>
+      `
+    },
+    skyline: {
+      name: "Skyline Rooftop Manager",
+      status: "Online",
+      messages: `
+        <div class="message received">
+          <p>I can send you the contract today. Please confirm your preferred date.</p>
+          <div class="timestamp">11:22 AM</div>
+        </div>
+        <div class="message sent">
+          <p>Thanks! I'll confirm by this afternoon.</p>
+          <div class="timestamp">11:24 AM</div>
+        </div>
+      `
+    }
+  };
+
+  const conversations = document.querySelectorAll('.conversation');
+  const chatHeader = document.querySelector('.chat-header h4');
+  const chatStatus = document.querySelector('.chat-header span');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.querySelector('.chat-input input');
+  const sendBtn = document.querySelector('.chat-input button');
+
+  let activeChat = 'ballroom';
+
+  conversations.forEach(conv => {
+    conv.addEventListener('click', () => {
+      conversations.forEach(c => c.classList.remove('active'));
+      conv.classList.add('active');
+
+      const chatKey = conv.getAttribute('data-chat');
+      const chatData = chats[chatKey];
+      activeChat = chatKey;
+
+      chatHeader.textContent = chatData.name;
+      chatStatus.textContent = chatData.status;
+      chatMessages.innerHTML = chatData.messages;
     });
+  });
 
-    // Messages data
-    const chats = {
-      ballroom: {
-        name: "Grand Ballroom Manager",
-        status: "Usually replies within an hour",
-        messages: `
-          <div class="message received">
-            <p>Hello! Thank you for your interest in our venue. I’d be happy to answer any questions you have.</p>
-            <div class="timestamp">09:49 AM</div>
-          </div>
-          <div class="message sent">
-            <p>Hi! I'm interested in booking for a corporate event in March. Do you have availability?</p>
-            <div class="timestamp">09:59 AM</div>
-          </div>
-        `
-      },
-      garden: {
-        name: "Garden Paradise Manager",
-        status: "Active now",
-        messages: `
-          <div class="message received">
-            <p>Hi! The catering package includes food, drinks, and basic table setup.</p>
-            <div class="timestamp">10:05 AM</div>
-          </div>
-          <div class="message sent">
-            <p>Sounds great! Can I see a sample menu?</p>
-            <div class="timestamp">10:07 AM</div>
-          </div>
-        `
-      },
-      skyline: {
-        name: "Skyline Rooftop Manager",
-        status: "Online",
-        messages: `
-          <div class="message received">
-            <p>I can send you the contract today. Please confirm your preferred date.</p>
-            <div class="timestamp">11:22 AM</div>
-          </div>
-          <div class="message sent">
-            <p>Thanks! I'll confirm by this afternoon.</p>
-            <div class="timestamp">11:24 AM</div>
-          </div>
-        `
-      }
-    };
+  function getCurrentTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
+  }
 
-    const conversations = document.querySelectorAll('.conversation');
-    const chatHeader = document.querySelector('.chat-header h4');
-    const chatStatus = document.querySelector('.chat-header span');
-    const chatMessages = document.getElementById('chatMessages');
+  function sendMessage() {
+    const text = chatInput.value.trim();
+    if (text === '') return;
 
-    conversations.forEach(conv => {
-      conv.addEventListener('click', () => {
-        conversations.forEach(c => c.classList.remove('active'));
-        conv.classList.add('active');
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', 'sent');
+    messageDiv.innerHTML = `
+      <p>${text}</p>
+      <div class="timestamp">${getCurrentTime()}</div>
+    `;
 
-        const chatKey = conv.getAttribute('data-chat');
-        const chatData = chats[chatKey];
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight; 
+    chatInput.value = '';
 
-        chatHeader.textContent = chatData.name;
-        chatStatus.textContent = chatData.status;
-        chatMessages.innerHTML = chatData.messages;
-      });
-    });
-  </script>
+    if (!chats[activeChat].messages.includes(text)) {
+      chats[activeChat].messages += messageDiv.outerHTML;
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+</script>
+
 </body>
 </html>
