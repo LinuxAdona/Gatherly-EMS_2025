@@ -6,11 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up to Gatherly | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
-    <link rel="stylesheet" href="../../src/output.css">
+    <link rel="stylesheet" href="../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <?php
+    session_start();
+
+    // Redirect to appropriate dashboard if already logged in
+    if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
+        switch ($_SESSION['role']) {
+            case 'administrator':
+                header("Location: admin-dashboard.php");
+                exit();
+            case 'coordinator':
+                header("Location: coordinator-dashboard.php");
+                exit();
+            case 'client':
+                header("Location: client-dashboard.php");
+                exit();
+            case 'venue_manager':
+                header("Location: venue-manager-dashboard.php");
+                exit();
+            default:
+                header("Location: home.php");
+                exit();
+        }
+    }
+    ?>
     <div class="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
         <div class="flex flex-col min-h-screen lg:flex-row">
             <!-- Form Section -->

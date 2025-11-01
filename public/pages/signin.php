@@ -14,6 +14,28 @@
 <body>
     <?php
     session_start();
+
+    // Redirect to the right dashboard if already logged in
+    if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
+        switch ($_SESSION['role']) {
+            case 'administrator':
+                header("Location: admin-dashboard.php");
+                exit();
+            case 'coordinator':
+                header("Location: coordinator-dashboard.php");
+                exit();
+            case 'client':
+                header("Location: client-dashboard.php");
+                exit();
+            case 'venue_manager':
+                header("Location: venue-manager-dashboard.php");
+                exit();
+            default:
+                header("Location: home.php");
+                exit();
+        }
+    }
+
     $error = null;
     if (isset($_SESSION['error'])) {
         $error = $_SESSION['error'];

@@ -60,13 +60,13 @@ $conn->close();
                     <a href="manage-venues.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Venues</a>
                     <a href="manage-events.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Events</a>
                     <a href="reports.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Reports</a>
-                    <div class="relative group">
-                        <button class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
+                    <div class="relative">
+                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
                             <i class="fas fa-user-shield text-2xl"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="fas fa-chevron-down text-xs"></i>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
+                        <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
                             <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
                             <a href="../../src/services/signout-handler.php" class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
@@ -215,6 +215,24 @@ $conn->close();
     </div>
 
     <?php include '../../src/components/Footer.php'; ?>
+
+    <script>
+        // Profile dropdown toggle
+        const profileBtn = document.getElementById('profile-dropdown-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 
 </html>
