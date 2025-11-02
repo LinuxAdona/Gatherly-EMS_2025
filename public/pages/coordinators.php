@@ -36,7 +36,7 @@ $conn->close();
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
     <!-- Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,10 +46,13 @@ $conn->close();
                     <span class="text-xl sm:text-2xl font-bold text-gray-800">Gatherly</span>
                 </div>
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="<?php echo $role === 'client' ? 'client-dashboard.php' : 'home.php'; ?>" class="text-gray-700 hover:text-indigo-600 transition-colors">Dashboard</a>
-                    <a href="venue/search.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Search Venues</a>
+                    <a href="<?php echo $role === 'client' ? 'client-dashboard.php' : 'home.php'; ?>"
+                        class="text-gray-700 hover:text-indigo-600 transition-colors">Dashboard</a>
+                    <a href="venue/search.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Search
+                        Venues</a>
                     <a href="coordinators.php" class="text-indigo-600 font-semibold">Coordinators</a>
-                    <a href="../../src/services/signout-handler.php" class="text-gray-700 hover:text-red-600 transition-colors">Sign Out</a>
+                    <a href="../../src/services/signout-handler.php"
+                        class="text-gray-700 hover:text-red-600 transition-colors">Sign Out</a>
                 </div>
             </div>
         </div>
@@ -63,7 +66,7 @@ $conn->close();
         </div>
 
         <!-- Why Hire a Coordinator -->
-        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 mb-8 text-white">
+        <div class="bg-linear-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 mb-8 text-white">
             <h2 class="text-2xl font-bold mb-4">Why Hire a Coordinator?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="flex items-start gap-3">
@@ -99,9 +102,11 @@ $conn->close();
                         ? round(($coordinator['completed_events'] / $coordinator['total_events']) * 100)
                         : 0;
                 ?>
-                    <div class="border border-gray-200 rounded-lg p-5 hover:border-indigo-300 hover:shadow-lg transition-all">
+                    <div
+                        class="border border-gray-200 rounded-lg p-5 hover:border-indigo-300 hover:shadow-lg transition-all">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                            <div
+                                class="w-16 h-16 bg-linear-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                                 <?php echo strtoupper(substr($coordinator['first_name'], 0, 1) . substr($coordinator['last_name'], 0, 1)); ?>
                             </div>
                             <div>
@@ -128,7 +133,8 @@ $conn->close();
                         <!-- Statistics -->
                         <div class="grid grid-cols-2 gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
                             <div class="text-center">
-                                <p class="text-2xl font-bold text-indigo-600"><?php echo $coordinator['total_events']; ?></p>
+                                <p class="text-2xl font-bold text-indigo-600"><?php echo $coordinator['total_events']; ?>
+                                </p>
                                 <p class="text-xs text-gray-600">Total Events</p>
                             </div>
                             <div class="text-center">
@@ -137,7 +143,8 @@ $conn->close();
                             </div>
                         </div>
 
-                        <button class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+                        <button
+                            class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
                             <i class="fas fa-user-check mr-2"></i>Contact Coordinator
                         </button>
                     </div>

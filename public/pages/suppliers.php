@@ -34,7 +34,7 @@ $conn->close();
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
     <!-- Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,10 +44,13 @@ $conn->close();
                     <span class="text-xl sm:text-2xl font-bold text-gray-800">Gatherly</span>
                 </div>
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="<?php echo $role === 'client' ? 'client-dashboard.php' : ($role === 'coordinator' ? 'coordinator-dashboard.php' : 'home.php'); ?>" class="text-gray-700 hover:text-indigo-600 transition-colors">Dashboard</a>
-                    <a href="venue/search.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Search Venues</a>
+                    <a href="<?php echo $role === 'client' ? 'client-dashboard.php' : ($role === 'coordinator' ? 'coordinator-dashboard.php' : 'home.php'); ?>"
+                        class="text-gray-700 hover:text-indigo-600 transition-colors">Dashboard</a>
+                    <a href="venue/search.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Search
+                        Venues</a>
                     <a href="suppliers.php" class="text-indigo-600 font-semibold">Suppliers</a>
-                    <a href="../../src/services/signout-handler.php" class="text-gray-700 hover:text-red-600 transition-colors">Sign Out</a>
+                    <a href="../../src/services/signout-handler.php"
+                        class="text-gray-700 hover:text-red-600 transition-colors">Sign Out</a>
                 </div>
             </div>
         </div>
@@ -96,15 +99,19 @@ $conn->close();
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Available Suppliers</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php foreach ($suppliers as $supplier): ?>
-                    <div class="border border-gray-200 rounded-lg p-5 hover:border-indigo-300 hover:shadow-lg transition-all">
+                    <div
+                        class="border border-gray-200 rounded-lg p-5 hover:border-indigo-300 hover:shadow-lg transition-all">
                         <div class="flex items-start justify-between mb-3">
                             <div>
-                                <h3 class="text-lg font-bold text-gray-800"><?php echo htmlspecialchars($supplier['supplier_name']); ?></h3>
-                                <span class="inline-block px-2 py-1 text-xs font-semibold text-indigo-600 bg-indigo-100 rounded-full mt-1">
+                                <h3 class="text-lg font-bold text-gray-800">
+                                    <?php echo htmlspecialchars($supplier['supplier_name']); ?></h3>
+                                <span
+                                    class="inline-block px-2 py-1 text-xs font-semibold text-indigo-600 bg-indigo-100 rounded-full mt-1">
                                     <?php echo htmlspecialchars($supplier['service_category']); ?>
                                 </span>
                             </div>
-                            <span class="px-2 py-1 text-xs font-semibold <?php echo $supplier['availability_status'] === 'available' ? 'text-green-600 bg-green-100' : 'text-gray-600 bg-gray-100'; ?> rounded-full">
+                            <span
+                                class="px-2 py-1 text-xs font-semibold <?php echo $supplier['availability_status'] === 'available' ? 'text-green-600 bg-green-100' : 'text-gray-600 bg-gray-100'; ?> rounded-full">
                                 <?php echo ucfirst($supplier['availability_status']); ?>
                             </span>
                         </div>
@@ -128,7 +135,8 @@ $conn->close();
                             </div>
                         </div>
 
-                        <button class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+                        <button
+                            class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
                             <i class="fas fa-info-circle mr-2"></i>View Services
                         </button>
                     </div>

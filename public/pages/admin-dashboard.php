@@ -45,7 +45,7 @@ $conn->close();
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gradient-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
     <!-- Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,21 +55,25 @@ $conn->close();
                     <span class="text-xl sm:text-2xl font-bold text-gray-800">Gatherly Admin</span>
                 </div>
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="admin-dashboard.php" class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Dashboard</a>
+                    <a href="admin-dashboard.php"
+                        class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Dashboard</a>
                     <a href="manage-users.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Users</a>
                     <a href="manage-venues.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Venues</a>
                     <a href="manage-events.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Events</a>
                     <a href="reports.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Reports</a>
                     <div class="relative">
-                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
+                        <button id="profile-dropdown-btn"
+                            class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
                             <i class="fas fa-user-shield text-2xl"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="fas fa-chevron-down text-xs"></i>
                         </button>
-                        <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
                             <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
-                            <a href="../../src/services/signout-handler.php" class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
+                            <a href="../../src/services/signout-handler.php"
+                                class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +95,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-600 mb-1">Total Users</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?>
+                        </h3>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-users text-2xl text-blue-600"></i>
@@ -103,7 +108,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-600 mb-1">Total Venues</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_venues']); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <?php echo number_format($stats['total_venues']); ?></h3>
                     </div>
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-building text-2xl text-green-600"></i>
@@ -115,7 +121,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-600 mb-1">Total Events</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_events']); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <?php echo number_format($stats['total_events']); ?></h3>
                     </div>
                     <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-calendar text-2xl text-purple-600"></i>
@@ -127,7 +134,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-600 mb-1">Total Revenue</p>
-                        <h3 class="text-3xl font-bold text-gray-800">₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            ₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
                     </div>
                     <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-peso-sign text-2xl text-yellow-600"></i>
@@ -144,28 +152,32 @@ $conn->close();
                     Management Tools
                 </h2>
                 <div class="space-y-3">
-                    <a href="manage-users.php" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50 transition-all">
+                    <a href="manage-users.php"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-users-cog text-xl text-indigo-600"></i>
                             <span class="font-semibold text-gray-700">Manage Users</span>
                         </div>
                         <i class="fas fa-arrow-right text-gray-400"></i>
                     </a>
-                    <a href="manage-venues.php" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50 transition-all">
+                    <a href="manage-venues.php"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-map-marked-alt text-xl text-green-600"></i>
                             <span class="font-semibold text-gray-700">Manage Venues</span>
                         </div>
                         <i class="fas fa-arrow-right text-gray-400"></i>
                     </a>
-                    <a href="manage-events.php" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 transition-all">
+                    <a href="manage-events.php"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-calendar-check text-xl text-purple-600"></i>
                             <span class="font-semibold text-gray-700">Manage Events</span>
                         </div>
                         <i class="fas fa-arrow-right text-gray-400"></i>
                     </a>
-                    <a href="system-settings.php" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all">
+                    <a href="system-settings.php"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-cog text-xl text-gray-600"></i>
                             <span class="font-semibold text-gray-700">System Settings</span>
@@ -181,28 +193,32 @@ $conn->close();
                     Quick Reports
                 </h2>
                 <div class="space-y-3">
-                    <a href="reports.php?type=revenue" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50 transition-all">
+                    <a href="reports.php?type=revenue"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-money-bill-wave text-xl text-green-600"></i>
                             <span class="font-semibold text-gray-700">Revenue Reports</span>
                         </div>
                         <i class="fas fa-arrow-right text-gray-400"></i>
                     </a>
-                    <a href="reports.php?type=bookings" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-200 hover:bg-blue-50 transition-all">
+                    <a href="reports.php?type=bookings"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-200 hover:bg-blue-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-chart-bar text-xl text-blue-600"></i>
                             <span class="font-semibold text-gray-700">Booking Analytics</span>
                         </div>
                         <i class="fas fa-arrow-right text-gray-400"></i>
                     </a>
-                    <a href="reports.php?type=venues" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 transition-all">
+                    <a href="reports.php?type=venues"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-chart-pie text-xl text-purple-600"></i>
                             <span class="font-semibold text-gray-700">Venue Performance</span>
                         </div>
                         <i class="fas fa-arrow-right text-gray-400"></i>
                     </a>
-                    <a href="reports.php?type=users" class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-orange-200 hover:bg-orange-50 transition-all">
+                    <a href="reports.php?type=users"
+                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-orange-200 hover:bg-orange-50 transition-all">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-user-chart text-xl text-orange-600"></i>
                             <span class="font-semibold text-gray-700">User Activity</span>

@@ -40,12 +40,14 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                     <a href="suppliers.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Suppliers</a>
                     <a href="my-events.php" class="text-gray-700 hover:text-indigo-600 transition-colors">My Events</a>
                     <div class="relative">
-                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
+                        <button id="profile-dropdown-btn"
+                            class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
                             <i class="fas fa-user-circle text-2xl"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="fas fa-chevron-down text-xs"></i>
                         </button>
-                        <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
                             <a href="../../src/services/signout-handler.php"
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
@@ -154,7 +156,7 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                     </h2>
                 </div>
                 <div class="space-y-3">
-                    <div class="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
+                    <div class="p-4 bg-linear-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
                         <p class="text-sm text-gray-700 mb-2">
                             <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
                             <strong>Pro Tip:</strong> Use our AI chatbot to find the perfect venue based on your
@@ -163,7 +165,7 @@ $first_name = $_SESSION['first_name'] ?? 'Guest';
                         <a href="chat/ai-chat.php"
                             class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">Try AI Chat →</a>
                     </div>
-                    <div class="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                    <div class="p-4 bg-linear-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
                         <p class="text-sm text-gray-700 mb-2">
                             <i class="fas fa-calendar-check text-blue-500 mr-2"></i>
                             <strong>Planning Tips:</strong> Book venues 3-6 months in advance for popular dates
