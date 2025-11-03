@@ -39,11 +39,12 @@
         <div class="flex flex-col min-h-screen lg:flex-row">
             <!-- Form Section -->
             <div class="flex flex-col items-center justify-center w-full p-4 lg:w-5/12 sm:p-8">
-                <div class="flex flex-col w-full max-w-md">
+                <div class="flex flex-col w-full max-w-xl">
+                    <!-- Header -->
                     <div class="flex flex-col items-start justify-center w-full">
                         <div class="flex flex-col items-start text-xl font-bold sm:text-2xl">
                             <a class="flex flex-col group" href="home.php">
-                                <img class="w-12 mb-6 sm:w-16 sm:mb-10 drop-shadow-lg transition-transform group-hover:scale-110"
+                                <img class="w-12 mb-6 transition-transform sm:w-16 sm:mb-10 drop-shadow-lg group-hover:scale-110"
                                     src="../assets/images/logo.png" alt="Logo">
                                 <span class="text-gray-800">Create your new account</span>
                             </a>
@@ -58,8 +59,10 @@
                             </p>
                         </div>
                     </div>
+                    <!-- Signup Form -->
                     <form action="../../src/services/signup-handler.php" method="POST" class="w-full mt-6 sm:mt-10">
                         <div class="flex flex-col w-full">
+                            <!-- Name Fields -->
                             <div class="grid w-full grid-cols-1 gap-4 mb-5 sm:grid-cols-2">
                                 <div class="flex flex-col">
                                     <label for="first_name" class="mb-2 text-sm font-semibold text-gray-700">First
@@ -76,22 +79,53 @@
                                         placeholder="Dela Cruz">
                                 </div>
                             </div>
-                            <label for="email" class="mb-2 text-sm font-semibold text-gray-700">Email address</label>
-                            <input type="email" id="email" name="email" required
+                            <!-- Username Field -->
+                            <label for="username" class="mb-2 text-sm font-semibold text-gray-700">Username</label>
+                            <input type="text" id="username" name="username" required
                                 class="w-full px-4 py-2.5 mb-5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                                placeholder="juandelacruz@gmail.com">
-                            <div class="flex flex-col mb-5">
-                                <label for="password" class="mb-2 text-sm font-semibold text-gray-700">Password</label>
-                                <input type="password" id="password" name="password" required
-                                    class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-                                <p class="mt-2 text-xs leading-relaxed text-gray-500 sm:text-sm">Password should be at
-                                    least 15 characters OR at least 8 characters including a number and a lowercase
-                                    letter.</p>
+                                placeholder="juandelacruz123">
+                            <!-- Role Field -->
+                            <label for="role" class="mb-2 text-sm font-semibold text-gray-700">Role</label>
+                            <select id="role" name="role" required
+                                class="w-full px-4 py-2.5 mb-5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                <option value="" disabled selected>Select your role</option>
+                                <option value="administrator">Administrator</option>
+                                <option value="manager">Manager</option>
+                                <option value="organizer">Organizer</option>
+                                <option value="supplier">Supplier</option>
+                            </select>
+                            <!-- Email Field -->
+                            <div class="">
+                                <div class="flex flex-col">
+                                    <label for="email" class="mb-2 text-sm font-semibold text-gray-700">Email address</label>
+                                    <input type="email" id="email" name="email" required
+                                        class="w-full px-4 py-2.5 mb-5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        placeholder="juandelacruz@gmail.com">
+                                </div>
                             </div>
-                            <label for="password2" class="mb-2 text-sm font-semibold text-gray-700">Re-enter
-                                Password</label>
-                            <input type="password" id="password2" name="password2" required
-                                class="w-full px-4 py-2.5 mb-6 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                            <!-- Phone Field -->
+                            <label for="phone" class="mb-2 text-sm font-semibold text-gray-700">Contact Number</label>
+                            <input type="tel" id="phone" name="phone" required
+                                class="w-full px-4 py-2.5 mb-5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                placeholder="09171234567" pattern="[0-9]{11}" title="Please enter a valid 11-digit phone number">
+                            <!-- Password Fields -->
+                            <div class="grid w-full grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                                <div class="flex flex-col">
+                                    <label for="password" class="mb-2 text-sm font-semibold text-gray-700">Password</label>
+                                    <input type="password" id="password" name="password" required
+                                        class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                </div>
+                                <div class="flex flex-col">
+                                    <label for="password2" class="mb-2 text-sm font-semibold text-gray-700">Re-enter
+                                        Password</label>
+                                    <input type="password" id="password2" name="password2" required
+                                        class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                </div>
+                            </div>
+                            <p class="mb-6 text-xs leading-relaxed text-gray-500 sm:text-sm">Password should be at
+                                least 15 characters OR at least 8 characters including a number and a lowercase
+                                letter.</p>
+
                             <button type="submit"
                                 class="w-full px-4 py-3 font-semibold text-white transition-all bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">Sign
                                 up</button>

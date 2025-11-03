@@ -38,14 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case 'administrator':
                     header("Location: ../../public/pages/admin-dashboard.php");
                     break;
-                case 'coordinator':
-                    header("Location: ../../public/pages/coordinator-dashboard.php");
+                case 'manager':
+                    header("Location: ../../public/pages/manager-dashboard.php");
                     break;
-                case 'client':
-                    header("Location: ../../public/pages/client-dashboard.php");
+                case 'organizer':
+                    header("Location: ../../public/pages/organizer-dashboard.php");
                     break;
-                case 'venue_manager':
-                    header("Location: ../../public/pages/venue-manager-dashboard.php");
+                case 'supplier':
+                    header("Location: ../../public/pages/supplier-dashboard.php");
                     break;
                 default:
                     header("Location: ../../public/pages/home.php");

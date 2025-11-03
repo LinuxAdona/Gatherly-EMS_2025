@@ -21,14 +21,14 @@
             case 'administrator':
                 header("Location: admin-dashboard.php");
                 exit();
-            case 'coordinator':
-                header("Location: coordinator-dashboard.php");
+            case 'organizer':
+                header("Location: organizer-dashboard.php");
                 exit();
-            case 'client':
-                header("Location: client-dashboard.php");
+            case 'manager':
+                header("Location: manager-dashboard.php");
                 exit();
-            case 'venue_manager':
-                header("Location: venue-manager-dashboard.php");
+            case 'supplier':
+                header("Location: supplier-dashboard.php");
                 exit();
             default:
                 header("Location: home.php");
@@ -47,7 +47,7 @@
         <div class="flex flex-col items-center justify-center flex-1 w-full px-4 py-8 sm:py-12">
             <div class="flex flex-col items-center mb-6 text-xl font-bold sm:text-2xl sm:mb-8 ">
                 <a href="home.php" class="flex flex-col items-center group">
-                    <img class="w-12 mb-4 sm:w-16 sm:mb-8 drop-shadow-lg transition-transform group-hover:scale-110"
+                    <img class="w-12 mb-4 transition-transform sm:w-16 sm:mb-8 drop-shadow-lg group-hover:scale-110"
                         src="../assets/images/logo.png" alt="Logo">
                     <span class="text-gray-800">Sign in to your account</span>
                 </a>

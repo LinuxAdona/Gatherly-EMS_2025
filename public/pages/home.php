@@ -30,11 +30,9 @@
                             <a href="#features"
                                 class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 rounded-lg lg:text-base hover:bg-indigo-50 hover:text-indigo-600">Features</a>
                             <a href="#how-it-works"
-                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 rounded-lg lg:text-base hover:bg-indigo-50 hover:text-indigo-600">How
-                                it works</a>
+                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 rounded-lg lg:text-base hover:bg-indigo-50 hover:text-indigo-600">Guide</a>
                             <a href="#smart-features"
-                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 rounded-lg lg:text-base hover:bg-indigo-50 hover:text-indigo-600">Smart
-                                features</a>
+                                class="px-3 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 rounded-lg lg:text-base hover:bg-indigo-50 hover:text-indigo-600">Overview</a>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -251,7 +249,7 @@
             <section id="smart-features" class="py-12 sm:py-16 md:py-20 bg-gray-50">
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="flex flex-col items-center mb-8 text-center sm:mb-12">
-                        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Smart features, explained
+                        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Overview
                         </h2>
                         <p class="mt-2 text-base text-gray-600 sm:mt-3 sm:text-lg md:text-xl">What makes Gatherly
                             intelligent and effective</p>
