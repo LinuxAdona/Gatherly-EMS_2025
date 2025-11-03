@@ -13,28 +13,36 @@ header('Content-Type: application/json');
 // Get JSON input
 $input = json_decode(file_get_contents('php://input'), true);
 $message = isset($input['message']) ? trim($input['message']) : '';
+$conversation_state = isset($input['conversation_state']) ? $input['conversation_state'] : [];
 
 if (empty($message)) {
     echo json_encode(['success' => false, 'error' => 'Message is required']);
     exit();
 }
 
-// Call Python ML script for recommendations
-$pythonScript = __DIR__ . '/../../ml/venue_recommender.py';
-$pythonPath = 'C:/Python314/python.exe'; // Use 'python3' on Linux/Mac or full path if needed
+// Call Python conversational planner script
+$pythonScript = __DIR__ . '/../../ml/conversational_planner.py';
+$pythonPath = 'C:/Python314/python.exe';
 
 // Escape message for command line
 $escapedMessage = escapeshellarg($message);
 
+// Pass conversation state as second argument if available
+$stateArg = '';
+if (!empty($conversation_state)) {
+    $stateJson = json_encode($conversation_state);
+    $stateArg = ' ' . escapeshellarg($stateJson);
+}
+
 // Execute Python script
-$command = "\"$pythonPath\" \"$pythonScript\" $escapedMessage 2>&1";
+$command = "\"$pythonPath\" \"$pythonScript\" $escapedMessage$stateArg 2>&1";
 $output = shell_exec($command);
 
 // Parse Python output
 if ($output === null || empty($output)) {
     echo json_encode([
         'success' => false,
-        'error' => 'Python ML service is not available. Please ensure Python and required packages are installed.'
+        'error' => 'AI service is not available. Please ensure Python and required packages are installed.'
     ]);
     exit();
 }
@@ -45,11 +53,11 @@ $result = json_decode($output, true);
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_encode([
         'success' => false,
-        'error' => 'Failed to parse ML response',
+        'error' => 'Failed to parse AI response',
         'debug' => $output
     ]);
     exit();
 }
 
-// Return the ML-based recommendations
+// Return the conversational response
 echo json_encode($result);

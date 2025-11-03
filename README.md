@@ -1,5 +1,19 @@
 # 🏛️ Gatherly: Event Management System (GEMS)
 
+## 🎉 NEW: Conversational AI Event Planner (v2.0)
+
+**NOW LIVE!** Our AI assistant uses conversational dialogue to help organizers plan complete events:
+
+- 🤖 **Incremental Questioning** - Asks questions step-by-step for better accuracy
+- 🏛️ **Venue Recommendations** - Top 3 venues with ML-based matching scores
+- 👥 **Supplier Recommendations** - Catering, Photography, Videography, Styling, and more!
+- 💰 **Budget-Aware** - Automatically allocates budget across venue and services
+- 📊 **7 Service Categories** - Complete event planning in one conversation
+
+[View Conversational AI Guide →](ml/CONVERSATIONAL_AI_GUIDE.md) | [Implementation Details →](ml/IMPLEMENTATION_SUMMARY.md)
+
+---
+
 ## Overview
 
 **Gatherly (GEMS)** is an intelligent **Event Management and Venue Booking Platform** designed to optimize how venues are discovered, booked, and managed.  
