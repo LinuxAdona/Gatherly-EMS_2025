@@ -47,29 +47,32 @@ $conn->close();
 
 <body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
     <!-- Navbar -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 sm:h-20">
-                <div class="flex items-center gap-3">
-                    <img src="../assets/images/logo.png" alt="Gatherly Logo" class="w-10 h-10 sm:w-12 sm:h-12">
-                    <span class="text-xl sm:text-2xl font-bold text-gray-800">Gatherly Admin</span>
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container px-4 mx-auto sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-12 sm:h-16">
+                <div class="flex items-center h-full">
+                    <a href="home.php" class="flex items-center group">
+                        <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
+                            src="../assets/images/logo.png" alt="Gatherly Logo">
+                        <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
+                    </a>
                 </div>
-                <div class="hidden md:flex items-center gap-6">
+                <div class="items-center hidden gap-6 md:flex">
                     <a href="admin-dashboard.php"
-                        class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Dashboard</a>
-                    <a href="manage-users.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Users</a>
-                    <a href="manage-venues.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Venues</a>
-                    <a href="manage-events.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Events</a>
-                    <a href="reports.php" class="text-gray-700 hover:text-indigo-600 transition-colors">Reports</a>
+                        class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Dashboard</a>
+                    <a href="manage-users.php" class="text-gray-700 transition-colors hover:text-indigo-600">Users</a>
+                    <a href="manage-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Venues</a>
+                    <a href="manage-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">Events</a>
+                    <a href="reports.php" class="text-gray-700 transition-colors hover:text-indigo-600">Reports</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
-                            class="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
-                            <i class="fas fa-user-shield text-2xl"></i>
+                            class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
+                            <i class="text-2xl fas fa-user-shield"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
-                            <i class="fas fa-chevron-down text-xs"></i>
+                            <i class="text-xs fas fa-chevron-down"></i>
                         </button>
                         <div id="profile-dropdown"
-                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
+                            class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
                             <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
                             <a href="../../src/services/signout-handler.php"
@@ -82,148 +85,148 @@ $conn->close();
     </nav>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Administrator Dashboard</h1>
+            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Administrator Dashboard</h1>
             <p class="text-gray-600">System overview and management tools</p>
         </div>
 
         <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Total Users</p>
+                        <p class="mb-1 text-sm text-gray-600">Total Users</p>
                         <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?>
                         </h3>
                     </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-users text-2xl text-blue-600"></i>
+                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
+                        <i class="text-2xl text-blue-600 fas fa-users"></i>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+            <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Total Venues</p>
+                        <p class="mb-1 text-sm text-gray-600">Total Venues</p>
                         <h3 class="text-3xl font-bold text-gray-800">
                             <?php echo number_format($stats['total_venues']); ?></h3>
                     </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-building text-2xl text-green-600"></i>
+                    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+                        <i class="text-2xl text-green-600 fas fa-building"></i>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+            <div class="p-6 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Total Events</p>
+                        <p class="mb-1 text-sm text-gray-600">Total Events</p>
                         <h3 class="text-3xl font-bold text-gray-800">
                             <?php echo number_format($stats['total_events']); ?></h3>
                     </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-calendar text-2xl text-purple-600"></i>
+                    <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg">
+                        <i class="text-2xl text-purple-600 fas fa-calendar"></i>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
+            <div class="p-6 bg-white border-l-4 border-yellow-500 shadow-md rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Total Revenue</p>
+                        <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
                         <h3 class="text-3xl font-bold text-gray-800">
                             ₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
                     </div>
-                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-peso-sign text-2xl text-yellow-600"></i>
+                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-lg">
+                        <i class="text-2xl text-yellow-600 fas fa-peso-sign"></i>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Management Tools -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-tools text-indigo-600 mr-2"></i>
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div class="p-6 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-indigo-600 fas fa-tools"></i>
                     Management Tools
                 </h2>
                 <div class="space-y-3">
                     <a href="manage-users.php"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-users-cog text-xl text-indigo-600"></i>
+                            <i class="text-xl text-indigo-600 fas fa-users-cog"></i>
                             <span class="font-semibold text-gray-700">Manage Users</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                     <a href="manage-venues.php"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-map-marked-alt text-xl text-green-600"></i>
+                            <i class="text-xl text-green-600 fas fa-map-marked-alt"></i>
                             <span class="font-semibold text-gray-700">Manage Venues</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                     <a href="manage-events.php"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-calendar-check text-xl text-purple-600"></i>
+                            <i class="text-xl text-purple-600 fas fa-calendar-check"></i>
                             <span class="font-semibold text-gray-700">Manage Events</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                     <a href="system-settings.php"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-cog text-xl text-gray-600"></i>
+                            <i class="text-xl text-gray-600 fas fa-cog"></i>
                             <span class="font-semibold text-gray-700">System Settings</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+            <div class="p-6 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-green-600 fas fa-chart-line"></i>
                     Quick Reports
                 </h2>
                 <div class="space-y-3">
                     <a href="reports.php?type=revenue"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-money-bill-wave text-xl text-green-600"></i>
+                            <i class="text-xl text-green-600 fas fa-money-bill-wave"></i>
                             <span class="font-semibold text-gray-700">Revenue Reports</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                     <a href="reports.php?type=bookings"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-200 hover:bg-blue-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-blue-200 hover:bg-blue-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-chart-bar text-xl text-blue-600"></i>
+                            <i class="text-xl text-blue-600 fas fa-chart-bar"></i>
                             <span class="font-semibold text-gray-700">Booking Analytics</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                     <a href="reports.php?type=venues"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-chart-pie text-xl text-purple-600"></i>
+                            <i class="text-xl text-purple-600 fas fa-chart-pie"></i>
                             <span class="font-semibold text-gray-700">Venue Performance</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                     <a href="reports.php?type=users"
-                        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-orange-200 hover:bg-orange-50 transition-all">
+                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-orange-200 hover:bg-orange-50">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-user-chart text-xl text-orange-600"></i>
+                            <i class="text-xl text-orange-600 fas fa-person-running"></i>
                             <span class="font-semibold text-gray-700">User Activity</span>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-400"></i>
+                        <i class="text-gray-400 fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>

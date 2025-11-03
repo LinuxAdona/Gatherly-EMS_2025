@@ -71,6 +71,7 @@ It benefits both **event organizers** and **venue managers** through automation,
 
 - **Event Organizers:** Companies or individuals managing weddings, concerts, corporate events, etc.
 - **Venue Owners/Managers:** Gyms, hotels, convention centers, and coliseums.
+- **Suppliers/Vendors:** Catering, AV, Lights & Sounds, decoration services.
 - **Municipal/Community Centers:** Government facilities managing local events.
 
 ---
@@ -121,7 +122,7 @@ Tracks:
 
 **Phases:**
 
-1. **Architecture Setup** – Backend, Frontend, Database.
+1. **Architecture Setup** – Backend, Frontend, Database.B
 2. **Authentication & Roles** – Admin, Organizer, Venue Manager.
 3. **Venue Management** – CRUD, amenities, availability.
 4. **Booking System** – Conflict-free, atomic transactions.

@@ -72,16 +72,16 @@
                 <div class="absolute inset-0 bg-linear-to-br from-indigo-900/30 via-purple-900/10 to-transparent">
                 </div>
                 <div class="flex flex-col justify-center h-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-3xl lg:w-full lg:pb-28 xl:pb-32">
+                    <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-5xl lg:w-full lg:pb-28 xl:pb-32">
                         <main class="mt-6 sm:mt-10 md:mt-16 lg:mt-20 xl:mt-28">
                             <div class="text-center lg:text-left">
                                 <h1
-                                    class="text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                                    class="text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl lg:text-7xl">
                                     <span class="block">Organize Events</span>
                                     <span class="block text-indigo-300">Seamlessly</span>
                                 </h1>
                                 <p
-                                    class="max-w-md mx-auto mt-4 text-sm leading-relaxed text-gray-100 sm:mt-5 md:mt-6 sm:text-base md:text-lg lg:text-xl lg:mx-0">
+                                    class="max-w-2xl mx-auto mt-4 text-sm leading-relaxed text-gray-100 sm:mt-5 md:mt-6 sm:text-base md:text-lg lg:text-xl lg:mx-0">
                                     Gatherly simplifies event management with powerful tools for planning, promotion,
                                     and attendee engagement.
                                 </p>
