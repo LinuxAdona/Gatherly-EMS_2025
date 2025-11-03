@@ -36,16 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Role-based redirection to specific dashboards
             switch ($role) {
                 case 'administrator':
-                    header("Location: ../../public/pages/admin-dashboard.php");
+                    header("Location: ../../public/pages/admin/admin-dashboard.php");
                     break;
                 case 'manager':
-                    header("Location: ../../public/pages/manager-dashboard.php");
+                    header("Location: ../../public/pages/manager/manager-dashboard.php");
                     break;
                 case 'organizer':
-                    header("Location: ../../public/pages/organizer-dashboard.php");
+                    header("Location: ../../public/pages/organizer/organizer-dashboard.php");
                     break;
                 case 'supplier':
-                    header("Location: ../../public/pages/supplier-dashboard.php");
+                    header("Location: ../../public/pages/supplier/supplier-dashboard.php");
                     break;
                 default:
                     header("Location: ../../public/pages/home.php");

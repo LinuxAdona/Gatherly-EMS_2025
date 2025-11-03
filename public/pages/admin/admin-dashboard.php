@@ -3,11 +3,11 @@ session_start();
 
 // Check if user is logged in and is an administrator
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'administrator') {
-    header("Location: signin.php");
+    header("Location: ../signin.php");
     exit();
 }
 
-require_once '../../src/services/dbconnect.php';
+require_once '../../../src/services/dbconnect.php';
 
 $first_name = $_SESSION['first_name'] ?? 'Admin';
 
@@ -40,9 +40,10 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Gatherly</title>
-    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
-    <link rel="stylesheet" href="../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../src/output.css'); ?>">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
+    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
 <body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
@@ -53,7 +54,7 @@ $conn->close();
                 <div class="flex items-center h-full">
                     <a href="home.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
-                            src="../assets/images/logo.png" alt="Gatherly Logo">
+                            src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
                     </a>
                 </div>
@@ -66,7 +67,7 @@ $conn->close();
                     <a href="reports.php" class="text-gray-700 transition-colors hover:text-indigo-600">Reports</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
-                            class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
+                            class="flex items-center gap-2 text-gray-700 transition-colors cursor-pointer hover:text-indigo-600">
                             <i class="text-2xl fas fa-user-shield"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="text-xs fas fa-chevron-down"></i>
@@ -75,7 +76,7 @@ $conn->close();
                             class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
                             <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
-                            <a href="../../src/services/signout-handler.php"
+                            <a href="../../../src/services/signout-handler.php"
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
@@ -93,7 +94,7 @@ $conn->close();
         </div>
 
         <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-3">
             <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
                 <div class="flex items-center justify-between">
                     <div>
@@ -132,18 +133,59 @@ $conn->close();
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="p-6 bg-white border-l-4 border-yellow-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
-                        <h3 class="text-3xl font-bold text-gray-800">
-                            ₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-lg">
-                        <i class="text-2xl text-yellow-600 fas fa-peso-sign"></i>
-                    </div>
+        <!-- Revenue Analytics Chart -->
+        <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
+            <div class="flex flex-col items-start justify-between mb-6 sm:flex-row sm:items-center">
+                <div>
+                    <h2 class="mb-1 text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-yellow-600 fas fa-chart-line"></i>
+                        Revenue Analytics
+                    </h2>
+                    <p class="text-sm text-gray-600">Track revenue performance over time</p>
                 </div>
+                <div class="flex flex-wrap gap-2 mt-4 sm:mt-0">
+                    <select id="yearSelect" class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="">Loading years...</option>
+                    </select>
+                    <select id="monthSelect" class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="">All Months</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
+                <div class="p-4 border-l-4 border-yellow-500 rounded-lg bg-yellow-50">
+                    <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Period</p>
+                    <p id="periodLabel" class="text-lg font-bold text-gray-800">Loading...</p>
+                </div>
+                <div class="p-4 border-l-4 border-green-500 rounded-lg bg-green-50">
+                    <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Total Revenue</p>
+                    <p id="totalRevenue" class="text-lg font-bold text-gray-800">₱0.00</p>
+                </div>
+                <div class="p-4 border-l-4 border-blue-500 rounded-lg bg-blue-50">
+                    <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Total Events</p>
+                    <p id="totalEvents" class="text-lg font-bold text-gray-800">0</p>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="relative" style="height: 400px;">
+                <canvas id="revenueChart"></canvas>
             </div>
         </div>
 
@@ -233,25 +275,9 @@ $conn->close();
         </div>
     </div>
 
-    <?php include '../../src/components/Footer.php'; ?>
+    <?php include '../../../src/components/Footer.php'; ?>
 
-    <script>
-        // Profile dropdown toggle
-        const profileBtn = document.getElementById('profile-dropdown-btn');
-        const profileDropdown = document.getElementById('profile-dropdown');
-
-        profileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            profileDropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-                profileDropdown.classList.add('hidden');
-            }
-        });
-    </script>
+    <script src="../../assets/js/admin.js"></script>
 </body>
 
 </html>

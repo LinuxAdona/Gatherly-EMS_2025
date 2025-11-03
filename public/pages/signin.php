@@ -19,16 +19,16 @@
     if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
         switch ($_SESSION['role']) {
             case 'administrator':
-                header("Location: admin-dashboard.php");
+                header("Location: admin/admin-dashboard.php");
                 exit();
             case 'organizer':
-                header("Location: organizer-dashboard.php");
+                header("Location: organizer/organizer-dashboard.php");
                 exit();
             case 'manager':
-                header("Location: manager-dashboard.php");
+                header("Location: manager/manager-dashboard.php");
                 exit();
             case 'supplier':
-                header("Location: supplier-dashboard.php");
+                header("Location: supplier/supplier-dashboard.php");
                 exit();
             default:
                 header("Location: home.php");
