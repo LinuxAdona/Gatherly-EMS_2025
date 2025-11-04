@@ -22,16 +22,24 @@ if (empty($message)) {
 
 // Call Python conversational planner script
 $pythonScript = __DIR__ . '/../../ml/conversational_planner.py';
-$pythonPath = 'C:/Python314/python.exe';
+$pythonPath = 'C:/Python313/python.exe';
+
+// Windows-specific escaping function
+function escapeForWindows($str)
+{
+    // Escape double quotes and wrap in double quotes for Windows
+    return '"' . str_replace('"', '\\"', $str) . '"';
+}
 
 // Escape message for command line
-$escapedMessage = escapeshellarg($message);
+$escapedMessage = escapeForWindows($message);
 
 // Pass conversation state as second argument if available
 $stateArg = '';
 if (!empty($conversation_state)) {
     $stateJson = json_encode($conversation_state);
-    $stateArg = ' ' . escapeshellarg($stateJson);
+    // For JSON, we need to escape backslashes and quotes properly for Windows
+    $stateArg = ' ' . escapeForWindows($stateJson);
 }
 
 // Execute Python script
