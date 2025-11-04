@@ -410,122 +410,148 @@
   </div>
 
 <script>
-  const toggleBtn = document.getElementById('toggleMode');
-  const body = document.body;
-  const icon = toggleBtn.querySelector('i');
+const toggleBtn = document.getElementById('toggleMode');
+const body = document.body;
+const icon = toggleBtn.querySelector('i');
 
-  toggleBtn.addEventListener('click', () => {
-    body.classList.toggle('dark');
-    icon.classList.toggle('fa-sun');
-    icon.classList.toggle('fa-moon');
-  });
-  
-  const chats = {
-    ballroom: {
-      name: "Grand Ballroom Manager",
-      status: "Usually replies within an hour",
-      messages: `
-        <div class="message received">
-          <p>Hello! Thank you for your interest in our venue. I’d be happy to answer any questions you have.</p>
-          <div class="timestamp">09:49 AM</div>
-        </div>
-        <div class="message sent">
-          <p>Hi! I'm interested in booking for a corporate event in March. Do you have availability?</p>
-          <div class="timestamp">09:59 AM</div>
-        </div>
-      `
-    },
-    garden: {
-      name: "Garden Paradise Manager",
-      status: "Active now",
-      messages: `
-        <div class="message received">
-          <p>Hi! The catering package includes food, drinks, and basic table setup.</p>
-          <div class="timestamp">10:05 AM</div>
-        </div>
-        <div class="message sent">
-          <p>Sounds great! Can I see a sample menu?</p>
-          <div class="timestamp">10:07 AM</div>
-        </div>
-      `
-    },
-    skyline: {
-      name: "Skyline Rooftop Manager",
-      status: "Online",
-      messages: `
-        <div class="message received">
-          <p>I can send you the contract today. Please confirm your preferred date.</p>
-          <div class="timestamp">11:22 AM</div>
-        </div>
-        <div class="message sent">
-          <p>Thanks! I'll confirm by this afternoon.</p>
-          <div class="timestamp">11:24 AM</div>
-        </div>
-      `
-    }
-  };
+toggleBtn.addEventListener('click', () => {
+  body.classList.toggle('dark');
+  icon.classList.toggle('fa-sun');
+  icon.classList.toggle('fa-moon');
+});
 
-  const conversations = document.querySelectorAll('.conversation');
-  const chatHeader = document.querySelector('.chat-header h4');
-  const chatStatus = document.querySelector('.chat-header span');
-  const chatMessages = document.getElementById('chatMessages');
-  const chatInput = document.querySelector('.chat-input input');
-  const sendBtn = document.querySelector('.chat-input button');
+const conversations = document.querySelectorAll('.conversation');
+const chatHeader = document.querySelector('.chat-header h4');
+const chatStatus = document.querySelector('.chat-header span');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.querySelector('.chat-input input');
+const sendBtn = document.querySelector('.chat-input button');
 
-  let activeChat = 'ballroom';
+let activeChat = 'ballroom'; 
+const eventId = 1;
+const senderId = 2;
+const receiverIdMap = { ballroom: 3, garden: 4, skyline: 5 };
 
-  conversations.forEach(conv => {
-    conv.addEventListener('click', () => {
-      conversations.forEach(c => c.classList.remove('active'));
-      conv.classList.add('active');
+const localMessages = {
+  ballroom: Array.from(chatMessages.children).map(msgDiv => ({
+    sender_id: msgDiv.classList.contains('sent') ? senderId : receiverIdMap['ballroom'],
+    message_text: msgDiv.querySelector('p').textContent,
+    timestamp: msgDiv.querySelector('.timestamp').textContent
+  })),
+  garden: [],
+  skyline: []
+};
 
-      const chatKey = conv.getAttribute('data-chat');
-      const chatData = chats[chatKey];
-      activeChat = chatKey;
-
-      chatHeader.textContent = chatData.name;
-      chatStatus.textContent = chatData.status;
-      chatMessages.innerHTML = chatData.messages;
-    });
-  });
-
-  function getCurrentTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    return `${hours}:${minutes} ${ampm}`;
-  }
-
-  function sendMessage() {
-    const text = chatInput.value.trim();
-    if (text === '') return;
-
+function displayMessages(chatKey) {
+  chatMessages.innerHTML = '';
+  localMessages[chatKey].forEach(msg => {
     const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', 'sent');
+    messageDiv.classList.add('message', msg.sender_id == senderId ? 'sent' : 'received');
     messageDiv.innerHTML = `
-      <p>${text}</p>
-      <div class="timestamp">${getCurrentTime()}</div>
+      <p>${msg.message_text}</p>
+      <div class="timestamp">${msg.timestamp}</div>
     `;
-
     chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight; 
-    chatInput.value = '';
-
-    if (!chats[activeChat].messages.includes(text)) {
-      chats[activeChat].messages += messageDiv.outerHTML;
-    }
-  }
-
-  sendBtn.addEventListener('click', sendMessage);
-
-  chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      sendMessage();
-    }
   });
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function loadMessages(chatKey = activeChat) {
+  const receiverId = receiverIdMap[chatKey];
+  fetch('load_messages.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      event_id: eventId,
+      sender_id: senderId,
+      receiver_id: receiverId
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      console.error(data.error);
+      return;
+    }
+
+    const existingTexts = localMessages[chatKey].map(m => m.message_text);
+    data.forEach(msg => {
+      if (!existingTexts.includes(msg.message_text)) {
+        localMessages[chatKey].push(msg);
+      }
+    });
+
+    if (chatKey === activeChat) displayMessages(activeChat);
+  })
+  .catch(err => console.error(err));
+}
+
+
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  const timestamp = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const receiverId = receiverIdMap[activeChat];
+
+  const newMessage = { sender_id: senderId, message_text: text, timestamp };
+  localMessages[activeChat].push(newMessage);
+  displayMessages(activeChat);
+
+  chatInput.value = '';
+
+  fetch('save_message.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      event_id: eventId,
+      sender_id: senderId,
+      receiver_id: receiverId,
+      message_text: text
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.success) alert(data.error || 'Message not sent');
+  })
+  .catch(err => console.error(err));
+}
+
+conversations.forEach(conv => {
+  conv.addEventListener('click', () => {
+    conversations.forEach(c => c.classList.remove('active'));
+    conv.classList.add('active');
+
+    activeChat = conv.getAttribute('data-chat');
+
+    if (activeChat === 'ballroom') {
+      chatHeader.textContent = "Grand Ballroom Manager";
+      chatStatus.textContent = "Active now";
+    } else if (activeChat === 'garden') {
+      chatHeader.textContent = "Garden Paradise Manager";
+      chatStatus.textContent = "Active now";
+    } else if (activeChat === 'skyline') {
+      chatHeader.textContent = "Skyline Rooftop Manager";
+      chatStatus.textContent = "Online";
+    }
+
+    displayMessages(activeChat);
+    loadMessages(activeChat);
+  });
+});
+
+sendBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// Initial load
+loadMessages();
+setInterval(() => loadMessages(activeChat), 3000);
+ 
 </script>
 
 </body>
