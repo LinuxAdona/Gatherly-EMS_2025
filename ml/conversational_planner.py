@@ -8,7 +8,7 @@ import sys
 import json
 import re
 import mysql.connector
-from datetime import datetime
+from typing import Dict, List, Tuple, Any, Optional
 
 class ConversationalEventPlanner:
     def __init__(self):
@@ -41,7 +41,7 @@ class ConversationalEventPlanner:
             'Equipment Rental'
         ]
     
-    def determine_stage(self, conversation_state, user_message):
+    def determine_stage(self, conversation_state: Dict[str, Any], user_message: str) -> Tuple[str, Dict[str, Any]]:
         """
         Determine what stage we're at in the conversation
         Returns: (stage, extracted_data)
@@ -49,7 +49,7 @@ class ConversationalEventPlanner:
         message_lower = user_message.lower()
         
         # Check if user is providing specific information
-        data = {}
+        data: Dict[str, Any] = {}
         
         # Parse event type
         event_types = {
@@ -117,10 +117,11 @@ class ConversationalEventPlanner:
             'rental': ['rental', 'tables', 'chairs', 'tent', 'equipment', 'stage']
         }
         
-        data['services'] = []
+        services_list: List[str] = []
         for service, keywords in service_keywords.items():
             if any(keyword in message_lower for keyword in keywords):
-                data['services'].append(service)
+                services_list.append(service)
+        data['services'] = services_list
         
         # Create a merged state to check what information we now have
         # This ensures we check against both existing state AND newly extracted data
@@ -143,7 +144,7 @@ class ConversationalEventPlanner:
                 data['services_needed'] = True
             return 'recommendations', data
     
-    def generate_question(self, stage, conversation_state):
+    def generate_question(self, stage: str, conversation_state: Dict[str, Any]) -> str:
         """Generate the next question based on the stage"""
         
         questions = {
@@ -171,7 +172,7 @@ class ConversationalEventPlanner:
         
         return questions.get(stage, "How else can I help you with your event?")
     
-    def get_venue_recommendations(self, conn, requirements):
+    def get_venue_recommendations(self, conn: Any, requirements: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Get venue recommendations based on requirements"""
         cursor = conn.cursor(dictionary=True)
         
@@ -200,7 +201,7 @@ class ConversationalEventPlanner:
                 venue['base_price'] = float(venue['base_price'])
         
         # Score venues
-        scored_venues = []
+        scored_venues: List[Dict[str, Any]] = []
         for venue in venues:
             score = self.calculate_venue_score(venue, requirements)
             if score > 30:  # Minimum threshold
@@ -219,7 +220,7 @@ class ConversationalEventPlanner:
         scored_venues.sort(key=lambda x: x['score'], reverse=True)
         return scored_venues[:3]  # Top 3
     
-    def calculate_venue_score(self, venue, requirements):
+    def calculate_venue_score(self, venue: Dict[str, Any], requirements: Dict[str, Any]) -> float:
         """Calculate venue suitability score"""
         score = 0
         total_weight = 0
@@ -261,7 +262,7 @@ class ConversationalEventPlanner:
         
         return score
     
-    def get_supplier_recommendations(self, conn, requirements, categories):
+    def get_supplier_recommendations(self, conn: Any, requirements: Dict[str, Any], categories: List[str]) -> Dict[str, List[Dict[str, Any]]]:
         """Get supplier and service recommendations"""
         cursor = conn.cursor(dictionary=True)
         
@@ -276,7 +277,7 @@ class ConversationalEventPlanner:
             'rental': 'Equipment Rental'
         }
         
-        recommendations = {}
+        recommendations: Dict[str, List[Dict[str, Any]]] = {}
         
         for category_key in categories:
             db_category = category_map.get(category_key)
@@ -319,7 +320,7 @@ class ConversationalEventPlanner:
         cursor.close()
         return recommendations
     
-    def filter_by_budget(self, services, total_budget):
+    def filter_by_budget(self, services: List[Dict[str, Any]], total_budget: float) -> List[Dict[str, Any]]:
         """Filter services by budget"""
         # Rough budget allocation
         allocations = {
@@ -338,14 +339,14 @@ class ConversationalEventPlanner:
         category = services[0]['category']
         budget_for_category = total_budget * allocations.get(category, 0.10)
         
-        filtered = []
+        filtered: List[Dict[str, Any]] = []
         for service in services:
             if service['price'] <= budget_for_category * 1.3:  # Allow 30% flexibility
                 filtered.append(service)
         
         return filtered if filtered else services  # Return all if none match
     
-    def process_conversation(self, message, conversation_state=None):
+    def process_conversation(self, message: str, conversation_state: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Main conversation processing"""
         if conversation_state is None:
             conversation_state = {}
@@ -392,7 +393,7 @@ class ConversationalEventPlanner:
                 'needs_more_info': True
             }
     
-    def generate_final_recommendations(self, conversation_state):
+    def generate_final_recommendations(self, conversation_state: Dict[str, Any]) -> Dict[str, Any]:
         """Generate comprehensive recommendations"""
         try:
             conn = mysql.connector.connect(**self.db_config)
@@ -430,7 +431,7 @@ class ConversationalEventPlanner:
                 'conversation_state': conversation_state
             }
     
-    def format_final_response(self, state, venues, suppliers):
+    def format_final_response(self, state: Dict[str, Any], venues: List[Dict[str, Any]], suppliers: Dict[str, List[Dict[str, Any]]]) -> str:
         """Format the final comprehensive recommendation"""
         event_type = state.get('event_type', 'event').title()
         guests = state.get('guests', 'N/A')
@@ -461,7 +462,7 @@ class ConversationalEventPlanner:
         
         return response
 
-def main():
+def main() -> None:
     if len(sys.argv) < 2:
         print(json.dumps({
             'success': False,
@@ -469,14 +470,14 @@ def main():
         }))
         sys.exit(1)
     
-    message = sys.argv[1]
+    message: str = sys.argv[1]
     
     # Get conversation state if provided (for multi-turn conversations)
-    conversation_state = {}
+    conversation_state: Dict[str, Any] = {}
     if len(sys.argv) > 2:
         try:
             conversation_state = json.loads(sys.argv[2])
-        except:
+        except Exception:
             pass
     
     planner = ConversationalEventPlanner()

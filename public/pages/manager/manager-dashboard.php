@@ -68,7 +68,8 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Venue Manager Dashboard | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -116,7 +117,8 @@ $conn->close();
     <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Welcome back, <?php echo htmlspecialchars($first_name); ?>! 🏢</h1>
+            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Welcome back,
+                <?php echo htmlspecialchars($first_name); ?>! 🏢</h1>
             <p class="text-gray-600">Manage your venues and optimize your business</p>
         </div>
 
@@ -130,7 +132,8 @@ $conn->close();
                         </div>
                         <h2 class="text-2xl font-bold text-green-900">Dynamic Pricing & Analytics</h2>
                     </div>
-                    <p class="text-gray-700">Optimize your venue pricing with AI-powered demand forecasting and competitive analysis!</p>
+                    <p class="text-gray-700">Optimize your venue pricing with AI-powered demand forecasting and
+                        competitive analysis!</p>
                     <div class="flex flex-wrap gap-2 mt-3">
                         <span class="px-3 py-1 text-xs font-semibold text-green-700 bg-green-200 rounded-full">
                             <i class="mr-1 fas fa-brain"></i> Smart Pricing
@@ -143,7 +146,8 @@ $conn->close();
                         </span>
                     </div>
                 </div>
-                <button id="openPricingTool" class="px-6 py-3 font-semibold text-white transition-all transform bg-green-600 shadow-lg rounded-xl hover:bg-green-700 hover:scale-105 hover:shadow-xl">
+                <button id="openPricingTool"
+                    class="px-6 py-3 font-semibold text-white transition-all transform bg-green-600 shadow-lg rounded-xl hover:bg-green-700 hover:scale-105 hover:shadow-xl">
                     <i class="mr-2 fas fa-dollar-sign"></i>
                     Optimize Pricing
                 </button>
@@ -156,7 +160,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="mb-1 text-sm text-gray-600">My Venues</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_venues']); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <?php echo number_format($stats['total_venues']); ?></h3>
                     </div>
                     <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
                         <i class="text-2xl text-green-600 fas fa-building"></i>
@@ -168,7 +173,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="mb-1 text-sm text-gray-600">Total Bookings</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_bookings']); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <?php echo number_format($stats['total_bookings']); ?></h3>
                     </div>
                     <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
                         <i class="text-2xl text-blue-600 fas fa-calendar-check"></i>
@@ -180,7 +186,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="mb-1 text-sm text-gray-600">Pending</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['pending_bookings']); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <?php echo number_format($stats['pending_bookings']); ?></h3>
                     </div>
                     <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-lg">
                         <i class="text-2xl text-yellow-600 fas fa-clock"></i>
@@ -192,7 +199,8 @@ $conn->close();
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
-                        <h3 class="text-3xl font-bold text-gray-800">₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            ₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
                     </div>
                     <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg">
                         <i class="text-2xl text-purple-600 fas fa-peso-sign"></i>
@@ -254,10 +262,12 @@ $conn->close();
                 <div class="space-y-3">
                     <?php if ($recent_bookings && $recent_bookings->num_rows > 0): ?>
                         <?php while ($booking = $recent_bookings->fetch_assoc()): ?>
-                            <div class="p-4 transition-all border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50">
+                            <div
+                                class="p-4 transition-all border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50">
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
-                                        <h3 class="mb-1 font-semibold text-gray-800"><?php echo htmlspecialchars($booking['event_name']); ?></h3>
+                                        <h3 class="mb-1 font-semibold text-gray-800">
+                                            <?php echo htmlspecialchars($booking['event_name']); ?></h3>
                                         <p class="text-sm text-gray-600">
                                             <i class="mr-1 fas fa-user"></i>
                                             <?php echo htmlspecialchars($booking['first_name'] . ' ' . $booking['last_name']); ?>
@@ -357,11 +367,14 @@ $conn->close();
                             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div>
                                     <label class="block mb-2 text-sm font-semibold text-gray-700">Base Price (₱)</label>
-                                    <input type="number" id="basePrice" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="50000" value="50000">
+                                    <input type="number" id="basePrice"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        placeholder="50000" value="50000">
                                 </div>
                                 <div>
                                     <label class="block mb-2 text-sm font-semibold text-gray-700">Season</label>
-                                    <select id="season" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <select id="season"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                                         <option value="1.0">Off-Peak (0%)</option>
                                         <option value="1.1">Regular (+10%)</option>
                                         <option value="1.2" selected>Peak (+20%)</option>
@@ -369,30 +382,35 @@ $conn->close();
                                 </div>
                                 <div>
                                     <label class="block mb-2 text-sm font-semibold text-gray-700">Day Type</label>
-                                    <select id="dayType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <select id="dayType"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                                         <option value="1.0">Weekday (0%)</option>
                                         <option value="1.15" selected>Weekend (+15%)</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label class="block mb-2 text-sm font-semibold text-gray-700">Demand</label>
-                                    <select id="demand" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <select id="demand"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                                         <option value="0.9">Low (-10%)</option>
                                         <option value="1.0">Normal (0%)</option>
                                         <option value="1.1" selected>High (+10%)</option>
                                     </select>
                                 </div>
                             </div>
-                            <button type="button" id="calculatePrice" class="w-full px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+                            <button type="button" id="calculatePrice"
+                                class="w-full px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
                                 Calculate Optimal Price
                             </button>
                         </form>
 
                         <!-- Result -->
-                        <div id="pricingResult" class="hidden p-4 mt-4 border-l-4 border-green-500 rounded-lg bg-green-50">
+                        <div id="pricingResult"
+                            class="hidden p-4 mt-4 border-l-4 border-green-500 rounded-lg bg-green-50">
                             <p class="mb-1 text-sm font-semibold text-gray-600">Recommended Price</p>
                             <p class="text-3xl font-bold text-green-600" id="optimalPrice">₱60,000.00</p>
-                            <p class="mt-2 text-sm text-gray-600">This price optimizes for maximum revenue while remaining competitive</p>
+                            <p class="mt-2 text-sm text-gray-600">This price optimizes for maximum revenue while
+                                remaining competitive</p>
                         </div>
                     </div>
                 </div>
