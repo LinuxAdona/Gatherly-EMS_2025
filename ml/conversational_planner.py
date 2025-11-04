@@ -87,6 +87,13 @@ class ConversationalEventPlanner:
                 data['budget'] = int(match.group(1).replace(',', ''))
                 break
         
+        # If at budget stage and message is just a number, treat it as budget
+        if not data.get('budget') and conversation_state.get('event_type') and conversation_state.get('guests'):
+            # Try to extract any standalone number (likely a budget response)
+            standalone_number = re.search(r'^[\s]*(\d[\d,]*)\s*$', message_lower)
+            if standalone_number:
+                data['budget'] = int(standalone_number.group(1).replace(',', ''))
+        
         # Parse date
         date_patterns = [
             r'(\d{4})-(\d{1,2})-(\d{1,2})',
@@ -436,15 +443,21 @@ class ConversationalEventPlanner:
         if budget:
             response += f"• Budget: ₱{budget:,}\n"
         
-        response += f"\n🏛️ Top Venue Recommendations:\n"
-        response += "I've found the best venues that match your requirements:\n"
+        # Venue count
+        venue_count = len(venues) if venues else 0
+        response += f"\n🏛️ Top Venue Recommendations ({venue_count} found):\n"
+        if venue_count > 0:
+            response += "I've found the best venues that match your requirements. Check them out below!\n"
+        else:
+            response += "Unfortunately, no venues match your exact criteria right now. Try adjusting your budget or guest count.\n"
         
-        # Venues will be displayed as cards in the frontend
-        
-        response += f"\n\n👥 Recommended Suppliers & Services:\n"
-        response += "I've curated the best suppliers for each service you need:\n"
-        
-        # Suppliers will be displayed as cards in the frontend
+        # Supplier count
+        supplier_count = sum(len(services) for services in suppliers.values()) if suppliers else 0
+        response += f"\n👥 Recommended Suppliers & Services ({supplier_count} found):\n"
+        if supplier_count > 0:
+            response += "I've curated the best suppliers for each service you need. Scroll down to see all options!\n"
+        else:
+            response += "I'm still working on finding the perfect suppliers for your event.\n"
         
         return response
 

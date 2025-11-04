@@ -78,11 +78,18 @@ if (chatForm) {
                     addBotMessage(data.response);
                 } else {
                     // Final recommendations
+                    console.log('Generating final recommendations with:', {
+                        venues: data.venues,
+                        suppliers: data.suppliers
+                    });
                     addBotMessage(data.response, data.venues, data.suppliers);
                 }
             } else {
                 addBotMessage('Sorry, I encountered an error. Please try again.');
                 console.error('API Error:', data.error);
+                if (data.debug) {
+                    console.error('Debug info:', data.debug);
+                }
             }
         } catch (error) {
             console.error('Chat error:', error);
