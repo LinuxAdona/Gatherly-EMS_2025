@@ -44,7 +44,7 @@ while ($service = $services_result->fetch_assoc()) {
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -174,21 +174,21 @@ while ($service = $services_result->fetch_assoc()) {
 
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <?php while ($venue = $venues_result->fetch_assoc()): ?>
-                                <div class="venue-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-indigo-500 hover:shadow-lg transition-all"
+                                <div class="p-4 transition-all border-2 border-gray-200 cursor-pointer venue-card rounded-xl hover:border-indigo-500 hover:shadow-lg"
                                     data-venue-id="<?php echo $venue['venue_id']; ?>"
                                     data-venue-price="<?php echo $venue['base_price']; ?>">
                                     <div class="flex items-start justify-between mb-3">
-                                        <h3 class="font-bold text-lg text-gray-800">
+                                        <h3 class="text-lg font-bold text-gray-800">
                                             <?php echo htmlspecialchars($venue['venue_name']); ?></h3>
                                         <input type="radio" name="venue_id" value="<?php echo $venue['venue_id']; ?>"
                                             class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" required>
                                     </div>
-                                    <p class="text-sm text-gray-600 mb-2">
-                                        <i class="fas fa-map-marker-alt text-indigo-600 mr-1"></i>
+                                    <p class="mb-2 text-sm text-gray-600">
+                                        <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
                                         <?php echo htmlspecialchars($venue['location']); ?>
                                     </p>
-                                    <p class="text-sm text-gray-600 mb-2">
-                                        <i class="fas fa-users text-indigo-600 mr-1"></i>
+                                    <p class="mb-2 text-sm text-gray-600">
+                                        <i class="mr-1 text-indigo-600 fas fa-users"></i>
                                         Capacity: <?php echo $venue['capacity']; ?> guests
                                     </p>
                                     <p class="text-lg font-bold text-green-600">
@@ -227,10 +227,10 @@ while ($service = $services_result->fetch_assoc()) {
                                     <div class="space-y-3">
                                         <?php foreach ($services as $service): ?>
                                             <label
-                                                class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 hover:border-indigo-300 transition-all">
+                                                class="flex items-start gap-3 p-3 transition-all border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 hover:border-indigo-300">
                                                 <input type="checkbox" name="services[]"
                                                     value="<?php echo $service['service_id']; ?>"
-                                                    class="service-checkbox mt-1 w-5 h-5 text-indigo-600 focus:ring-indigo-500"
+                                                    class="w-5 h-5 mt-1 text-indigo-600 service-checkbox focus:ring-indigo-500"
                                                     data-price="<?php echo $service['price']; ?>">
                                                 <div class="flex-1">
                                                     <div class="flex items-start justify-between">
@@ -240,10 +240,10 @@ while ($service = $services_result->fetch_assoc()) {
                                                             <p class="text-sm text-gray-600">
                                                                 <?php echo htmlspecialchars($service['supplier_name']); ?> -
                                                                 <?php echo htmlspecialchars($service['location']); ?></p>
-                                                            <p class="text-xs text-gray-500 mt-1">
+                                                            <p class="mt-1 text-xs text-gray-500">
                                                                 <?php echo htmlspecialchars($service['description']); ?></p>
                                                         </div>
-                                                        <p class="text-lg font-bold text-green-600 ml-4">
+                                                        <p class="ml-4 text-lg font-bold text-green-600">
                                                             ₱<?php echo number_format($service['price'], 2); ?></p>
                                                     </div>
                                                 </div>
