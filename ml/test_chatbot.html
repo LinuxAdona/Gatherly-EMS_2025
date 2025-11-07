@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .chat-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background: #7c3aed;
+            color: white;
+            text-align: right;
+        }
+        .bot-message {
+            background: white;
+            border: 1px solid #ddd;
+        }
+        .venue-card {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f3e8ff;
+            border-radius: 5px;
+            border: 1px solid #c084fc;
+        }
+        input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 25%;
+            padding: 10px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #6d28d9;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 AI Venue Recommendation Test</h1>
+    <p><strong>Note:</strong> This is a standalone test page. For the full experience, log in as an organizer.</p>
+    
+    <div id="status"></div>
+    
+    <div class="chat-container" id="chatContainer">
+        <div class="message bot-message">
+            <strong>AI Assistant:</strong> Hello! I'm your AI venue recommendation assistant. Tell me about your event and I'll help you find the perfect venue!
+        </div>
+    </div>
+    
+    <div>
+        <input type="text" id="messageInput" placeholder="E.g., I need a wedding venue for 150 guests with 100000 budget" />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <h3>Try these examples:</h3>
+        <ul>
+            <li><a href="#" onclick="testQuery('I need a wedding venue for 150 guests with 100000 budget'); return false;">Wedding for 150 guests</a></li>
+            <li><a href="#" onclick="testQuery('corporate event for 200 people'); return false;">Corporate event for 200 people</a></li>
+            <li><a href="#" onclick="testQuery('birthday party with 50 guests and 30000 budget'); return false;">Birthday party with budget</a></li>
+            <li><a href="#" onclick="testQuery('wedding venue with parking and catering'); return false;">Wedding with amenities</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function testQuery(query) {
+            document.getElementById('messageInput').value = query;
+            sendMessage();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show loading
+            const status = document.getElementById('status');
+            status.className = 'status';
+            status.innerHTML = '⏳ Processing your request...';
+            
+            try {
+                // Call PHP API
+                const response = await fetch('../../src/services/ai-recommendation.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    status.className = 'status success';
+                    status.innerHTML = '✅ Success! Recommendations loaded.';
+                    
+                    // Add bot response
+                    addMessage(data.response, 'bot', data.venues);
+                } else {
+                    status.className = 'status error';
+                    status.innerHTML = '❌ Error: ' + (data.error || 'Unknown error');
+                    
+                    // Show debug info if available
+                    if (data.debug) {
+                        console.log('Debug info:', data.debug);
+                        addMessage('Error: ' + data.error + '\n\nDebug info in console (F12)', 'bot');
+                    } else {
+                        addMessage('Sorry, I encountered an error: ' + data.error, 'bot');
+                    }
+                }
+            } catch (error) {
+                status.className = 'status error';
+                status.innerHTML = '❌ Connection Error: ' + error.message;
+                addMessage('Sorry, I couldn\'t connect to the server. Error: ' + error.message, 'bot');
+            }
+            
+            // Clear status after 5 seconds
+            setTimeout(() => {
+                status.innerHTML = '';
+                status.className = '';
+            }, 5000);
+        }
+        
+        function addMessage(message, type, venues = null) {
+            const container = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + (type === 'user' ? 'user-message' : 'bot-message');
+            
+            let html = type === 'user' 
+                ? message 
+                : '<strong>AI Assistant:</strong> ' + message;
+            
+            // Add venue cards if available
+            if (venues && venues.length > 0) {
+                venues.forEach(venue => {
+                    html += `
+                        <div class="venue-card">
+                            <h4>🏛️ ${venue.name}</h4>
+                            <p>👥 Capacity: ${venue.capacity} | 💰 Price: ₱${venue.price.toLocaleString()} | ⭐ Score: ${venue.score}%</p>
+                            <p>📍 ${venue.location}</p>
+                            <p><small>${venue.description}</small></p>
+                        </div>
+                    `;
+                });
+            }
+            
+            messageDiv.innerHTML = html;
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // Allow Enter key to send
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

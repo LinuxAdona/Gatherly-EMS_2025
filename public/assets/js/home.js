@@ -1,38 +1,52 @@
 // Hero background panning on scroll
-// Targets element with class "hero-section" and reads data-pan-speed attribute (default 0.45)
+// Targets all elements with class "hero-section" and reads data-pan-speed attribute (default 0.45)
 (function () {
     'use strict';
 
-    const hero = document.querySelector('.hero-section');
-    if (!hero) return;
+    const heroSections = document.querySelectorAll('.hero-section');
+    if (heroSections.length === 0) return;
 
-    // Read speed from data attribute; lower = slower movement
-    const dataSpeed = parseFloat(hero.dataset.panSpeed);
-    const speed = Number.isFinite(dataSpeed) ? dataSpeed : 0.45;
+    // Track ticking state for each section
+    const sectionStates = new Map();
 
-    // Ensure will-change for smoother animations
-    hero.style.willChange = 'background-position';
+    heroSections.forEach(hero => {
+        // Read speed from data attribute; lower = slower movement
+        const dataSpeed = parseFloat(hero.dataset.panSpeed);
+        const speed = Number.isFinite(dataSpeed) ? dataSpeed : 0.45;
 
-    let ticking = false;
+        // Ensure will-change for smoother animations
+        hero.style.willChange = 'background-position';
+
+        // Initialize state for this section
+        sectionStates.set(hero, { speed, ticking: false });
+    });
 
     function update() {
-        // Use getBoundingClientRect to determine hero position relative to viewport
-        const rect = hero.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        heroSections.forEach(hero => {
+            const state = sectionStates.get(hero);
+            
+            // Use getBoundingClientRect to determine hero position relative to viewport
+            const rect = hero.getBoundingClientRect();
 
-        // Compute an offset based on the hero's top relative to viewport
-        // When hero is at top (rect.top = 0) offset = 0; when scrolled up, rect.top negative -> positive offset
-        const offset = -rect.top * speed;
+            // Compute an offset based on the hero's top relative to viewport
+            // When hero is at top (rect.top = 0) offset = 0; when scrolled up, rect.top negative -> positive offset
+            const offset = -rect.top * state.speed;
 
-        // Set background position (center horizontal, offset vertical)
-        hero.style.backgroundPosition = `center ${offset}px`;
+            // Set background position (center horizontal, offset vertical)
+            hero.style.backgroundPosition = `center ${offset}px`;
 
-        ticking = false;
+            state.ticking = false;
+        });
     }
 
     function requestUpdate() {
-        if (!ticking) {
-            ticking = true;
+        // Check if any section needs update
+        const needsUpdate = Array.from(sectionStates.values()).some(state => !state.ticking);
+        
+        if (needsUpdate) {
+            sectionStates.forEach(state => {
+                state.ticking = true;
+            });
             requestAnimationFrame(update);
         }
     }
@@ -43,10 +57,12 @@
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
 
-    // Also observe changes to the hero's position (images loading, layout changes)
+    // Also observe changes to each section's position (images loading, layout changes)
     if ('ResizeObserver' in window) {
         const ro = new ResizeObserver(requestUpdate);
-        ro.observe(hero);
+        heroSections.forEach(hero => {
+            ro.observe(hero);
+        });
     }
 })();
 
@@ -119,7 +135,7 @@
 
     // Classes to toggle on active/inactive links
     const ACTIVE_CLASSES = ['bg-indigo-500', 'text-white', 'hover:bg-indigo-600'];
-    const INACTIVE_CLASSES = ['text-gray-700', 'hover:bg-gray-200'];
+    const INACTIVE_CLASSES = ['text-gray-700', 'hover:text-indigo-600'];
 
     // Intercept clicks on internal anchors and perform a smooth scroll that accounts for the sticky nav
     // Note: listener must NOT be passive because we call preventDefault()
@@ -163,4 +179,34 @@
             }
         });
     }, { passive: false });
+})();
+
+// Mobile menu toggle
+(function () {
+    'use strict';
+    
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (menuButton && mobileMenu) {
+        menuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close menu when clicking on a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!menuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
 })();
