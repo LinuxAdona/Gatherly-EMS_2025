@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 04, 2025 at 02:58 AM
+-- Host: localhost
+-- Generation Time: Nov 08, 2025 at 04:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `sad_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `amenities`
+--
+
+CREATE TABLE `amenities` (
+  `amenity_id` int(11) NOT NULL,
+  `amenity_name` varchar(100) NOT NULL,
+  `default_price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `amenities`
+--
+
+INSERT INTO `amenities` (`amenity_id`, `amenity_name`, `default_price`) VALUES
+(1, 'Air Conditioning', 1200.00),
+(2, 'Wi-Fi', 650.00),
+(3, 'Security Services', 1500.00),
+(4, 'Projector', 1200.00),
+(5, 'Parking Space', 900.00),
+(6, 'Stage Setup', 6000.00),
+(7, 'Accessibility Features', 1000.00),
+(8, 'Garden Setup', 3000.00),
+(9, 'VIP Lounge', 6500.00),
+(10, 'Outdoor Seating', 2500.00),
+(11, 'Others', 2000.00);
 
 -- --------------------------------------------------------
 
@@ -88,14 +117,14 @@ CREATE TABLE `events` (
 
 INSERT INTO `events` (`event_id`, `event_name`, `event_type`, `theme`, `expected_guests`, `total_cost`, `event_date`, `status`, `client_id`, `coordinator_id`, `venue_id`, `created_at`) VALUES
 (1, 'Mike & Anna Wedding', 'Wedding', 'Rustic Garden', 150, 85000.00, '2025-01-15 00:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(2, 'ABC Corp Year-End', 'Corporate', 'Modern Gala', 200, 95000.00, '2025-02-10 00:00:00', 'confirmed', 3, 2, 2, '2025-11-03 22:29:33'),
+(2, 'ABC Corp Year-End', 'Corporate', 'Modern Gala', 200, 95000.00, '2025-02-10 00:00:00', 'canceled', 3, 2, 2, '2025-11-03 22:29:33'),
 (3, 'Sophia 18th Birthday', 'Birthday', 'Royal Blue', 100, 60000.00, '2025-03-25 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(4, 'Charity Concert 2025', 'Concert', 'Hope & Light', 300, 120000.00, '2025-04-18 00:00:00', 'confirmed', 3, 2, 4, '2025-11-03 22:29:33'),
+(4, 'Charity Concert 2025', 'Concert', 'Hope & Light', 300, 120000.00, '0000-00-00 00:00:00', 'pending', 3, 2, 4, '2025-11-03 22:29:33'),
 (5, 'Team Building Summit', 'Corporate', 'Tropical Retreat', 80, 45000.00, '2025-05-12 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
 (6, 'Linux & Julie Wedding', 'Wedding', 'Rustic Garden', 200, 85000.00, '2025-01-21 00:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
 (7, 'QRT Corp Year-End', 'Corporate', 'Modern Gala', 150, 95000.00, '2025-03-19 00:00:00', 'confirmed', 3, 2, 2, '2025-11-03 22:29:33'),
 (8, 'Maricris 18th Birthday', 'Birthday', 'Royal Blue', 100, 60000.00, '2025-04-29 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(9, 'Sabrina Concert 2025', 'Concert', 'Hope & Light', 200, 120000.00, '2025-04-07 00:00:00', 'confirmed', 3, 2, 4, '2025-11-03 22:29:33'),
+(9, 'Sabrina Concert 2025', 'Concert', 'Hope & Light', 200, 120000.00, '0000-00-00 00:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
 (10, 'Team Collab Summit', 'Corporate', 'Tropical Retreat', 100, 45000.00, '2025-05-13 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
 (11, 'New Year Gala 2020', 'Corporate', 'Celebration', 250, 125000.00, '2020-01-15 18:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
 (12, 'Valentine Wedding', 'Wedding', 'Romance', 180, 95000.00, '2020-02-14 16:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
@@ -147,15 +176,15 @@ INSERT INTO `events` (`event_id`, `event_name`, `event_type`, `theme`, `expected
 (58, 'October Conference', 'Corporate', 'Professional', 240, 125000.00, '2024-10-18 09:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
 (59, 'November Thanksgiving', 'Birthday', 'Harvest', 160, 88000.00, '2024-11-28 18:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
 (60, 'December Holiday Gala', 'Corporate', 'Winter', 270, 140000.00, '2024-12-20 19:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(61, 'January Celebration 2025', 'Corporate', 'New Year', 215, 112000.00, '2025-01-18 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
+(61, 'January Celebration 2025', 'Corporate', 'New Year', 215, 112000.00, '2025-01-18 18:00:00', 'canceled', 3, 2, 2, '2025-11-03 22:29:33'),
 (62, 'February Love Fest', 'Wedding', 'Romantic', 180, 96000.00, '2025-02-22 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
 (63, 'March Business Summit', 'Corporate', 'Strategy', 225, 115000.00, '2025-03-16 09:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(64, 'April Spring Wedding', 'Wedding', 'Floral Garden', 195, 105000.00, '2025-04-12 15:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(65, 'May Tech Expo', 'Corporate', 'Technology', 250, 128000.00, '2025-05-20 10:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
+(64, 'April Spring Wedding', 'Wedding', 'Floral Garden', 195, 105000.00, '2025-04-12 15:00:00', 'canceled', 3, 2, 1, '2025-11-03 22:29:33'),
+(65, 'May Tech Expo', 'Corporate', 'Technology', 250, 128000.00, '2025-05-20 10:00:00', 'canceled', 3, 2, 4, '2025-11-03 22:29:33'),
 (66, 'June Summer Bash', 'Birthday', 'Tropical', 130, 75000.00, '2025-06-15 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
 (67, 'July Concert Night', 'Concert', 'Music', 320, 168000.00, '2025-07-25 20:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(68, 'August Corporate Gala', 'Corporate', 'Elegant', 200, 108000.00, '2025-08-30 19:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(69, 'September Wedding Dream', 'Wedding', 'Romantic', 210, 115000.00, '2025-09-20 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
+(68, 'August Corporate Gala', 'Corporate', 'Elegant', 200, 108000.00, '2025-08-30 19:00:00', 'canceled', 3, 2, 3, '2025-11-03 22:29:33'),
+(69, 'September Wedding Dream', 'Wedding', 'Romantic', 210, 115000.00, '2025-09-20 00:00:00', 'canceled', 3, 2, 1, '2025-11-03 22:29:33'),
 (70, 'October Birthday Party', 'Birthday', 'Autumn', 145, 82000.00, '2025-10-25 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33');
 
 -- --------------------------------------------------------
@@ -186,6 +215,21 @@ CREATE TABLE `event_services` (
   `quantity` int(11) DEFAULT 1,
   `price_at_booking` decimal(10,2) DEFAULT NULL,
   `status` enum('pending','booked','canceled') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `premium_packages`
+--
+
+CREATE TABLE `premium_packages` (
+  `package_id` int(11) NOT NULL,
+  `package_name` varchar(100) NOT NULL,
+  `package_description` text DEFAULT NULL,
+  `base_price` decimal(10,2) NOT NULL,
+  `features` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -280,18 +324,20 @@ CREATE TABLE `users` (
   `last_name` varchar(50) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `role` enum('administrator','manager','organizer','supplier') NOT NULL
+  `role` enum('administrator','manager','organizer','supplier') NOT NULL,
+  `status` enum('active','inactive') DEFAULT 'active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `first_name`, `last_name`, `email`, `phone`, `role`) VALUES
-(1, 'admin123', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'System', 'Admin', 'admin@example.com', '09171234567', 'administrator'),
-(2, 'manager_linux', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Linux', 'Adona', 'linux@gmail.com', '09181234567', 'manager'),
-(3, 'supplier_dore', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Dore', 'Cables', 'dore@gmail.com', '09191234567', 'supplier'),
-(6, 'organizer_adrian', '$2y$10$DOYBedKeOf3.SsEHrxVdfu0X90eYn8uunI4/RU2FnH6XRA9ekw/Jy', 'Adrian', 'Cornado', 'adrian@gmail.com', '09201234567', 'organizer');
+INSERT INTO `users` (`user_id`, `username`, `password`, `first_name`, `last_name`, `email`, `phone`, `role`, `status`, `created_at`) VALUES
+(1, 'admin123', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'System', 'Admin', 'admin@example.com', '09171234567', 'administrator', 'active', '2025-11-08 15:04:09'),
+(2, 'manager_linux', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Linux', 'Adona', 'linux@gmail.com', '09181234567', 'manager', 'active', '2025-11-08 15:04:09'),
+(3, 'supplier_dore', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Dore', 'Cables', 'dore@gmail.com', '09191234567', 'supplier', 'active', '2025-11-08 15:04:09'),
+(6, 'organizer_adrian', '$2y$10$DOYBedKeOf3.SsEHrxVdfu0X90eYn8uunI4/RU2FnH6XRA9ekw/Jy', 'Adrian', 'Cornado', 'adrian@gmail.com', '09201234567', 'organizer', 'active', '2025-11-08 15:04:09');
 
 -- --------------------------------------------------------
 
@@ -301,6 +347,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `first_name`, `last_name
 
 CREATE TABLE `venues` (
   `venue_id` int(11) NOT NULL,
+  `manager_id` int(11) DEFAULT NULL,
   `venue_name` varchar(100) NOT NULL,
   `location` varchar(255) DEFAULT NULL,
   `capacity` int(11) DEFAULT NULL,
@@ -311,18 +358,21 @@ CREATE TABLE `venues` (
   `weekend_price` decimal(10,2) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `availability_status` enum('available','booked') DEFAULT 'available',
-  `image` blob DEFAULT NULL
+  `image` blob DEFAULT NULL,
+  `status` enum('active','inactive') DEFAULT 'active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `price_percentage` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `venues`
 --
 
-INSERT INTO `venues` (`venue_id`, `venue_name`, `location`, `capacity`, `base_price`, `peak_price`, `offpeak_price`, `weekday_price`, `weekend_price`, `description`, `availability_status`, `image`) VALUES
-(1, 'Crystal Hall', 'Taguig City', 300, 50000.00, 65000.00, 40000.00, 48000.00, 60000.00, 'Elegant indoor venue ideal for weddings and corporate events.', 'available', NULL),
-(2, 'Aurora Pavilion', 'Makati City', 200, 40000.00, 55000.00, 35000.00, 42000.00, 50000.00, 'Modern glass pavilion with garden access.', 'available', NULL),
-(3, 'Emerald Garden', 'Quezon City', 150, 35000.00, 50000.00, 30000.00, 37000.00, 45000.00, 'Outdoor garden venue surrounded by lush greenery.', 'available', NULL),
-(4, 'Sunset Veranda', 'Pasay City', 250, 45000.00, 60000.00, 35000.00, 40000.00, 55000.00, 'Seaside view venue perfect for receptions.', 'available', NULL);
+INSERT INTO `venues` (`venue_id`, `manager_id`, `venue_name`, `location`, `capacity`, `base_price`, `peak_price`, `offpeak_price`, `weekday_price`, `weekend_price`, `description`, `availability_status`, `image`, `status`, `created_at`, `price_percentage`) VALUES
+(1, NULL, 'Crystal Hall', 'Taguig City', 300, 50000.00, 65000.00, 40000.00, 48000.00, 60000.00, 'Elegant indoor venue ideal for weddings and corporate events.', 'available', NULL, 'active', '2025-11-08 15:04:09', NULL),
+(2, NULL, 'Aurora Pavilion', 'Makati City', 200, 40000.00, 55000.00, 35000.00, 42000.00, 50000.00, 'Modern glass pavilion with garden access.', 'available', NULL, 'active', '2025-11-08 15:04:09', NULL),
+(3, NULL, 'Emerald Garden', 'Quezon City', 150, 35000.00, 50000.00, 30000.00, 37000.00, 45000.00, 'Outdoor garden venue surrounded by lush greenery.', 'available', NULL, 'active', '2025-11-08 15:04:09', NULL),
+(4, NULL, 'Sunset Veranda', 'Pasay City', 250, 45000.00, 60000.00, 35000.00, 40000.00, 55000.00, 'Seaside view venue perfect for receptions.', 'available', NULL, 'active', '2025-11-08 15:04:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -353,6 +403,12 @@ INSERT INTO `venue_amenities` (`venue_amenity_id`, `venue_id`, `amenity_name`) V
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `amenities`
+--
+ALTER TABLE `amenities`
+  ADD PRIMARY KEY (`amenity_id`);
 
 --
 -- Indexes for table `chat`
@@ -394,6 +450,12 @@ ALTER TABLE `event_services`
   ADD KEY `event_id` (`event_id`),
   ADD KEY `service_id` (`service_id`),
   ADD KEY `supplier_id` (`supplier_id`);
+
+--
+-- Indexes for table `premium_packages`
+--
+ALTER TABLE `premium_packages`
+  ADD PRIMARY KEY (`package_id`);
 
 --
 -- Indexes for table `recommendations`
@@ -443,6 +505,12 @@ ALTER TABLE `venue_amenities`
 --
 
 --
+-- AUTO_INCREMENT for table `amenities`
+--
+ALTER TABLE `amenities`
+  MODIFY `amenity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
@@ -471,6 +539,12 @@ ALTER TABLE `event_contracts`
 --
 ALTER TABLE `event_services`
   MODIFY `event_service_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `premium_packages`
+--
+ALTER TABLE `premium_packages`
+  MODIFY `package_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `recommendations`
