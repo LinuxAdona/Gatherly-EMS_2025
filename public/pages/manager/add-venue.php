@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Check if user is logged in and is a manager
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'manager') {
     header("Location: ../signin.php");
     exit();
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $weekday_price = $base_price;
     $weekend_price = $peak_price;
 
-    // Handle image upload (optional)
+    // Handle image upload 
     $imageData = null;
     if (!empty($_FILES['image']['tmp_name'])) {
         $imageData = file_get_contents($_FILES['image']['tmp_name']);
@@ -102,10 +101,12 @@ $default_amenities = [
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="text-xs fas fa-chevron-down"></i>
                         </button>
-                        <div id="profile-dropdown" class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
+                        <div id="profile-dropdown"
+                            class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Profile</a>
                             <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Settings</a>
-                            <a href="../../../src/services/signout-handler.php" class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
+                            <a href="../../../src/services/signout-handler.php"
+                                class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
                 </div>
@@ -114,7 +115,6 @@ $default_amenities = [
     </nav>
 
 <!-- Main Content -->
-
 <div class="container px-6 py-10 mx-auto sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-md border border-gray-200 p-8">
         <div class="flex items-center gap-2 mb-6">
@@ -200,7 +200,6 @@ $default_amenities = [
                       class="w-full mt-2 border border-gray-300 px-4 py-2.5 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"></textarea>
         </div>
 
-        <!-- Venue Image Section with indicator -->
         <div>
             <label class="block text-sm font-semibold text-gray-700">Venue Image</label>
             <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition relative">
@@ -265,7 +264,6 @@ $default_amenities = [
     baseInput.addEventListener('input', computePrices);
     percentInput.addEventListener('input', computePrices);
 
-    // Image upload indicator
     const imageInput = document.getElementById('imageInput');
     const imageStatus = document.getElementById('imageStatus');
     imageInput.addEventListener('change', () => {
