@@ -102,7 +102,8 @@ $years_result = $conn->query($years_query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports & Analytics | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -120,11 +121,13 @@ $years_result = $conn->query($years_query);
                     </a>
                 </div>
                 <div class="items-center hidden gap-6 md:flex">
-                    <a href="admin-dashboard.php" class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
+                    <a href="admin-dashboard.php"
+                        class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
                     <a href="manage-users.php" class="text-gray-700 transition-colors hover:text-indigo-600">Users</a>
                     <a href="manage-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Venues</a>
                     <a href="manage-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">Events</a>
-                    <a href="reports.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Reports</a>
+                    <a href="reports.php"
+                        class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Reports</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
                             class="flex items-center gap-2 text-gray-700 transition-colors cursor-pointer hover:text-indigo-600">
@@ -134,6 +137,8 @@ $years_result = $conn->query($years_query);
                         </button>
                         <div id="profile-dropdown"
                             class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
+                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
+                            <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
                             <a href="../../../src/services/signout-handler.php"
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
@@ -159,19 +164,26 @@ $years_result = $conn->query($years_query);
             <form method="GET" class="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Report Type</label>
-                    <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="revenue" <?php echo $report_type === 'revenue' ? 'selected' : ''; ?>>Revenue Reports</option>
-                        <option value="bookings" <?php echo $report_type === 'bookings' ? 'selected' : ''; ?>>Booking Analytics</option>
-                        <option value="venues" <?php echo $report_type === 'venues' ? 'selected' : ''; ?>>Venue Performance</option>
-                        <option value="users" <?php echo $report_type === 'users' ? 'selected' : ''; ?>>User Activity</option>
+                    <select name="type"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="revenue" <?php echo $report_type === 'revenue' ? 'selected' : ''; ?>>Revenue
+                            Reports</option>
+                        <option value="bookings" <?php echo $report_type === 'bookings' ? 'selected' : ''; ?>>Booking
+                            Analytics</option>
+                        <option value="venues" <?php echo $report_type === 'venues' ? 'selected' : ''; ?>>Venue
+                            Performance</option>
+                        <option value="users" <?php echo $report_type === 'users' ? 'selected' : ''; ?>>User Activity
+                        </option>
                     </select>
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Year</label>
-                    <select name="year" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select name="year"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Years</option>
                         <?php while ($yr = $years_result->fetch_assoc()): ?>
-                            <option value="<?php echo $yr['year']; ?>" <?php echo $year == $yr['year'] ? 'selected' : ''; ?>>
+                            <option value="<?php echo $yr['year']; ?>"
+                                <?php echo $year == $yr['year'] ? 'selected' : ''; ?>>
                                 <?php echo $yr['year']; ?>
                             </option>
                         <?php endwhile; ?>
@@ -179,7 +191,8 @@ $years_result = $conn->query($years_query);
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Month</label>
-                    <select name="month" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select name="month"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Months</option>
                         <?php for ($i = 1; $i <= 12; $i++): ?>
                             <option value="<?php echo $i; ?>" <?php echo $month == $i ? 'selected' : ''; ?>>
@@ -189,10 +202,12 @@ $years_result = $conn->query($years_query);
                     </select>
                 </div>
                 <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                    <button type="submit"
+                        class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                         <i class="mr-2 fas fa-filter"></i>Apply
                     </button>
-                    <a href="reports.php" class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                    <a href="reports.php"
+                        class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
                         <i class="fas fa-redo"></i>
                     </a>
                 </div>
@@ -203,15 +218,18 @@ $years_result = $conn->query($years_query);
         <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
             <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
                 <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
-                <h3 class="text-3xl font-bold text-gray-800">₱<?php echo number_format($revenue_stats['total_revenue'] ?? 0, 2); ?></h3>
+                <h3 class="text-3xl font-bold text-gray-800">
+                    ₱<?php echo number_format($revenue_stats['total_revenue'] ?? 0, 2); ?></h3>
             </div>
             <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
                 <p class="mb-1 text-sm text-gray-600">Total Events</p>
-                <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($revenue_stats['total_events'] ?? 0); ?></h3>
+                <h3 class="text-3xl font-bold text-gray-800">
+                    <?php echo number_format($revenue_stats['total_events'] ?? 0); ?></h3>
             </div>
             <div class="p-6 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
                 <p class="mb-1 text-sm text-gray-600">Average Revenue</p>
-                <h3 class="text-3xl font-bold text-gray-800">₱<?php echo number_format($revenue_stats['avg_revenue'] ?? 0, 2); ?></h3>
+                <h3 class="text-3xl font-bold text-gray-800">
+                    ₱<?php echo number_format($revenue_stats['avg_revenue'] ?? 0, 2); ?></h3>
             </div>
         </div>
 
@@ -227,20 +245,32 @@ $years_result = $conn->query($years_query);
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Event Type</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Count</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Revenue</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Avg Revenue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Event Type</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Count</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Revenue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Avg Revenue</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php if ($event_types->num_rows > 0): ?>
                                 <?php while ($type = $event_types->fetch_assoc()): ?>
                                     <tr>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900"><?php echo htmlspecialchars($type['event_type']); ?></td>
-                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($type['count']); ?></td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">₱<?php echo number_format($type['revenue'], 2); ?></td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">₱<?php echo number_format($type['revenue'] / $type['count'], 2); ?></td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                            <?php echo htmlspecialchars($type['event_type']); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($type['count']); ?>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                            ₱<?php echo number_format($type['revenue'], 2); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            ₱<?php echo number_format($type['revenue'] / $type['count'], 2); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
@@ -263,9 +293,15 @@ $years_result = $conn->query($years_query);
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Month</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Events</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Revenue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Month</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Events</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Revenue</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -275,8 +311,10 @@ $years_result = $conn->query($years_query);
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900">
                                             <?php echo date('F Y', strtotime($month_data['month'] . '-01')); ?>
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($month_data['event_count']); ?></td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">₱<?php echo number_format($month_data['revenue'], 2); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            <?php echo number_format($month_data['event_count']); ?></td>
+                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                            ₱<?php echo number_format($month_data['revenue'], 2); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
@@ -301,22 +339,37 @@ $years_result = $conn->query($years_query);
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Venue</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Location</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Events</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Revenue</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Avg Guests</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Venue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Location</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Events</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Revenue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Avg Guests</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php if ($venues->num_rows > 0): ?>
                                 <?php while ($venue = $venues->fetch_assoc()): ?>
                                     <tr>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900"><?php echo htmlspecialchars($venue['venue_name']); ?></td>
-                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo htmlspecialchars($venue['location']); ?></td>
-                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($venue['event_count']); ?></td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">₱<?php echo number_format($venue['total_revenue'] ?? 0, 2); ?></td>
-                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($venue['avg_guests'] ?? 0); ?></td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                            <?php echo htmlspecialchars($venue['venue_name']); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            <?php echo htmlspecialchars($venue['location']); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            <?php echo number_format($venue['event_count']); ?></td>
+                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                            ₱<?php echo number_format($venue['total_revenue'] ?? 0, 2); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            <?php echo number_format($venue['avg_guests'] ?? 0); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
@@ -341,10 +394,18 @@ $years_result = $conn->query($years_query);
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">User</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Role</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Events Organized</th>
-                                <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Total Value</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    User</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Role</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Events Organized</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Total Value</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -355,8 +416,10 @@ $years_result = $conn->query($years_query);
                                             <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-900"><?php echo ucfirst($user['role']); ?></td>
-                                        <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($user['events_organized']); ?></td>
-                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">₱<?php echo number_format($user['total_value'] ?? 0, 2); ?></td>
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            <?php echo number_format($user['events_organized']); ?></td>
+                                        <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                            ₱<?php echo number_format($user['total_value'] ?? 0, 2); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>

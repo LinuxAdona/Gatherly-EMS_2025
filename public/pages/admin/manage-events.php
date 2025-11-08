@@ -76,7 +76,8 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Events | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
@@ -93,10 +94,12 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
                     </a>
                 </div>
                 <div class="items-center hidden gap-6 md:flex">
-                    <a href="admin-dashboard.php" class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
+                    <a href="admin-dashboard.php"
+                        class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
                     <a href="manage-users.php" class="text-gray-700 transition-colors hover:text-indigo-600">Users</a>
                     <a href="manage-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Venues</a>
-                    <a href="manage-events.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Events</a>
+                    <a href="manage-events.php"
+                        class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Events</a>
                     <a href="reports.php" class="text-gray-700 transition-colors hover:text-indigo-600">Reports</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
@@ -107,6 +110,8 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
                         </button>
                         <div id="profile-dropdown"
                             class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
+                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
+                            <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
                             <a href="../../../src/services/signout-handler.php"
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
@@ -162,29 +167,41 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Event Type</label>
-                    <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select name="type"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Types</option>
-                        <option value="Wedding" <?php echo $type_filter === 'Wedding' ? 'selected' : ''; ?>>Wedding</option>
-                        <option value="Corporate" <?php echo $type_filter === 'Corporate' ? 'selected' : ''; ?>>Corporate</option>
-                        <option value="Birthday" <?php echo $type_filter === 'Birthday' ? 'selected' : ''; ?>>Birthday</option>
-                        <option value="Concert" <?php echo $type_filter === 'Concert' ? 'selected' : ''; ?>>Concert</option>
+                        <option value="Wedding" <?php echo $type_filter === 'Wedding' ? 'selected' : ''; ?>>Wedding
+                        </option>
+                        <option value="Corporate" <?php echo $type_filter === 'Corporate' ? 'selected' : ''; ?>>
+                            Corporate</option>
+                        <option value="Birthday" <?php echo $type_filter === 'Birthday' ? 'selected' : ''; ?>>Birthday
+                        </option>
+                        <option value="Concert" <?php echo $type_filter === 'Concert' ? 'selected' : ''; ?>>Concert
+                        </option>
                     </select>
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Status</label>
-                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select name="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Status</option>
-                        <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                        <option value="confirmed" <?php echo $status_filter === 'confirmed' ? 'selected' : ''; ?>>Confirmed</option>
-                        <option value="completed" <?php echo $status_filter === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                        <option value="canceled" <?php echo $status_filter === 'canceled' ? 'selected' : ''; ?>>Canceled</option>
+                        <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>Pending
+                        </option>
+                        <option value="confirmed" <?php echo $status_filter === 'confirmed' ? 'selected' : ''; ?>>
+                            Confirmed</option>
+                        <option value="completed" <?php echo $status_filter === 'completed' ? 'selected' : ''; ?>>
+                            Completed</option>
+                        <option value="canceled" <?php echo $status_filter === 'canceled' ? 'selected' : ''; ?>>Canceled
+                        </option>
                     </select>
                 </div>
                 <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                    <button type="submit"
+                        class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                         <i class="mr-2 fas fa-search"></i>Filter
                     </button>
-                    <a href="manage-events.php" class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                    <a href="manage-events.php"
+                        class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
                         <i class="fas fa-redo"></i>
                     </a>
                 </div>
@@ -197,41 +214,59 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
                 <table class="w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Event</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Client</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Venue</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Date</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Guests</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Cost</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Status</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-center text-gray-700 uppercase">Actions</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Event</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Client</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Venue</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Date</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Guests</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Cost</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Status</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-center text-gray-700 uppercase">
+                                Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <?php if ($events_result->num_rows > 0): ?>
-                            <?php while ($event = $events_result->fetch_assoc()): ?>
-                                <tr class="transition-colors hover:bg-gray-50">
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-semibold text-gray-900"><?php echo htmlspecialchars($event['event_name']); ?></div>
-                                        <div class="text-xs text-gray-500"><?php echo htmlspecialchars($event['event_type']); ?> - <?php echo htmlspecialchars($event['theme']); ?></div>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                                        <?php echo htmlspecialchars($event['first_name'] . ' ' . $event['last_name']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                                        <?php echo htmlspecialchars($event['venue_name'] ?? 'N/A'); ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                        <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                                        <?php echo number_format($event['expected_guests']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap">
-                                        ₱<?php echo number_format($event['total_cost'], 2); ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <?php
+                        <?php while ($event = $events_result->fetch_assoc()): ?>
+                        <tr class="transition-colors hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="text-sm font-semibold text-gray-900">
+                                    <?php echo htmlspecialchars($event['event_name']); ?></div>
+                                <div class="text-xs text-gray-500"><?php echo htmlspecialchars($event['event_type']); ?>
+                                    - <?php echo htmlspecialchars($event['theme']); ?></div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                                <?php echo htmlspecialchars($event['first_name'] . ' ' . $event['last_name']); ?>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                                <?php echo htmlspecialchars($event['venue_name'] ?? 'N/A'); ?>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                                <?php echo number_format($event['expected_guests']); ?>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap">
+                                ₱<?php echo number_format($event['total_cost'], 2); ?>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php
                                         $status_colors = [
                                             'pending' => 'bg-yellow-100 text-yellow-800',
                                             'confirmed' => 'bg-green-100 text-green-800',
@@ -240,57 +275,66 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
                                         ];
                                         $color = $status_colors[$event['status']] ?? 'bg-gray-100 text-gray-800';
                                         ?>
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $color; ?>">
-                                            <?php echo ucfirst($event['status']); ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-center whitespace-nowrap">
-                                        <div class="flex justify-center gap-1">
-                                            <?php if ($event['status'] === 'pending'): ?>
-                                                <form method="POST" class="inline">
-                                                    <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
-                                                    <input type="hidden" name="action" value="confirm">
-                                                    <button type="submit" class="px-2 py-1 text-xs text-white transition-colors bg-green-500 rounded hover:bg-green-600" title="Confirm">
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
-                                            <?php if ($event['status'] === 'confirmed'): ?>
-                                                <form method="POST" class="inline">
-                                                    <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
-                                                    <input type="hidden" name="action" value="complete">
-                                                    <button type="submit" class="px-2 py-1 text-xs text-white transition-colors bg-blue-500 rounded hover:bg-blue-600" title="Complete">
-                                                        <i class="fas fa-check-double"></i>
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
-                                            <?php if ($event['status'] !== 'canceled' && $event['status'] !== 'completed'): ?>
-                                                <form method="POST" class="inline" onsubmit="return confirm('Cancel this event?');">
-                                                    <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
-                                                    <input type="hidden" name="action" value="cancel">
-                                                    <button type="submit" class="px-2 py-1 text-xs text-white transition-colors bg-orange-500 rounded hover:bg-orange-600" title="Cancel">
-                                                        <i class="fas fa-ban"></i>
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
-                                            <form method="POST" class="inline" onsubmit="return confirm('Delete this event permanently?');">
-                                                <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
-                                                <input type="hidden" name="action" value="delete">
-                                                <button type="submit" class="px-2 py-1 text-xs text-white transition-colors bg-red-500 rounded hover:bg-red-600" title="Delete">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $color; ?>">
+                                    <?php echo ucfirst($event['status']); ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-center whitespace-nowrap">
+                                <div class="flex justify-center gap-1">
+                                    <?php if ($event['status'] === 'pending'): ?>
+                                    <form method="POST" class="inline">
+                                        <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
+                                        <input type="hidden" name="action" value="confirm">
+                                        <button type="submit"
+                                            class="px-2 py-1 text-xs text-white transition-colors bg-green-500 rounded hover:bg-green-600"
+                                            title="Confirm">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                    <?php if ($event['status'] === 'confirmed'): ?>
+                                    <form method="POST" class="inline">
+                                        <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
+                                        <input type="hidden" name="action" value="complete">
+                                        <button type="submit"
+                                            class="px-2 py-1 text-xs text-white transition-colors bg-blue-500 rounded hover:bg-blue-600"
+                                            title="Complete">
+                                            <i class="fas fa-check-double"></i>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                    <?php if ($event['status'] !== 'canceled' && $event['status'] !== 'completed'): ?>
+                                    <form method="POST" class="inline" onsubmit="return confirm('Cancel this event?');">
+                                        <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
+                                        <input type="hidden" name="action" value="cancel">
+                                        <button type="submit"
+                                            class="px-2 py-1 text-xs text-white transition-colors bg-orange-500 rounded hover:bg-orange-600"
+                                            title="Cancel">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                    <form method="POST" class="inline"
+                                        onsubmit="return confirm('Delete this event permanently?');">
+                                        <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button type="submit"
+                                            class="px-2 py-1 text-xs text-white transition-colors bg-red-500 rounded hover:bg-red-600"
+                                            title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="8" class="px-6 py-8 text-center text-gray-500">
-                                    <i class="mb-2 text-4xl fas fa-calendar"></i>
-                                    <p>No events found</p>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="8" class="px-6 py-8 text-center text-gray-500">
+                                <i class="mb-2 text-4xl fas fa-calendar"></i>
+                                <p>No events found</p>
+                            </td>
+                        </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -301,14 +345,14 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
     <?php include '../../../src/components/Footer.php'; ?>
 
     <script>
-        document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.getElementById('profile-dropdown').classList.toggle('hidden');
-        });
+    document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('profile-dropdown').classList.toggle('hidden');
+    });
 
-        document.addEventListener('click', function() {
-            document.getElementById('profile-dropdown')?.classList.add('hidden');
-        });
+    document.addEventListener('click', function() {
+        document.getElementById('profile-dropdown')?.classList.add('hidden');
+    });
     </script>
 </body>
 

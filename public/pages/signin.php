@@ -57,11 +57,11 @@
                     <div
                         class="flex flex-col w-full p-6 bg-white border border-gray-200 shadow-xl sm:p-8 md:p-12 rounded-2xl">
                         <?php if (!empty($error)): ?>
-                            <div
-                                class="flex items-start gap-2 p-3 mb-4 text-sm text-red-700 border border-red-200 rounded-lg sm:p-4 sm:mb-5 bg-red-50">
-                                <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
-                                <span><?php echo htmlspecialchars($error); ?></span>
-                            </div>
+                        <div
+                            class="flex items-start gap-2 p-3 mb-4 text-sm text-red-700 border border-red-200 rounded-lg sm:p-4 sm:mb-5 bg-red-50">
+                            <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                            <span><?php echo htmlspecialchars($error); ?></span>
+                        </div>
                         <?php endif; ?>
                         <label for="email" class="mb-2 text-sm font-semibold text-gray-700">Email address</label>
                         <input type="email" id="email" name="email" required
@@ -85,7 +85,7 @@
                             </a>
                         </div>
                         <button type="submit"
-                            class="w-full px-4 py-3 font-semibold text-white transition-all bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">Sign
+                            class="cursor-pointer w-full px-4 py-3 font-semibold text-white transition-all bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">Sign
                             in</button>
                     </div>
                 </form>

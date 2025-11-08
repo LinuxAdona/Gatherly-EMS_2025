@@ -69,11 +69,12 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gradient-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -86,8 +87,10 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                     </a>
                 </div>
                 <div class="items-center hidden gap-6 md:flex">
-                    <a href="admin-dashboard.php" class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
-                    <a href="manage-users.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Users</a>
+                    <a href="admin-dashboard.php"
+                        class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
+                    <a href="manage-users.php"
+                        class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Users</a>
                     <a href="manage-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Venues</a>
                     <a href="manage-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">Events</a>
                     <a href="reports.php" class="text-gray-700 transition-colors hover:text-indigo-600">Reports</a>
@@ -100,6 +103,8 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                         </button>
                         <div id="profile-dropdown"
                             class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
+                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
+                            <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
                             <a href="../../../src/services/signout-handler.php"
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
@@ -110,7 +115,7 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <!-- Header -->
         <div class="mb-8">
             <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
@@ -155,26 +160,35 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Role</label>
-                    <select name="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select name="role"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Roles</option>
-                        <option value="organizer" <?php echo $role_filter === 'organizer' ? 'selected' : ''; ?>>Organizer</option>
-                        <option value="manager" <?php echo $role_filter === 'manager' ? 'selected' : ''; ?>>Manager</option>
-                        <option value="administrator" <?php echo $role_filter === 'administrator' ? 'selected' : ''; ?>>Administrator</option>
+                        <option value="organizer" <?php echo $role_filter === 'organizer' ? 'selected' : ''; ?>>
+                            Organizer</option>
+                        <option value="manager" <?php echo $role_filter === 'manager' ? 'selected' : ''; ?>>Manager
+                        </option>
+                        <option value="administrator" <?php echo $role_filter === 'administrator' ? 'selected' : ''; ?>>
+                            Administrator</option>
                     </select>
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Status</label>
-                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select name="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Status</option>
-                        <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active</option>
-                        <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive</option>
+                        <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active
+                        </option>
+                        <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive
+                        </option>
                     </select>
                 </div>
                 <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                    <button type="submit"
+                        class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                         <i class="mr-2 fas fa-search"></i>Filter
                     </button>
-                    <a href="manage-users.php" class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                    <a href="manage-users.php"
+                        class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
                         <i class="fas fa-redo"></i>
                     </a>
                 </div>
@@ -187,35 +201,48 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                 <table class="w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">User</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Email</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Role</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Status</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">Joined</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider text-center text-gray-700 uppercase">Actions</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                User</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Email</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Role</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Status</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                Joined</th>
+                            <th
+                                class="px-6 py-3 text-xs font-semibold tracking-wider text-center text-gray-700 uppercase">
+                                Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <?php if ($users_result->num_rows > 0): ?>
-                            <?php while ($user = $users_result->fetch_assoc()): ?>
-                                <tr class="transition-colors hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex items-center justify-center w-10 h-10 text-white bg-indigo-500 rounded-full">
-                                                <?php echo strtoupper(substr($user['first_name'], 0, 1)); ?>
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-semibold text-gray-900">
-                                                    <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
-                                                </div>
-                                            </div>
+                        <?php while ($user = $users_result->fetch_assoc()): ?>
+                        <tr class="transition-colors hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div
+                                        class="flex items-center justify-center w-10 h-10 text-white bg-indigo-500 rounded-full">
+                                        <?php echo strtoupper(substr($user['first_name'], 0, 1)); ?>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
                                         </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900"><?php echo htmlspecialchars($user['email']); ?></div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <?php
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900"><?php echo htmlspecialchars($user['email']); ?></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php
                                         $role_colors = [
                                             'administrator' => 'bg-red-100 text-red-800',
                                             'manager' => 'bg-yellow-100 text-yellow-800',
@@ -223,65 +250,70 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                                         ];
                                         $color = $role_colors[$user['role']] ?? 'bg-gray-100 text-gray-800';
                                         ?>
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $color; ?>">
-                                            <?php echo ucfirst($user['role']); ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <?php if ($user['status'] === 'active'): ?>
-                                            <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
-                                                <i class="mr-1 fas fa-check-circle"></i>Active
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">
-                                                <i class="mr-1 fas fa-times-circle"></i>Inactive
-                                            </span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                        <?php echo date('M d, Y', strtotime($user['created_at'])); ?>
-                                    </td>
-                                    <td class="px-6 py-4 text-center whitespace-nowrap">
-                                        <div class="flex justify-center gap-2">
-                                            <?php if ($user['user_id'] != $_SESSION['user_id']): ?>
-                                                <?php if ($user['status'] === 'active'): ?>
-                                                    <form method="POST" class="inline" onsubmit="return confirm('Deactivate this user?');">
-                                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                        <input type="hidden" name="action" value="deactivate">
-                                                        <button type="submit" class="px-3 py-1 text-xs text-white transition-colors bg-orange-500 rounded hover:bg-orange-600">
-                                                            <i class="fas fa-ban"></i>
-                                                        </button>
-                                                    </form>
-                                                <?php else: ?>
-                                                    <form method="POST" class="inline">
-                                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                        <input type="hidden" name="action" value="activate">
-                                                        <button type="submit" class="px-3 py-1 text-xs text-white transition-colors bg-green-500 rounded hover:bg-green-600">
-                                                            <i class="fas fa-check"></i>
-                                                        </button>
-                                                    </form>
-                                                <?php endif; ?>
-                                                <form method="POST" class="inline" onsubmit="return confirm('Delete this user permanently?');">
-                                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                    <input type="hidden" name="action" value="delete">
-                                                    <button type="submit" class="px-3 py-1 text-xs text-white transition-colors bg-red-500 rounded hover:bg-red-600">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            <?php else: ?>
-                                                <span class="px-3 py-1 text-xs text-gray-500 bg-gray-200 rounded">You</span>
-                                            <?php endif; ?>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $color; ?>">
+                                    <?php echo ucfirst($user['role']); ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php if ($user['status'] === 'active'): ?>
+                                <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
+                                    <i class="mr-1 fas fa-check-circle"></i>Active
+                                </span>
+                                <?php else: ?>
+                                <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">
+                                    <i class="mr-1 fas fa-times-circle"></i>Inactive
+                                </span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                <?php echo date('M d, Y', strtotime($user['created_at'])); ?>
+                            </td>
+                            <td class="px-6 py-4 text-center whitespace-nowrap">
+                                <div class="flex justify-center gap-2">
+                                    <?php if ($user['user_id'] != $_SESSION['user_id']): ?>
+                                    <?php if ($user['status'] === 'active'): ?>
+                                    <form method="POST" class="inline"
+                                        onsubmit="return confirm('Deactivate this user?');">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                        <input type="hidden" name="action" value="deactivate">
+                                        <button type="submit"
+                                            class="px-3 py-1 text-xs text-white transition-colors bg-orange-500 rounded hover:bg-orange-600">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                    </form>
+                                    <?php else: ?>
+                                    <form method="POST" class="inline">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                        <input type="hidden" name="action" value="activate">
+                                        <button type="submit"
+                                            class="px-3 py-1 text-xs text-white transition-colors bg-green-500 rounded hover:bg-green-600">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                    <form method="POST" class="inline"
+                                        onsubmit="return confirm('Delete this user permanently?');">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button type="submit"
+                                            class="px-3 py-1 text-xs text-white transition-colors bg-red-500 rounded hover:bg-red-600">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <?php else: ?>
+                                    <span class="px-3 py-1 text-xs text-gray-500 bg-gray-200 rounded">You</span>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
-                                    <i class="mb-2 text-4xl fas fa-users"></i>
-                                    <p>No users found</p>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                                <i class="mb-2 text-4xl fas fa-users"></i>
+                                <p>No users found</p>
+                            </td>
+                        </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -292,15 +324,15 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
     <?php include '../../../src/components/Footer.php'; ?>
 
     <script>
-        // Profile dropdown toggle
-        document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.getElementById('profile-dropdown').classList.toggle('hidden');
-        });
+    // Profile dropdown toggle
+    document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('profile-dropdown').classList.toggle('hidden');
+    });
 
-        document.addEventListener('click', function() {
-            document.getElementById('profile-dropdown')?.classList.add('hidden');
-        });
+    document.addEventListener('click', function() {
+        document.getElementById('profile-dropdown')?.classList.add('hidden');
+    });
     </script>
 </body>
 
