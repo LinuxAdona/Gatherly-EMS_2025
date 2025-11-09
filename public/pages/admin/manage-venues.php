@@ -210,7 +210,7 @@ $stats['total_capacity'] = $conn->query("SELECT SUM(capacity) as total FROM venu
             <?php if ($venues_result->num_rows > 0): ?>
                 <?php while ($venue = $venues_result->fetch_assoc()): ?>
                     <div class="overflow-hidden transition-shadow bg-white shadow-md rounded-xl hover:shadow-xl">
-                        <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500">
+                        <div class="h-48 bg-linear-to-br from-indigo-400 to-purple-500">
                             <div class="flex items-center justify-center h-full">
                                 <i class="text-6xl text-white fas fa-building"></i>
                             </div>

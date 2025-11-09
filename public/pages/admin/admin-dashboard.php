@@ -41,7 +41,8 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -100,24 +101,30 @@ $conn->close();
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-2 relative group cursor-help">
                         <i class="fas fa-users text-blue-500"></i>
-                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?></span>
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
                             Total Users
                         </div>
                     </div>
                     <div class="w-px h-8 bg-gray-200"></div>
                     <div class="flex items-center gap-2 relative group cursor-help">
                         <i class="fas fa-building text-green-500"></i>
-                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_venues']); ?></span>
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_venues']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
                             Total Venues
                         </div>
                     </div>
                     <div class="w-px h-8 bg-gray-200"></div>
                     <div class="flex items-center gap-2 relative group cursor-help">
                         <i class="fas fa-calendar text-purple-500"></i>
-                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_events']); ?></span>
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_events']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
                             Total Events
                         </div>
                     </div>
@@ -136,10 +143,12 @@ $conn->close();
                     <p class="text-sm text-gray-600">Track revenue performance over time</p>
                 </div>
                 <div class="flex flex-wrap gap-2 mt-4 sm:mt-0">
-                    <select id="yearSelect" class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select id="yearSelect"
+                        class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">Loading years...</option>
                     </select>
-                    <select id="monthSelect" class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select id="monthSelect"
+                        class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Months</option>
                         <option value="1">January</option>
                         <option value="2">February</option>
