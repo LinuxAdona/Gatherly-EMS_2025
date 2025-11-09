@@ -46,7 +46,7 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
-<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -86,50 +86,40 @@ $conn->close();
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
-        <!-- Welcome Section -->
-        <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Administrator Dashboard</h1>
-            <p class="text-gray-600">System overview and management tools</p>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Total Users</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?>
-                        </h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
-                        <i class="text-2xl text-blue-600 fas fa-users"></i>
-                    </div>
-                </div>
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
+        <!-- Header and Statistics -->
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-8">
+            <!-- Welcome Section -->
+            <div class="lg:shrink-0">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Administrator Dashboard</h1>
+                <p class="text-gray-600">System overview and management tools</p>
             </div>
 
-            <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Total Venues</p>
-                        <h3 class="text-3xl font-bold text-gray-800">
-                            <?php echo number_format($stats['total_venues']); ?></h3>
+            <!-- Statistics Cards -->
+            <div class="p-4 bg-white shadow-sm rounded-lg lg:shrink-0">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-users text-blue-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_users']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Users
+                        </div>
                     </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
-                        <i class="text-2xl text-green-600 fas fa-building"></i>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-building text-green-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_venues']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Venues
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="p-6 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Total Events</p>
-                        <h3 class="text-3xl font-bold text-gray-800">
-                            <?php echo number_format($stats['total_events']); ?></h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg">
-                        <i class="text-2xl text-purple-600 fas fa-calendar"></i>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-calendar text-purple-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_events']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Events
+                        </div>
                     </div>
                 </div>
             </div>

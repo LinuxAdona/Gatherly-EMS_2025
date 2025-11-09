@@ -116,36 +116,70 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
 
     <!-- Main Content -->
     <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
-                <i class="mr-2 text-indigo-600 fas fa-users-cog"></i>
-                User Management
-            </h1>
-            <p class="text-gray-600">Manage system users and their access permissions</p>
-        </div>
+        <!-- Header and Statistics -->
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-8">
+            <!-- Header -->
+            <div class="lg:shrink-0">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
+                    <i class="mr-2 text-indigo-600 fas fa-users-cog"></i>
+                    User Management
+                </h1>
+                <p class="text-gray-600">Manage system users and their access permissions</p>
+            </div>
 
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-5">
-            <div class="p-4 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Total Users</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['total']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Active</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['active']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-red-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Inactive</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['inactive']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Organizers</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['organizers']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-yellow-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Managers</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['managers']); ?></p>
+            <!-- Statistics Cards -->
+            <div class="p-4 bg-white shadow-sm rounded-lg lg:shrink-0">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-users text-blue-500"></i>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Users
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['active']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Active Users
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-times-circle text-red-500"></i>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['inactive']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Inactive Users
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-calendar-alt text-purple-500"></i>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['organizers']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Organizers
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-building text-yellow-500"></i>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['managers']); ?></span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Managers
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

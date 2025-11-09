@@ -81,7 +81,7 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -122,37 +122,61 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
-                <i class="mr-2 text-purple-600 fas fa-calendar-check"></i>
-                Event Management
-            </h1>
-            <p class="text-gray-600">Oversee and manage all events in the system</p>
-        </div>
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
+        <!-- Header and Statistics -->
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-8">
+            <!-- Header -->
+            <div class="lg:shrink-0">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
+                    <i class="mr-2 text-purple-600 fas fa-calendar-check"></i>
+                    Event Management
+                </h1>
+                <p class="text-gray-600">Oversee and manage all events in the system</p>
+            </div>
 
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-5">
-            <div class="p-4 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Total Events</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['total']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-yellow-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Pending</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['pending']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Confirmed</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['confirmed']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Completed</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['completed']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-red-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Canceled</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['canceled']); ?></p>
+            <!-- Statistics Cards -->
+            <div class="p-4 bg-white shadow-sm rounded-lg lg:shrink-0">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-calendar text-blue-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Events
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-clock text-yellow-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['pending']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Pending Events
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['confirmed']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Confirmed Events
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-check-double text-purple-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['completed']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Completed Events
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-times-circle text-red-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['canceled']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Canceled Events
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

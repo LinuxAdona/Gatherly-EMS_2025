@@ -75,7 +75,7 @@ $stats['total_capacity'] = $conn->query("SELECT SUM(capacity) as total FROM venu
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -116,33 +116,53 @@ $stats['total_capacity'] = $conn->query("SELECT SUM(capacity) as total FROM venu
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
-                <i class="mr-2 text-green-600 fas fa-map-marked-alt"></i>
-                Venue Management
-            </h1>
-            <p class="text-gray-600">Manage event venues and their availability</p>
-        </div>
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
+        <!-- Header and Statistics -->
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-8">
+            <!-- Header -->
+            <div class="lg:shrink-0">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
+                    <i class="mr-2 text-green-600 fas fa-map-marked-alt"></i>
+                    Venue Management
+                </h1>
+                <p class="text-gray-600">Manage event venues and their availability</p>
+            </div>
 
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="p-4 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Total Venues</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['total']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Active</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['active']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-red-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Inactive</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['inactive']); ?></p>
-            </div>
-            <div class="p-4 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
-                <p class="mb-1 text-xs text-gray-600 uppercase">Total Capacity</p>
-                <p class="text-2xl font-bold text-gray-800"><?php echo number_format($stats['total_capacity']); ?></p>
+            <!-- Statistics Cards -->
+            <div class="p-4 bg-white shadow-sm rounded-lg lg:shrink-0">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-building text-blue-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Venues
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['active']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Active Venues
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-times-circle text-red-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['inactive']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Inactive Venues
+                        </div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 relative group cursor-help">
+                        <i class="fas fa-users text-purple-500"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['total_capacity']); ?></span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                            Total Capacity
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -188,76 +208,76 @@ $stats['total_capacity'] = $conn->query("SELECT SUM(capacity) as total FROM venu
         <!-- Venues Grid -->
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <?php if ($venues_result->num_rows > 0): ?>
-            <?php while ($venue = $venues_result->fetch_assoc()): ?>
-            <div class="overflow-hidden transition-shadow bg-white shadow-md rounded-xl hover:shadow-xl">
-                <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500">
-                    <div class="flex items-center justify-center h-full">
-                        <i class="text-6xl text-white fas fa-building"></i>
+                <?php while ($venue = $venues_result->fetch_assoc()): ?>
+                    <div class="overflow-hidden transition-shadow bg-white shadow-md rounded-xl hover:shadow-xl">
+                        <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500">
+                            <div class="flex items-center justify-center h-full">
+                                <i class="text-6xl text-white fas fa-building"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-3">
+                                <h3 class="text-xl font-bold text-gray-800">
+                                    <?php echo htmlspecialchars($venue['venue_name']); ?></h3>
+                                <?php if ($venue['status'] === 'active'): ?>
+                                    <span
+                                        class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">Active</span>
+                                <?php else: ?>
+                                    <span
+                                        class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">Inactive</span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <p><i
+                                        class="mr-2 fas fa-map-marker-alt text-indigo-600"></i><?php echo htmlspecialchars($venue['location']); ?>
+                                </p>
+                                <p><i class="mr-2 fas fa-users text-indigo-600"></i>Capacity:
+                                    <?php echo number_format($venue['capacity']); ?></p>
+                                <p><i
+                                        class="mr-2 fas fa-dollar-sign text-indigo-600"></i>₱<?php echo number_format($venue['base_price'], 2); ?>
+                                </p>
+                                <?php if ($venue['first_name']): ?>
+                                    <p><i class="mr-2 fas fa-user text-indigo-600"></i>Manager:
+                                        <?php echo htmlspecialchars($venue['first_name'] . ' ' . $venue['last_name']); ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="flex gap-2 mt-4">
+                                <?php if ($venue['status'] === 'active'): ?>
+                                    <form method="POST" class="flex-1" onsubmit="return confirm('Deactivate this venue?');">
+                                        <input type="hidden" name="venue_id" value="<?php echo $venue['venue_id']; ?>">
+                                        <input type="hidden" name="action" value="deactivate">
+                                        <button type="submit"
+                                            class="w-full px-4 py-2 text-sm text-white transition-colors bg-orange-500 rounded-lg hover:bg-orange-600">
+                                            <i class="mr-2 fas fa-ban"></i>Deactivate
+                                        </button>
+                                    </form>
+                                <?php else: ?>
+                                    <form method="POST" class="flex-1">
+                                        <input type="hidden" name="venue_id" value="<?php echo $venue['venue_id']; ?>">
+                                        <input type="hidden" name="action" value="activate">
+                                        <button type="submit"
+                                            class="w-full px-4 py-2 text-sm text-white transition-colors bg-green-500 rounded-lg hover:bg-green-600">
+                                            <i class="mr-2 fas fa-check"></i>Activate
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                                <form method="POST" class="flex-1" onsubmit="return confirm('Delete this venue permanently?');">
+                                    <input type="hidden" name="venue_id" value="<?php echo $venue['venue_id']; ?>">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit"
+                                        class="w-full px-4 py-2 text-sm text-white transition-colors bg-red-500 rounded-lg hover:bg-red-600">
+                                        <i class="mr-2 fas fa-trash"></i>Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-xl font-bold text-gray-800">
-                            <?php echo htmlspecialchars($venue['venue_name']); ?></h3>
-                        <?php if ($venue['status'] === 'active'): ?>
-                        <span
-                            class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">Active</span>
-                        <?php else: ?>
-                        <span
-                            class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">Inactive</span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <p><i
-                                class="mr-2 fas fa-map-marker-alt text-indigo-600"></i><?php echo htmlspecialchars($venue['location']); ?>
-                        </p>
-                        <p><i class="mr-2 fas fa-users text-indigo-600"></i>Capacity:
-                            <?php echo number_format($venue['capacity']); ?></p>
-                        <p><i
-                                class="mr-2 fas fa-dollar-sign text-indigo-600"></i>₱<?php echo number_format($venue['base_price'], 2); ?>
-                        </p>
-                        <?php if ($venue['first_name']): ?>
-                        <p><i class="mr-2 fas fa-user text-indigo-600"></i>Manager:
-                            <?php echo htmlspecialchars($venue['first_name'] . ' ' . $venue['last_name']); ?></p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="flex gap-2 mt-4">
-                        <?php if ($venue['status'] === 'active'): ?>
-                        <form method="POST" class="flex-1" onsubmit="return confirm('Deactivate this venue?');">
-                            <input type="hidden" name="venue_id" value="<?php echo $venue['venue_id']; ?>">
-                            <input type="hidden" name="action" value="deactivate">
-                            <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-white transition-colors bg-orange-500 rounded-lg hover:bg-orange-600">
-                                <i class="mr-2 fas fa-ban"></i>Deactivate
-                            </button>
-                        </form>
-                        <?php else: ?>
-                        <form method="POST" class="flex-1">
-                            <input type="hidden" name="venue_id" value="<?php echo $venue['venue_id']; ?>">
-                            <input type="hidden" name="action" value="activate">
-                            <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-white transition-colors bg-green-500 rounded-lg hover:bg-green-600">
-                                <i class="mr-2 fas fa-check"></i>Activate
-                            </button>
-                        </form>
-                        <?php endif; ?>
-                        <form method="POST" class="flex-1" onsubmit="return confirm('Delete this venue permanently?');">
-                            <input type="hidden" name="venue_id" value="<?php echo $venue['venue_id']; ?>">
-                            <input type="hidden" name="action" value="delete">
-                            <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-white transition-colors bg-red-500 rounded-lg hover:bg-red-600">
-                                <i class="mr-2 fas fa-trash"></i>Delete
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <?php endwhile; ?>
+                <?php endwhile; ?>
             <?php else: ?>
-            <div class="col-span-3 py-12 text-center">
-                <i class="mb-4 text-6xl text-gray-400 fas fa-building"></i>
-                <p class="text-xl text-gray-500">No venues found</p>
-            </div>
+                <div class="col-span-3 py-12 text-center">
+                    <i class="mb-4 text-6xl text-gray-400 fas fa-building"></i>
+                    <p class="text-xl text-gray-500">No venues found</p>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -265,14 +285,14 @@ $stats['total_capacity'] = $conn->query("SELECT SUM(capacity) as total FROM venu
     <?php include '../../../src/components/Footer.php'; ?>
 
     <script>
-    document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
-        e.stopPropagation();
-        document.getElementById('profile-dropdown').classList.toggle('hidden');
-    });
+        document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
 
-    document.addEventListener('click', function() {
-        document.getElementById('profile-dropdown')?.classList.add('hidden');
-    });
+        document.addEventListener('click', function() {
+            document.getElementById('profile-dropdown')?.classList.add('hidden');
+        });
     </script>
 </body>
 
