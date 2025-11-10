@@ -305,7 +305,61 @@ while ($service = $services_result->fetch_assoc()) {
         </form>
     </div>
 
-    <script src="../../assets/js/create-event.js"></script>
+    <script>
+        function updateCostSummary() {
+            // Update venue cost
+            const selectedVenue = document.querySelector('input[name="venue_id"]:checked');
+            const venueCost = selectedVenue ? parseFloat(selectedVenue.closest('.venue-card').dataset.venuePrice) : 0;
+
+            // Update services cost
+            let servicesCost = 0;
+            document.querySelectorAll('input.service-checkbox:checked').forEach(checkbox => {
+                servicesCost += parseFloat(checkbox.dataset.price) || 0;
+            });
+
+            const total = venueCost + servicesCost;
+
+            // Update UI
+            document.getElementById('venue-cost').textContent = '₱' + venueCost.toFixed(2);
+            document.getElementById('services-cost').textContent = '₱' + servicesCost.toFixed(2);
+            document.getElementById('total-cost').textContent = '₱' + total.toFixed(2);
+            document.getElementById('total_cost').value = total.toFixed(2);
+        }
+
+        // Handle venue selection
+        document.querySelectorAll('input[name="venue_id"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.venue-card').forEach(card => {
+                    card.classList.remove('border-indigo-500', 'shadow-lg');
+                });
+                if (this.checked) {
+                    this.closest('.venue-card').classList.add('border-indigo-500', 'shadow-lg');
+                }
+                updateCostSummary();
+            });
+        });
+
+        // Handle service selection
+        document.querySelectorAll('input.service-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateCostSummary);
+        });
+
+        // Auto-select venue from URL
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_GET['venue_id']) && is_numeric($_GET['venue_id'])): ?>
+            const venueId = <?php echo (int)$_GET['venue_id']; ?>;
+            const radio = document.querySelector(`input[name="venue_id"][value="${venueId}"]`);
+            if (radio) {
+                radio.checked = true;
+                const card = radio.closest('.venue-card');
+                if (card) {
+                    card.classList.add('border-indigo-500', 'shadow-lg');
+                }
+                updateCostSummary();
+            }
+            <?php endif; ?>
+        });
+    </script>
 </body>
 
 </html>
