@@ -1,245 +1,197 @@
+<?php
+session_start();
+
+// Check if user is logged in and is an organizer
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
+    header("Location: ../signin.php");
+    exit();
+}
+
+require_once '../../../src/services/dbconnect.php';
+
+$first_name = $_SESSION['first_name'] ?? 'Organizer';
+$user_id = $_SESSION['user_id'];
+
+// Fetch venues with amenities
+$venues_query = "
+    SELECT v.venue_id, v.venue_name, v.location, v.capacity, v.base_price, v.description
+    FROM venues v 
+    WHERE v.availability_status = 'available'
+    ORDER BY v.venue_name
+";
+$venues_result = $conn->query($venues_query);
+
+// Fetch all amenities grouped by venue_id
+$amenities_query = "SELECT venue_id, amenity_name FROM venue_amenities";
+$amenities_result = $conn->query($amenities_query);
+$amenities_by_venue = [];
+while ($row = $amenities_result->fetch_assoc()) {
+    $amenities_by_venue[$row['venue_id']][] = $row['amenity_name'];
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Discover Venues - GEMS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Venues | Gatherly</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
+    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-gray-100 font-sans">
-
-    <!-- Navbar -->
-    <nav class="bg-white shadow px-6 py-3 flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-            <span class="text-2xl font-bold flex items-center space-x-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <!-- Ground line -->
-                <line x1="3" y1="21" x2="21" y2="21" stroke="#0011ffff" stroke-width="1.2" stroke-linecap="round"/>
-                
-                <!-- Left building (with horizontal floors) -->
-                <rect x="5" y="8" width="6" height="12" fill="none" stroke="#0011ffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="5" y1="11" x2="11" y2="11" stroke="#0011ffff" stroke-width="0.8"/>
-                <line x1="5" y1="14" x2="11" y2="14" stroke="#0011ffff" stroke-width="0.8"/>
-                <line x1="5" y1="17" x2="11" y2="17" stroke="#0011ffff" stroke-width="0.8"/>
-                
-                <!-- Right building (taller, vertical windows) -->
-                <rect x="12" y="6" width="5" height="14" fill="none" stroke="#0011ffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="13.5" y1="9" x2="13.5" y2="18" stroke="#0011ffff" stroke-width="0.6"/>
-                </svg>
-                <span>GEMS</span>
-            </span>
-
-            <button class="ml-2 px-4 py-2 font-semi-bold text-gray-700 hover:bg-gray-300 rounded-md flex items-center space-x-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <!-- Ground line -->
-                <line x1="2" y1="14" x2="14" y2="14" stroke="#000000ff" stroke-width="0.8" stroke-linecap="round"/>
-                
-                <!-- Left building (with horizontal floors) -->
-                <rect x="3.5" y="6" width="4" height="8" fill="none" stroke="#000000ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="3.5" y1="8" x2="7.5" y2="8" stroke="#000000ff" stroke-width="0.5"/>
-                <line x1="3.5" y1="10" x2="7.5" y2="10" stroke="#000000ff" stroke-width="0.5"/>
-                <line x1="3.5" y1="12" x2="7.5" y2="12" stroke="#000000ff" stroke-width="0.5"/>
-                
-                <!-- Right building (taller, vertical windows) -->
-                <rect x="8" y="4" width="3.5" height="9.5" fill="none" stroke="#000000ff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="9.25" y1="6" x2="9.25" y2="12.5" stroke="#000000ff" stroke-width="0.4"/>
-                </svg>
-            <a href="#">
-                <span>Home</span>
-            </a>
-            </button>
-            <button class="ml-2 px-4 py-2 font-semi-bold text-gray-700 hover:bg-gray-300 rounded-md flex items-center space-x-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <!-- Circle (magnifying glass lens) -->
-                <circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="#000" stroke-width="1.2" stroke-linecap="round"/>
-                <!-- Handle (diagonal line) -->
-                <line x1="10" y1="10" x2="13" y2="13" stroke="#000" stroke-width="1.2" stroke-linecap="round"/>
-                </svg>
-            <a href="#">
-                <span>Venues</span>
-            </a>
-            </button>
-            <button class="ml-2 px-4 py-2 font-semi-bold text-gray-700 hover:bg-gray-300 rounded-md flex items-center space-x-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-            <rect x="2" y="4" width="12" height="8" rx="1" fill="none" stroke="#000000ff" stroke-width="1" stroke-linecap="round"/>
-            <line x1="6" y1="12" x2="10" y2="12" stroke="#000000ff" stroke-width="1" stroke-linecap="round"/>
-            <line x1="8" y1="12" x2="8" y2="14" stroke="#000000ff" stroke-width="1" stroke-linecap="round"/>
-            <line x1="5" y1="9" x2="5" y2="10" stroke="#000000ff" stroke-width="1.2"/>
-            <line x1="8" y1="7" x2="8" y2="10" stroke="#000000ff" stroke-width="1.2"/>
-            </svg>
-            <a href="#">
-                <span>Analytics</span>
-            </a>
-            </button>
-            <button class="ml-2 px-4 py-2 font-semi-bold text-gray-700 hover:bg-gray-300 rounded-md flex items-center space-x-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-            <!-- Speech bubble outline -->
-            <path d="M13 4H5C4.45 4 4 4.45 4 5v6c0 0.55 0.45 1 1 1h2l1 2 1-2h3c0.55 0 1-0.45 1-1V5c0-0.55-0.45-1-1-1z"
-                    fill="none" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <a href="#">
-                <span>Messages</span>
-            </a>
-            </button>
-        </div>
-
-        <div class="flex items-center space-x-4">
-            <!-- Light/Dark mode toggle placeholder -->
-            <button aria-label="Toggle Dark Mode" class="text-gray-600 hover:text-gray-900">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <!-- Sun circle -->
-                <circle cx="8" cy="8" r="3" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round"/>
-                <!-- Rays (top, right, bottom, left) -->
-                <line x1="8" y1="2" x2="8" y2="4" stroke="#000" stroke-width="1" stroke-linecap="round"/>
-                <line x1="12" y1="8" x2="14" y2="8" stroke="#000" stroke-width="1" stroke-linecap="round"/>
-                <line x1="8" y1="12" x2="8" y2="14" stroke="#000" stroke-width="1" stroke-linecap="round"/>
-                <line x1="2" y1="8" x2="4" y2="8" stroke="#000" stroke-width="1" stroke-linecap="round"/>
-                </svg>
-            </button>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700">
-                <a href="#">Sign In</a>
-            </button>
+<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat']">
+    <!-- Navbar: copied exactly from organizer-dashboard.php -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container px-4 mx-auto sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-12 sm:h-16">
+                <div class="flex items-center h-full">
+                    <a href="../home.php" class="flex items-center group">
+                        <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
+                            src="../../assets/images/logo.png" alt="Gatherly Logo">
+                        <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
+                    </a>
+                </div>
+                <div class="items-center hidden gap-6 md:flex">
+                    <a href="organizer-dashboard.php" class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
+                    <a href="my-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">My Events</a>
+                    <a href="find-venues.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Find Venues</a>
+                    <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI Planner</a>
+                    <div class="relative">
+                        <button id="profile-dropdown-btn"
+                            class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
+                            <i class="text-2xl fas fa-user-circle"></i>
+                            <span><?php echo htmlspecialchars($first_name); ?></span>
+                            <i class="text-xs fas fa-chevron-down"></i>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
+                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
+                            <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
+                            <a href="../../../src/services/signout-handler.php"
+                                class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!--Main-->
-        <main class="container mx-auto px-6 py-8">
+    <!-- Main Content -->
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <div class="flex items-center gap-4 mb-6">
+            <a href="javascript:history.back()" class="text-gray-600 transition-colors hover:text-indigo-600">
+                <i class="text-2xl fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Find Venues</h1>
+                <p class="text-gray-600">Browse and select the perfect venue for your upcoming events</p>
+            </div>
+        </div>
 
-            <h1 class="text-3xl font-extrabold text-gray-900 mb-1">Discover Venues</h1>
-            <p class="text-gray-600 mb-6">6 Venues available</p>
-
-            <!--Search and Filter-->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 mb-6">
-                <div class="flex items-center flex-grow max-w-xl sm:max-w-none">
-                    <label for="search" class="sr-only">Search Venues</label>
-                        <input type="search" id="search" name="search" placeholder="⌕ Search venues by name, location, and features..."
-                         class="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                         <button class="ml-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-300 flex items-center space-x-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                            <line x1="2" y1="4" x2="14" y2="4" stroke="#000" stroke-width="1.2" stroke-linecap="round"/>
-                            <line x1="2" y1="8" x2="14" y2="8" stroke="#000" stroke-width="1.2" stroke-linecap="round"/>
-                            <line x1="2" y1="12" x2="14" y2="12" stroke="#000" stroke-width="1.2" stroke-linecap="round"/>
-                            </svg>
-                            <span>Filters</span>
-                        </button>
+        <!-- Search and Filters (simplified for now – can enhance later) -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search venues by name or location..."
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            oninput="filterVenues()"
+                        >
+                    </div>
                 </div>
             </div>
-
-            <!--Category Filter tabs-->
-            <div class="flex flex-wrap gap-2 mb-6">
-            <?php
-            // Define venue categories (could be dynamic from database)
-            $categories = ['All', 'Ballroom', 'Conference', 'Outdoor', 'Rooftop'];
-            
-            foreach ($categories as $index => $category) {
-                $isActive = ($index === 0); // First category is active by default
-                $buttonClass = $isActive ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200';
-            ?>
-                <button class="<?php echo $buttonClass; ?> px-3 py-1 rounded-md text-sm font-medium transition">
-                    <?php echo htmlspecialchars($category); ?>
-                </button>
-            <?php } ?>
         </div>
 
-        <!-- Venue Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php
-            // Sample venue data (in a real app, this would come from a database)
-            $venues = [
-                [
-                    'name' => 'Grand Ballroom',
-                    'location' => 'Downtown Manhattan, NY',
-                    'guests' => 'Up to 200 guests',
-                    'price' => '$10,000',
-                    'image' => 'https://placehold.co/400x200?text=Grand+Ballroom'
-                ],
-                [
-                    'name' => 'Garden Paradise',
-                    'location' => 'Brooklyn Heights, NY',
-                    'guests' => 'Up to 150 guests',
-                    'price' => '$7,500',
-                    'image' => 'https://placehold.co/400x200?text=Garden+Paradise'
-                ],
-                [
-                    'name' => 'Modern Conference Center',
-                    'location' => 'Midtown Manhattan, NY',
-                    'guests' => 'Up to 300 guests',
-                    'price' => '$15,000',
-                    'image' => 'https://placehold.co/400x200?text=Modern+Conference+Center'
-                ],
-                [
-                    'name' => 'Elegant Banquet Hall',
-                    'location' => 'Upper East Side, NY',
-                    'guests' => 'Up to 250 guests',
-                    'price' => '$12,000',
-                    'image' => 'https://placehold.co/400x200?text=Elegant+Banquet+Hall'
-                ],
-                [
-                    'name' => 'Skyline Rooftop Venue',
-                    'location' => 'Chelsea, NY',
-                    'guests' => 'Up to 120 guests',
-                    'price' => '$9,000',
-                    'image' => 'https://placehold.co/400x200?text=Skyline+Rooftop+Venue'
-                ],
-                [
-                    'name' => 'Rustic Barn Estate',
-                    'location' => 'Hudson Valley, NY',
-                    'guests' => 'Up to 180 guests',
-                    'price' => '$6,500',
-                    'image' => 'https://placehold.co/400x200?text=Rustic+Barn+Estate'
-                ]
-            ];
-            
-            // Display each venue card
-            foreach ($venues as $venue) {
-            ?>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:shadow-lg hover:-translate-y-1">
-                    <!-- Venue Image with Gradient Overlay -->
-                    <div class="relative h-48">
-                        <img src="<?php echo htmlspecialchars($venue['image']); ?>" 
-                             alt="<?php echo htmlspecialchars($venue['name']); ?>"
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        
-                        <!-- Venue Title and Location -->
-                        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-                            <h3 class="text-xl font-bold"><?php echo htmlspecialchars($venue['name']); ?></h3>
-                            <div class="flex items-center mt-1 text-sm">
-                                <i class="fas fa-map-marker-alt mr-1"></i>
-                                <span><?php echo htmlspecialchars($venue['location']); ?></span>
+        <!-- Venue Cards -->
+        <div id="venuesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php if ($venues_result && $venues_result->num_rows > 0): ?>
+                <?php while ($venue = $venues_result->fetch_assoc()): ?>
+                    <?php
+                    $amenities = $amenities_by_venue[$venue['venue_id']] ?? [];
+                    $amenities_html = '';
+                    $more_count = 0;
+                    if (count($amenities) > 3) {
+                        $display = array_slice($amenities, 0, 3);
+                        $more_count = count($amenities) - 3;
+                    } else {
+                        $display = $amenities;
+                    }
+                    foreach ($display as $a) {
+                        $amenities_html .= '<span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">' . htmlspecialchars($a) . '</span>';
+                    }
+                    if ($more_count > 0) {
+                        $amenities_html .= '<span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-md">+' . $more_count . ' more</span>';
+                    }
+                    ?>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-500">No image</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Venue Details -->
-                    <div class="p-4">
-                        <div class="flex justify-between items-center mb-4">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-users mr-1"></i>
-                                <span><?php echo htmlspecialchars($venue['guests']); ?></span>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2"><?php echo htmlspecialchars($venue['venue_name']); ?></h3>
+                            <div class="flex items-center text-gray-600 mb-3">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span class="text-sm"><?php echo htmlspecialchars($venue['location']); ?></span>
                             </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-800"><?php echo htmlspecialchars($venue['price']); ?></div>
-                                <div class="text-xs text-gray-500">per day</div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-users mr-2"></i>
+                                    <span class="text-sm"><?php echo $venue['capacity']; ?> capacity</span>
+                                </div>
+                                <span class="text-lg font-bold text-indigo-600">₱<?php echo number_format($venue['base_price'], 2); ?></span>
                             </div>
+                            <?php if (!empty($amenities)): ?>
+                            <div class="mb-4">
+                                <p class="text-sm font-medium text-gray-900 mb-2">Amenities:</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <?php echo $amenities_html; ?>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            <a href="create-event.php?venue_id=<?php echo $venue['venue_id']; ?>"
+                               class="w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                                Select Venue
+                            </a>
                         </div>
-                        
-                        <!-- View Details Button -->
-                        <button class="w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-50 transition">
-                            View Details
-                        </button>
                     </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="col-span-full text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <i class="fas fa-map-marker-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No venues available</h3>
+                    <p class="text-gray-600">Check back later or contact support.</p>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
         </div>
-        </main>
+    </div>
 
-        <!-- Footer -->
-    <footer class="bg-white border-t mt-10 py-6">
-        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
-            © 2025 GEMS. All rights reserved.
-        </div>
-    </footer>
+    <script>
+        function filterVenues() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#venuesContainer > div');
+            let count = 0;
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    card.classList.remove('hidden');
+                    count++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
