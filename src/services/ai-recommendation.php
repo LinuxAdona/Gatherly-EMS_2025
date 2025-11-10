@@ -21,13 +21,21 @@ if (empty($message)) {
 
 // Call Python ML script for recommendations
 $pythonScript = __DIR__ . '/../../ml/venue_recommender.py';
-$pythonPath = 'C:/Python314/python.exe'; // Use 'python3' on Linux/Mac or full path if needed
+
+// Detect OS and set Python path accordingly
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    $pythonPath = 'C:/Python314/python.exe';
+} else {
+    // Linux/Unix - use virtual environment python
+    $venvPython = __DIR__ . '/../../ml/venv/bin/python3';
+    $pythonPath = file_exists($venvPython) ? $venvPython : '/usr/bin/python3';
+}
 
 // Escape message for command line
 $escapedMessage = escapeshellarg($message);
 
 // Execute Python script
-$command = "\"$pythonPath\" \"$pythonScript\" $escapedMessage 2>&1";
+$command = "$pythonPath " . escapeshellarg($pythonScript) . " $escapedMessage 2>&1";
 $output = shell_exec($command);
 
 // Parse Python output

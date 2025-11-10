@@ -22,28 +22,47 @@ if (empty($message)) {
 
 // Call Python conversational planner script
 $pythonScript = __DIR__ . '/../../ml/conversational_planner.py';
-$pythonPath = 'C:/Python313/python.exe';
 
-// Windows-specific escaping function
-function escapeForWindows($str)
-{
-    // Escape double quotes and wrap in double quotes for Windows
-    return '"' . str_replace('"', '\\"', $str) . '"';
+// Detect OS and set Python path accordingly
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    $pythonPath = 'C:/Python313/python.exe';
+} else {
+    // Linux/Unix - use virtual environment python
+    $venvPython = __DIR__ . '/../../ml/venv/bin/python3';
+    $pythonPath = file_exists($venvPython) ? $venvPython : '/usr/bin/python3';
 }
 
-// Escape message for command line
-$escapedMessage = escapeForWindows($message);
+// Verify files exist
+if (!file_exists($pythonScript)) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'Python script not found',
+        'debug' => "Script path: $pythonScript"
+    ]);
+    exit();
+}
+
+if (!file_exists($pythonPath)) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'Python interpreter not found',
+        'debug' => "Python path: $pythonPath"
+    ]);
+    exit();
+}
+
+// Escape message for command line (works for both Linux and Windows)
+$escapedMessage = escapeshellarg($message);
 
 // Pass conversation state as second argument if available
 $stateArg = '';
 if (!empty($conversation_state)) {
     $stateJson = json_encode($conversation_state);
-    // For JSON, we need to escape backslashes and quotes properly for Windows
-    $stateArg = ' ' . escapeForWindows($stateJson);
+    $stateArg = ' ' . escapeshellarg($stateJson);
 }
 
 // Execute Python script
-$command = "\"$pythonPath\" \"$pythonScript\" $escapedMessage$stateArg 2>&1";
+$command = "$pythonPath " . escapeshellarg($pythonScript) . " $escapedMessage$stateArg 2>&1";
 $output = shell_exec($command);
 
 // Parse Python output

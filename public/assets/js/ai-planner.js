@@ -49,6 +49,9 @@ if (chatForm) {
 
         try {
             // Send message to AI conversational planner API
+            console.log('Sending message:', message);
+            console.log('Conversation state:', conversationState);
+            
             const response = await fetch('../../../src/services/ai-conversation.php', {
                 method: 'POST',
                 headers: {
@@ -60,7 +63,11 @@ if (chatForm) {
                 })
             });
 
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            
             const data = await response.json();
+            console.log('Response data:', data);
             
             // Remove typing indicator
             removeTypingIndicator();
@@ -85,8 +92,14 @@ if (chatForm) {
                     addBotMessage(data.response, data.venues, data.suppliers);
                 }
             } else {
-                addBotMessage('Sorry, I encountered an error. Please try again.');
+                // Show detailed error message
+                let errorMsg = 'Sorry, I encountered an error: ' + (data.error || 'Unknown error');
+                if (data.debug) {
+                    errorMsg += '\n\nDebug info: ' + data.debug;
+                }
+                addBotMessage(errorMsg);
                 console.error('API Error:', data.error);
+                console.error('Full response:', data);
                 if (data.debug) {
                     console.error('Debug info:', data.debug);
                 }
