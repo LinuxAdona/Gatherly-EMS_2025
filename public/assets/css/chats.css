@@ -1,0 +1,52 @@
+/* Custom styles for message bubbles and chat-specific components */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+}
+
+.message.received {
+    align-self: flex-start;
+}
+
+.message.sent {
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message p {
+    background: #f2f4f7;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.message.sent p {
+    background: #0059ff;
+    color: white;
+}
+
+.timestamp {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 3px;
+}
+
+.chat-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+/* Dark mode message styles */
+body.dark .message p {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+body.dark .message.sent p {
+    background-color: #2196f3;
+    color: white;
+}

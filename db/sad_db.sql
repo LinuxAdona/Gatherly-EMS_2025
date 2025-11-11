@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 08, 2025 at 04:24 PM
+-- Generation Time: Nov 11, 2025 at 11:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -62,7 +62,9 @@ CREATE TABLE `chat` (
   `sender_id` int(11) DEFAULT NULL,
   `receiver_id` int(11) DEFAULT NULL,
   `message_text` text DEFAULT NULL,
-  `timestamp` datetime DEFAULT current_timestamp()
+  `timestamp` datetime DEFAULT current_timestamp(),
+  `file_url` varchar(255) DEFAULT NULL,
+  `is_file` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
