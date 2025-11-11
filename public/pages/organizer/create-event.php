@@ -102,8 +102,8 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
         <!-- Header -->
         <div class="mb-8">
             <div class="flex items-center gap-4 mb-4">
-                <a href="organizer-dashboard.php" 
-                   class="text-gray-600 transition-colors hover:text-indigo-600">
+                <a href="organizer-dashboard.php"
+                    class="text-gray-600 transition-colors hover:text-indigo-600">
                     <i class="text-2xl fas fa-arrow-left"></i>
                 </a>
                 <div>
@@ -189,35 +189,35 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
 
                         <!-- Selected Venue Card -->
                         <?php if ($selected_venue): ?>
-                        <div id="selected-venue-card" class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
-                            <div class="flex items-start justify-between mb-3">
-                                <h3 class="text-lg font-bold text-gray-800">
-                                    <?php echo htmlspecialchars($selected_venue['venue_name']); ?>
-                                </h3>
-                                <input type="radio" name="venue_id" value="<?php echo $selected_venue['venue_id']; ?>"
-                                    class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" checked>
+                            <div id="selected-venue-card" class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
+                                <div class="flex items-start justify-between mb-3">
+                                    <h3 class="text-lg font-bold text-gray-800">
+                                        <?php echo htmlspecialchars($selected_venue['venue_name']); ?>
+                                    </h3>
+                                    <input type="radio" name="venue_id" value="<?php echo $selected_venue['venue_id']; ?>"
+                                        class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" checked>
+                                </div>
+                                <p class="mb-2 text-sm text-gray-600">
+                                    <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
+                                    <?php echo htmlspecialchars($selected_venue['location']); ?>
+                                </p>
+                                <p class="mb-2 text-sm text-gray-600">
+                                    <i class="mr-1 text-indigo-600 fas fa-users"></i>
+                                    Capacity: <?php echo $selected_venue['capacity']; ?> guests
+                                </p>
+                                <p class="text-lg font-bold text-green-600">
+                                    ₱<?php echo number_format($selected_venue['base_price'], 2); ?>
+                                </p>
                             </div>
-                            <p class="mb-2 text-sm text-gray-600">
-                                <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
-                                <?php echo htmlspecialchars($selected_venue['location']); ?>
-                            </p>
-                            <p class="mb-2 text-sm text-gray-600">
-                                <i class="mr-1 text-indigo-600 fas fa-users"></i>
-                                Capacity: <?php echo $selected_venue['capacity']; ?> guests
-                            </p>
-                            <p class="text-lg font-bold text-green-600">
-                                ₱<?php echo number_format($selected_venue['base_price'], 2); ?>
-                            </p>
-                        </div>
                         <?php else: ?>
-                        <div id="selected-venue-card" class="hidden"></div>
+                            <div id="selected-venue-card" class="hidden"></div>
                         <?php endif; ?>
 
                         <!-- Choose Other Venue Button -->
                         <div class="mt-4">
                             <a href="find-venues.php"
-                               class="inline-flex items-center px-4 py-2 text-indigo-600 font-medium bg-indigo-100 rounded-lg hover:bg-indigo-200 transition-colors">
-                                <i class="fas fa-exchange-alt mr-2"></i>
+                                class="inline-flex items-center px-4 py-2 font-medium text-indigo-600 transition-colors bg-indigo-100 rounded-lg hover:bg-indigo-200">
+                                <i class="mr-2 fas fa-exchange-alt"></i>
                                 Choose other venue
                             </a>
                         </div>
@@ -311,7 +311,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                                 </span>
                             </div>
 
-                            <input type="hidden" id="total_cost" name="total_cost" 
+                            <input type="hidden" id="total_cost" name="total_cost"
                                 value="<?php echo $selected_venue ? $selected_venue['base_price'] : '0'; ?>">
                         </div>
 
