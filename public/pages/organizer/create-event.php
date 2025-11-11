@@ -102,8 +102,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
         <!-- Header -->
         <div class="mb-8">
             <div class="flex items-center gap-4 mb-4">
-                <a href="organizer-dashboard.php"
-                    class="text-gray-600 transition-colors hover:text-indigo-600">
+                <a href="organizer-dashboard.php" class="text-gray-600 transition-colors hover:text-indigo-600">
                     <i class="text-2xl fas fa-arrow-left"></i>
                 </a>
                 <div>
@@ -189,7 +188,8 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
 
                         <!-- Selected Venue Card -->
                         <?php if ($selected_venue): ?>
-                            <div id="selected-venue-card" class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
+                            <div id="selected-venue-card"
+                                class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
                                 <div class="flex items-start justify-between mb-3">
                                     <h3 class="text-lg font-bold text-gray-800">
                                         <?php echo htmlspecialchars($selected_venue['venue_name']); ?>
@@ -210,8 +210,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                                 </p>
                             </div>
                         <?php else: ?>
-                            <div id="selected-venue-card" class="hidden"></div>
-                        <?php endif; ?>
+                            <div id="selected-venue-card" class="hidden"></div><?php endif; ?>
 
                         <!-- Choose Other Venue Button -->
                         <div class="mt-4">
