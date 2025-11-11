@@ -102,11 +102,41 @@ $conn->close();
 
     <!-- Main Content -->
     <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
-        <!-- Welcome Section -->
-        <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Welcome back,
-                <?php echo htmlspecialchars($first_name); ?>! 👋</h1>
-            <p class="text-gray-600">Plan your events with intelligent venue recommendations</p>
+        <div class="flex flex-col gap-6 mb-8 lg:flex-row lg:items-start lg:justify-between">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Welcome back,
+                    <?php echo htmlspecialchars($first_name); ?>! 👋</h1>
+                <p class="text-gray-600">Plan your events with intelligent venue recommendations</p>
+            </div>
+            <!-- Statistics Cards -->
+            <div class="p-4 bg-white rounded-lg shadow-sm lg:shrink-0">
+                <div class="flex items-center gap-6">
+                    <div class="relative flex items-center gap-2 group cursor-help">
+                        <i class="text-indigo-500 fas fa-calendar-alt"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['my_events']); ?></span>
+                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">My Events</div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="relative flex items-center gap-2 group cursor-help">
+                        <i class="text-yellow-500 fas fa-clock"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['pending_events']); ?></span>
+                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">Pending Events</div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="relative flex items-center gap-2 group cursor-help">
+                        <i class="text-green-500 fas fa-check-circle"></i>
+                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['confirmed_events']); ?></span>
+                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">Confirmed Events</div>
+                    </div>
+                    <div class="w-px h-8 bg-gray-200"></div>
+                    <div class="relative flex items-center gap-2 group cursor-help">
+                        <i class="text-blue-500 fas fa-peso-sign"></i>
+                        <span class="text-xl font-bold text-gray-800">₱<?php echo number_format($stats['total_spent'], 2); ?></span>
+                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">Total Spent</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- AI Chatbot Highlight Banner -->
@@ -126,7 +156,7 @@ $conn->close();
                         <span class="px-3 py-1 text-xs font-semibold text-indigo-700 bg-indigo-200 rounded-full">
                             <i class="mr-1 fas fa-brain"></i> Smart Matching
                         </span>
-                        <span class="px-3 py-1 text-xs font-semibold text-cyan-700 bg-cyan-200 rounded-full">
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full text-cyan-700 bg-cyan-200">
                             <i class="mr-1 fas fa-chart-line"></i> Budget Optimization
                         </span>
                         <span class="px-3 py-1 text-xs font-semibold text-indigo-700 bg-indigo-200 rounded-full">
@@ -137,63 +167,8 @@ $conn->close();
                 <a href="ai-planner.php"
                     class="px-6 py-3 font-semibold text-white transition-all transform bg-indigo-600 shadow-lg rounded-xl hover:bg-indigo-700 hover:scale-105 hover:shadow-xl">
                     <i class="mr-2 fas fa-comments"></i>
-                    Open AI Planner
+                    Chat with AI
                 </a>
-            </div>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="p-6 bg-white border-l-4 border-indigo-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">My Events</p>
-                        <h3 class="text-3xl font-bold text-gray-800"><?php echo number_format($stats['my_events']); ?>
-                        </h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-indigo-100 rounded-lg">
-                        <i class="text-2xl text-indigo-600 fas fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-6 bg-white border-l-4 border-yellow-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Pending</p>
-                        <h3 class="text-3xl font-bold text-gray-800">
-                            <?php echo number_format($stats['pending_events']); ?></h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-lg">
-                        <i class="text-2xl text-yellow-600 fas fa-clock"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Confirmed</p>
-                        <h3 class="text-3xl font-bold text-gray-800">
-                            <?php echo number_format($stats['confirmed_events']); ?></h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
-                        <i class="text-2xl text-green-600 fas fa-check-circle"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="mb-1 text-sm text-gray-600">Total Spent</p>
-                        <h3 class="text-3xl font-bold text-gray-800">
-                            ₱<?php echo number_format($stats['total_spent'], 2); ?></h3>
-                    </div>
-                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
-                        <i class="text-2xl text-blue-600 fas fa-peso-sign"></i>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -249,37 +224,37 @@ $conn->close();
                 </h2>
                 <div class="space-y-3">
                     <?php if ($recent_events && $recent_events->num_rows > 0): ?>
-                    <?php while ($event = $recent_events->fetch_assoc()): ?>
-                    <div
-                        class="p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h3 class="mb-1 font-semibold text-gray-800">
-                                    <?php echo htmlspecialchars($event['event_name']); ?></h3>
-                                <p class="text-sm text-gray-600">
-                                    <i class="mr-1 fas fa-map-marker-alt"></i>
-                                    <?php echo htmlspecialchars($event['venue_name'] ?? 'No venue assigned'); ?>
-                                </p>
-                                <p class="text-sm text-gray-600">
-                                    <i class="mr-1 fas fa-calendar"></i>
-                                    <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
-                                </p>
-                            </div>
-                            <span class="px-3 py-1 text-xs font-semibold rounded-full
+                        <?php while ($event = $recent_events->fetch_assoc()): ?>
+                            <div
+                                class="p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <h3 class="mb-1 font-semibold text-gray-800">
+                                            <?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                        <p class="text-sm text-gray-600">
+                                            <i class="mr-1 fas fa-map-marker-alt"></i>
+                                            <?php echo htmlspecialchars($event['venue_name'] ?? 'No venue assigned'); ?>
+                                        </p>
+                                        <p class="text-sm text-gray-600">
+                                            <i class="mr-1 fas fa-calendar"></i>
+                                            <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
+                                        </p>
+                                    </div>
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full
                                         <?php
                                         echo $event['status'] == 'confirmed' ? 'bg-green-100 text-green-700' : ($event['status'] == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($event['status'] == 'completed' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'));
                                         ?>">
-                                <?php echo ucfirst($event['status']); ?>
-                            </span>
-                        </div>
-                    </div>
-                    <?php endwhile; ?>
+                                        <?php echo ucfirst($event['status']); ?>
+                                    </span>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
                     <?php else: ?>
-                    <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
-                        <i class="mb-3 text-4xl fas fa-calendar-times"></i>
-                        <p class="mb-2 font-semibold">No events yet</p>
-                        <p class="text-sm">Create your first event to get started!</p>
-                    </div>
+                        <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
+                            <i class="mb-3 text-4xl fas fa-calendar-times"></i>
+                            <p class="mb-2 font-semibold">No events yet</p>
+                            <p class="text-sm">Create your first event to get started!</p>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
