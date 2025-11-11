@@ -25,8 +25,28 @@ $venues_result = $conn->query($venues_query);
 $amenities_query = "SELECT venue_id, amenity_name FROM venue_amenities";
 $amenities_result = $conn->query($amenities_query);
 $amenities_by_venue = [];
+$all_amenities = [];
 while ($row = $amenities_result->fetch_assoc()) {
     $amenities_by_venue[$row['venue_id']][] = $row['amenity_name'];
+    $all_amenities[] = $row['amenity_name'];
+}
+$all_amenities = array_unique($all_amenities);
+sort($all_amenities);
+
+// Get min/max price and capacity for filters
+$stats_query = "SELECT MIN(base_price) as min_price, MAX(base_price) as max_price, MIN(capacity) as min_cap, MAX(capacity) as max_cap FROM venues WHERE availability_status = 'available'";
+$stats = $conn->query($stats_query)->fetch_assoc();
+$min_price = (int)($stats['min_price'] ?? 0);
+$max_price = (int)($stats['max_price'] ?? 100000);
+$min_cap = (int)($stats['min_cap'] ?? 0);
+$max_cap = (int)($stats['max_cap'] ?? 1000);
+
+// Fetch unique locations
+$locations_query = "SELECT DISTINCT location FROM venues WHERE availability_status = 'available' ORDER BY location";
+$locations_result = $conn->query($locations_query);
+$locations = [];
+while ($row = $locations_result->fetch_assoc()) {
+    $locations[] = $row['location'];
 }
 
 $conn->close();
@@ -41,9 +61,49 @@ $conn->close();
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
+    <style>
+        .filter-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 100%;
+            max-width: 320px;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+        .filter-drawer.open {
+            transform: translateX(0);
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        @media (max-width: 1023px) {
+            .filter-drawer {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat']">
-    <!-- Navbar: copied exactly from organizer-dashboard.php -->
+    <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
@@ -92,26 +152,26 @@ $conn->close();
             </div>
         </div>
 
-        <!-- Search and Filters (simplified for now – can enhance later) -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                <div class="flex-1">
-                    <div class="relative">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input
-                            type="text"
-                            id="searchInput"
-                            placeholder="Search venues by name or location..."
-                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            oninput="filterVenues()"
-                        >
-                    </div>
-                </div>
+        <!-- Search + Filter Button: SIDE-BY-SIDE -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-6 flex flex-col sm:flex-row gap-2">
+            <div class="relative flex-1">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search venues by name or location..."
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    oninput="applyFilters()"
+                >
             </div>
+            <button onclick="openFilterDrawer()"
+                class="px-4 py-2 bg-indigo-100 text-indigo-700 font-medium rounded-lg hover:bg-indigo-200 whitespace-nowrap flex items-center justify-center">
+                <i class="fas fa-filter mr-2"></i> Filters
+            </button>
         </div>
 
-        <!-- Venue Cards -->
-        <div id="venuesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Venue Listings -->
+        <div id="venuesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             <?php if ($venues_result && $venues_result->num_rows > 0): ?>
                 <?php while ($venue = $venues_result->fetch_assoc()): ?>
                     <?php
@@ -131,7 +191,12 @@ $conn->close();
                         $amenities_html .= '<span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-md">+' . $more_count . ' more</span>';
                     }
                     ?>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow venue-card"
+                        data-name="<?php echo htmlspecialchars($venue['venue_name']); ?>"
+                        data-location="<?php echo htmlspecialchars($venue['location']); ?>"
+                        data-capacity="<?php echo $venue['capacity']; ?>"
+                        data-price="<?php echo $venue['base_price']; ?>"
+                        data-amenities="<?php echo implode(',', array_map('htmlspecialchars', $amenities)); ?>">
                         <div class="relative">
                             <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
                                 <span class="text-gray-500">No image</span>
@@ -177,21 +242,180 @@ $conn->close();
         </div>
     </div>
 
+    <!-- Filter Drawer -->
+    <div id="filterDrawer" class="filter-drawer">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-gray-800 text-lg">Filters</h3>
+                <button onclick="closeFilterDrawer()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-5">
+                <!-- Price Range -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Price Range (₱)</label>
+                    <div class="text-sm text-gray-600 mb-1">
+                        <span id="priceRangeText">₱<?php echo number_format($min_price, 0); ?> – ₱<?php echo number_format($max_price, 0); ?></span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="range" id="priceMin" min="<?php echo $min_price; ?>" max="<?php echo $max_price; ?>" value="<?php echo $min_price; ?>" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updatePriceRange()">
+                        <input type="range" id="priceMax" min="<?php echo $min_price; ?>" max="<?php echo $max_price; ?>" value="<?php echo $max_price; ?>" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer" oninput="updatePriceRange()">
+                    </div>
+                </div>
+
+                <!-- Capacity -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Capacity (guests)</label>
+                    <div class="text-sm text-gray-600 mb-1">
+                        <span id="capRangeText"><?php echo $min_cap; ?> – <?php echo $max_cap; ?></span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="range" id="capMin" min="<?php echo $min_cap; ?>" max="<?php echo $max_cap; ?>" value="<?php echo $min_cap; ?>" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateCapRange()">
+                        <input type="range" id="capMax" min="<?php echo $min_cap; ?>" max="<?php echo $max_cap; ?>" value="<?php echo $max_cap; ?>" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer" oninput="updateCapRange()">
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                    <select id="locationFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option value="">All Locations</option>
+                        <?php foreach ($locations as $loc): ?>
+                            <option value="<?php echo htmlspecialchars($loc); ?>"><?php echo htmlspecialchars($loc); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Amenities -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Amenities</label>
+                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                        <?php foreach ($all_amenities as $amenity): ?>
+                            <label class="flex items-center text-sm">
+                                <input type="checkbox" class="amenity-checkbox rounded text-indigo-600" value="<?php echo htmlspecialchars($amenity); ?>">
+                                <span class="ml-2"><?php echo htmlspecialchars($amenity); ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <button onclick="clearAllFilters()" class="w-full py-2 text-indigo-600 font-medium border border-indigo-200 rounded-lg hover:bg-indigo-50">
+                    Clear All Filters
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="closeFilterDrawer()"></div>
+
     <script>
-        function filterVenues() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('#venuesContainer > div');
-            let count = 0;
+        function openFilterDrawer() {
+            document.getElementById('filterDrawer').classList.add('open');
+            document.getElementById('overlay').classList.add('open');
+        }
+
+        function closeFilterDrawer() {
+            document.getElementById('filterDrawer').classList.remove('open');
+            document.getElementById('overlay').classList.remove('open');
+        }
+
+        function updatePriceRange() {
+            const minSlider = document.getElementById('priceMin');
+            const maxSlider = document.getElementById('priceMax');
+            const minVal = parseInt(minSlider.value);
+            const maxVal = parseInt(maxSlider.value);
+
+            if (minVal > maxVal) {
+                minSlider.value = maxVal;
+                maxSlider.value = minVal;
+            }
+
+            document.getElementById('priceRangeText').textContent = 
+                '₱' + parseInt(minSlider.value).toLocaleString() + ' – ₱' + parseInt(maxSlider.value).toLocaleString();
+            applyFilters();
+        }
+
+        function updateCapRange() {
+            const minSlider = document.getElementById('capMin');
+            const maxSlider = document.getElementById('capMax');
+            const minVal = parseInt(minSlider.value);
+            const maxVal = parseInt(maxSlider.value);
+
+            if (minVal > maxVal) {
+                minSlider.value = maxVal;
+                maxSlider.value = minVal;
+            }
+
+            document.getElementById('capRangeText').textContent = 
+                minSlider.value + ' – ' + maxSlider.value;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const minPrice = parseInt(document.getElementById('priceMin').value);
+            const maxPrice = parseInt(document.getElementById('priceMax').value);
+            const minCap = parseInt(document.getElementById('capMin').value);
+            const maxCap = parseInt(document.getElementById('capMax').value);
+            const locationFilter = document.getElementById('locationFilter').value;
+            const selectedAmenities = Array.from(document.querySelectorAll('.amenity-checkbox:checked'))
+                .map(cb => cb.value);
+
+            const cards = document.querySelectorAll('.venue-card');
             cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(term)) {
-                    card.classList.remove('hidden');
-                    count++;
-                } else {
-                    card.classList.add('hidden');
+                const name = card.dataset.name.toLowerCase();
+                const location = card.dataset.location.toLowerCase();
+                const capacity = parseInt(card.dataset.capacity);
+                const price = parseFloat(card.dataset.price);
+                const amenities = card.dataset.amenities ? card.dataset.amenities.split(',') : [];
+
+                let matches = true;
+
+                if (searchTerm && !name.includes(searchTerm) && !location.includes(searchTerm)) matches = false;
+                if (price < minPrice || price > maxPrice) matches = false;
+                if (capacity < minCap || capacity > maxCap) matches = false;
+                if (locationFilter && card.dataset.location !== locationFilter) matches = false;
+                if (selectedAmenities.length > 0) {
+                    for (let amenity of selectedAmenities) {
+                        if (!amenities.includes(amenity)) {
+                            matches = false;
+                            break;
+                        }
+                    }
                 }
+
+                card.classList.toggle('hidden', !matches);
             });
         }
+
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('priceMin').value = <?php echo $min_price; ?>;
+            document.getElementById('priceMax').value = <?php echo $max_price; ?>;
+            document.getElementById('capMin').value = <?php echo $min_cap; ?>;
+            document.getElementById('capMax').value = <?php echo $max_cap; ?>;
+            document.getElementById('locationFilter').value = '';
+            document.querySelectorAll('.amenity-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('priceRangeText').textContent = '₱<?php echo number_format($min_price, 0); ?> – ₱<?php echo number_format($max_price, 0); ?>';
+            document.getElementById('capRangeText').textContent = '<?php echo $min_cap; ?> – <?php echo $max_cap; ?>';
+            applyFilters();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#priceMin, #priceMax, #capMin, #capMax, #locationFilter').forEach(el => {
+                el.addEventListener('input', applyFilters);
+            });
+            document.querySelectorAll('.amenity-checkbox').forEach(cb => {
+                cb.addEventListener('change', applyFilters);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeFilterDrawer();
+        });
     </script>
 </body>
 </html>
