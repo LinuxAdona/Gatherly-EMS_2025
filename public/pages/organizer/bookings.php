@@ -39,15 +39,18 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Bookings | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat']">
+
+<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat'] min-h-screen flex flex-col">
     <!-- Navbar: exact copy from organizer-dashboard.php -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -60,10 +63,15 @@ $conn->close();
                     </a>
                 </div>
                 <div class="items-center hidden gap-6 md:flex">
-                    <a href="organizer-dashboard.php" class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
-                    <a href="my-events.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">My Events</a>
-                    <a href="find-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Find Venues</a>
-                    <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI Planner</a>
+                    <a href="organizer-dashboard.php"
+                        class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
+                    <a href="my-events.php"
+                        class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">My Events</a>
+                    <a href="find-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Find
+                        Venues</a>
+                    <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI
+                        Planner</a>
+                    <a href="chats.php" class="text-gray-700 transition-colors hover:text-indigo-600">Chat</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
                             class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
@@ -85,7 +93,7 @@ $conn->close();
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <!-- Back Button -->
         <div class="flex items-center gap-4 mb-6">
             <a href="javascript:history.back()" class="text-gray-600 transition-colors hover:text-indigo-600">
@@ -101,18 +109,29 @@ $conn->close();
         <?php if ($result && $result->num_rows > 0): ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php while ($event = $result->fetch_assoc()): ?>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-xl font-bold text-gray-900"><?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                <h3 class="text-xl font-bold text-gray-900">
+                                    <?php echo htmlspecialchars($event['event_name']); ?></h3>
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full
                                     <?php
                                     switch ($event['status']) {
-                                        case 'confirmed': echo 'bg-green-100 text-green-700'; break;
-                                        case 'pending': echo 'bg-yellow-100 text-yellow-700'; break;
-                                        case 'completed': echo 'bg-blue-100 text-blue-700'; break;
-                                        case 'canceled': echo 'bg-red-100 text-red-700'; break;
-                                        default: echo 'bg-gray-100 text-gray-700';
+                                        case 'confirmed':
+                                            echo 'bg-green-100 text-green-700';
+                                            break;
+                                        case 'pending':
+                                            echo 'bg-yellow-100 text-yellow-700';
+                                            break;
+                                        case 'completed':
+                                            echo 'bg-blue-100 text-blue-700';
+                                            break;
+                                        case 'canceled':
+                                            echo 'bg-red-100 text-red-700';
+                                            break;
+                                        default:
+                                            echo 'bg-gray-100 text-gray-700';
                                     }
                                     ?>">
                                     <?php echo ucfirst($event['status']); ?>
@@ -153,11 +172,14 @@ $conn->close();
                 <h3 class="text-lg font-medium text-gray-900 mb-2">No bookings yet</h3>
                 <p class="text-gray-600">You haven’t created any event bookings.</p>
                 <a href="find-venues.php"
-                   class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                    class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
                     Find a Venue & Book
                 </a>
             </div>
         <?php endif; ?>
     </div>
+
+    <?php include '../../../src/components/Footer.php'; ?>
 </body>
+
 </html>

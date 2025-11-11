@@ -60,7 +60,7 @@ $conn->close();
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat'] min-h-screen flex flex-col">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -80,6 +80,7 @@ $conn->close();
                         Venues</a>
                     <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI
                         Planner</a>
+                    <a href="chats.php" class="text-gray-700 transition-colors hover:text-indigo-600">Chat</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
                             class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
@@ -101,7 +102,7 @@ $conn->close();
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <div class="flex flex-col gap-6 mb-8 lg:flex-row lg:items-start lg:justify-between">
             <!-- Welcome Section -->
             <div class="mb-8">
@@ -114,26 +115,38 @@ $conn->close();
                 <div class="flex items-center gap-6">
                     <div class="relative flex items-center gap-2 group cursor-help">
                         <i class="text-indigo-500 fas fa-calendar-alt"></i>
-                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['my_events']); ?></span>
-                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">My Events</div>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['my_events']); ?></span>
+                        <div
+                            class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">
+                            My Events</div>
                     </div>
                     <div class="w-px h-8 bg-gray-200"></div>
                     <div class="relative flex items-center gap-2 group cursor-help">
                         <i class="text-yellow-500 fas fa-clock"></i>
-                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['pending_events']); ?></span>
-                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">Pending Events</div>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['pending_events']); ?></span>
+                        <div
+                            class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">
+                            Pending Events</div>
                     </div>
                     <div class="w-px h-8 bg-gray-200"></div>
                     <div class="relative flex items-center gap-2 group cursor-help">
                         <i class="text-green-500 fas fa-check-circle"></i>
-                        <span class="text-xl font-bold text-gray-800"><?php echo number_format($stats['confirmed_events']); ?></span>
-                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">Confirmed Events</div>
+                        <span
+                            class="text-xl font-bold text-gray-800"><?php echo number_format($stats['confirmed_events']); ?></span>
+                        <div
+                            class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">
+                            Confirmed Events</div>
                     </div>
                     <div class="w-px h-8 bg-gray-200"></div>
                     <div class="relative flex items-center gap-2 group cursor-help">
                         <i class="text-blue-500 fas fa-peso-sign"></i>
-                        <span class="text-xl font-bold text-gray-800">₱<?php echo number_format($stats['total_spent'], 2); ?></span>
-                        <div class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">Total Spent</div>
+                        <span
+                            class="text-xl font-bold text-gray-800">₱<?php echo number_format($stats['total_spent'], 2); ?></span>
+                        <div
+                            class="absolute invisible px-3 py-1 mb-2 text-xs text-white transition-all duration-200 -translate-x-1/2 bg-gray-900 rounded opacity-0 bottom-full left-1/2 group-hover:opacity-100 group-hover:visible whitespace-nowrap">
+                            Total Spent</div>
                     </div>
                 </div>
             </div>
@@ -260,6 +273,8 @@ $conn->close();
             </div>
         </div>
     </div>
+
+    <?php include '../../../src/components/Footer.php' ?>
 
     <script src="../../assets/js/organizer.js"></script>
 </body>

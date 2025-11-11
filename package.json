@@ -5,5 +5,8 @@
   },
   "devDependencies": {
     "tailwindcss": "^4.1.16"
+  },
+  "scripts": {
+    "dev": "browser-sync start --proxy 'localhost/Gatherly-EMS_2025' --files '/opt/lampp/htdocs/Gatherly-EMS_2025/**/**'"
   }
 }

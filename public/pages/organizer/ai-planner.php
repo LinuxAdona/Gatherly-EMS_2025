@@ -22,7 +22,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-linear-to-br from-indigo-50 via-white to-pink-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-pink-50 font-['Montserrat'] min-h-screen flex flex-col">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -42,6 +42,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                         Venues</a>
                     <a href="ai-planner.php"
                         class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">AI Planner</a>
+                    <a href="chats.php" class="text-gray-700 transition-colors hover:text-indigo-600">Chat</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
                             class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
@@ -63,7 +64,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <!-- Header Section -->
         <div class="mb-8 text-center">
             <div class="flex items-center justify-center gap-4 mb-4">
@@ -185,6 +186,8 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
             </div>
         </div>
     </div>
+
+    <?php include '../../../src/components/Footer.php'; ?>
 
     <script src="../../assets/js/ai-planner.js"></script>
 </body>

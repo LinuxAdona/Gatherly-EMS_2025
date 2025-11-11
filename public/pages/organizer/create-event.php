@@ -58,7 +58,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
     <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
+<body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat'] min-h-screen flex flex-col">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -76,6 +76,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                     <a href="my-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">My Events</a>
                     <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI
                         Planner</a>
+                    <a href="chats.php" class="text-gray-700 transition-colors hover:text-indigo-600">Chat</a>
                     <a href="create-event.php" class="font-semibold text-indigo-600">Create Event</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
@@ -98,7 +99,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <!-- Header -->
         <div class="mb-8">
             <div class="flex items-center gap-4 mb-4">
@@ -210,7 +211,7 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                                 </p>
                             </div>
                         <?php else: ?>
-                            <div id="selected-venue-card" class="hidden"></div><?php endif; ?>
+                            <div id="selected-venue-card" class="hidden"></div> <?php endif; ?>
 
                         <!-- Choose Other Venue Button -->
                         <div class="mt-4">
@@ -372,6 +373,8 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
             checkbox.addEventListener('change', updateCostSummary);
         });
     </script>
+
+    <?php include '../../../src/components/Footer.php'; ?>
 </body>
 
 </html>

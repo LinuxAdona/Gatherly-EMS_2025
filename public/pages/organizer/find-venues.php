@@ -54,6 +54,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,31 +71,35 @@ $conn->close();
             width: 100%;
             max-width: 320px;
             background: white;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             transform: translateX(100%);
             transition: transform 0.3s ease;
             overflow-y: auto;
         }
+
         .filter-drawer.open {
             transform: translateX(0);
         }
+
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 999;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
         }
+
         .overlay.open {
             opacity: 1;
             visibility: visible;
         }
+
         @media (max-width: 1023px) {
             .filter-drawer {
                 max-width: 100%;
@@ -102,7 +107,8 @@ $conn->close();
         }
     </style>
 </head>
-<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat']">
+
+<body class="bg-linear-to-br from-indigo-50 via-white to-cyan-50 font-['Montserrat'] min-h-screen flex flex-col">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
@@ -140,7 +146,7 @@ $conn->close();
     </nav>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8">
+    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <!-- Back Button -->
         <div class="flex items-center gap-4 mb-6">
             <a href="javascript:history.back()" class="text-gray-600 transition-colors hover:text-indigo-600">
@@ -161,8 +167,7 @@ $conn->close();
                     id="searchInput"
                     placeholder="Search venues by name or location..."
                     class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    oninput="applyFilters()"
-                >
+                    oninput="applyFilters()">
             </div>
             <button onclick="openFilterDrawer()"
                 class="px-4 py-2 bg-indigo-100 text-indigo-700 font-medium rounded-lg hover:bg-indigo-200 whitespace-nowrap flex items-center justify-center">
@@ -216,15 +221,15 @@ $conn->close();
                                 <span class="text-lg font-bold text-indigo-600">₱<?php echo number_format($venue['base_price'], 2); ?></span>
                             </div>
                             <?php if (!empty($amenities)): ?>
-                            <div class="mb-4">
-                                <p class="text-sm font-medium text-gray-900 mb-2">Amenities:</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <?php echo $amenities_html; ?>
+                                <div class="mb-4">
+                                    <p class="text-sm font-medium text-gray-900 mb-2">Amenities:</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <?php echo $amenities_html; ?>
+                                    </div>
                                 </div>
-                            </div>
                             <?php endif; ?>
                             <a href="create-event.php?venue_id=<?php echo $venue['venue_id']; ?>"
-                               class="w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                                class="w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
                                 Select Venue
                             </a>
                         </div>
@@ -333,7 +338,7 @@ $conn->close();
                 maxSlider.value = minVal;
             }
 
-            document.getElementById('priceRangeText').textContent = 
+            document.getElementById('priceRangeText').textContent =
                 '₱' + parseInt(minSlider.value).toLocaleString() + ' – ₱' + parseInt(maxSlider.value).toLocaleString();
             applyFilters();
         }
@@ -349,7 +354,7 @@ $conn->close();
                 maxSlider.value = minVal;
             }
 
-            document.getElementById('capRangeText').textContent = 
+            document.getElementById('capRangeText').textContent =
                 minSlider.value + ' – ' + maxSlider.value;
             applyFilters();
         }
@@ -417,5 +422,8 @@ $conn->close();
             if (e.key === 'Escape') closeFilterDrawer();
         });
     </script>
+
+    <?php include '../../../src/components/Footer.php'; ?>
 </body>
+
 </html>

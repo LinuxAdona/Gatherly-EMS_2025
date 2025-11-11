@@ -1,23 +1,10 @@
-// Dark Mode Toggle
-const toggleBtn = document.getElementById('toggleMode');
-const body = document.body;
-const icon = toggleBtn.querySelector('i');
-
-toggleBtn.addEventListener('click', () => {
-  body.classList.toggle('dark');
-  icon.classList.toggle('fa-sun');
-  icon.classList.toggle('fa-moon');
-});
-
 // Chat Management
 const conversations = document.querySelectorAll('.conversation');
-const chatHeader = document.querySelector('.chat-header h4');
-const chatStatus = document.querySelector('.chat-header span');
 const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.querySelector('.chat-input input[type="text"]');
+const chatInputField = document.querySelector('input[type="text"][placeholder*="Type your message"]');
 const fileInput = document.getElementById('fileInput');
 const attachBtn = document.getElementById('attachFile');
-const sendBtn = document.querySelector('.chat-input button');
+const sendBtn = document.querySelector('button:has(.fa-paper-plane)') || document.querySelector('.fa-paper-plane').closest('button');
 
 let activeChat = 'ballroom';
 const eventId = 1;
@@ -94,7 +81,7 @@ function displayMessages(chatKey) {
 function loadMessages(chatKey = activeChat) {
   const receiverId = receiverIdMap[chatKey];
 
-  fetch('load_messages.php', {
+  fetch('../../../src/services/load_messages.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -140,23 +127,31 @@ function loadMessages(chatKey = activeChat) {
 // File attachment handling
 let attachedFile = null;
 
-attachBtn.addEventListener('click', () => fileInput.click());
+if (attachBtn) {
+  attachBtn.addEventListener('click', () => fileInput.click());
+}
 
-fileInput.addEventListener('change', () => {
-  const file = fileInput.files[0];
-  if (!file) return;
+if (fileInput) {
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = e => {
-    attachedFile = e.target.result; // base64
-    chatInput.placeholder = "File attached. Type message or click send...";
-  };
-  reader.readAsDataURL(file);
-});
+    const reader = new FileReader();
+    reader.onload = e => {
+      attachedFile = e.target.result; // base64
+      if (chatInputField) {
+        chatInputField.placeholder = "File attached. Type message or click send...";
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 // Send message (text, file, or both)
 function sendMessage() {
-  const text = chatInput.value.trim();
+  if (!chatInputField) return;
+  
+  const text = chatInputField.value.trim();
   if (!text && !attachedFile) return;
 
   const timestamp = new Date().toLocaleTimeString([], {
@@ -186,7 +181,7 @@ function sendMessage() {
   });
   if (attachedFile) bodyData.append('file_url', attachedFile);
 
-  fetch('save_message.php', {
+  fetch('../../../src/services/save_message.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -200,20 +195,25 @@ function sendMessage() {
     .catch(err => console.error(err));
 
   // Reset inputs
-  chatInput.value = '';
-  chatInput.placeholder = 'Type your message...';
+  chatInputField.value = '';
+  chatInputField.placeholder = 'Type your message...';
   attachedFile = null;
-  fileInput.value = '';
+  if (fileInput) fileInput.value = '';
 }
 
 // Send events
-sendBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    sendMessage();
-  }
-});
+if (sendBtn) {
+  sendBtn.addEventListener('click', sendMessage);
+}
+
+if (chatInputField) {
+  chatInputField.addEventListener('keypress', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+}
 
 // Switch conversations
 conversations.forEach(conv => {
@@ -224,15 +224,19 @@ conversations.forEach(conv => {
     const badge = conv.querySelector('.badge');
     if (badge) badge.remove();
 
+    // Update chat header
+    const chatHeaderTitle = document.querySelector('#chatArea h4');
+    const chatHeaderStatus = document.querySelector('#chatArea h4 + span');
+    
     if (activeChat === 'ballroom') {
-      chatHeader.innerHTML = "Grand Ballroom Manager";
-      chatStatus.textContent = "Active now";
+      if (chatHeaderTitle) chatHeaderTitle.textContent = "Grand Ballroom Manager";
+      if (chatHeaderStatus) chatHeaderStatus.innerHTML = '<i class="mr-1 fas fa-circle text-[8px]"></i>Online - Usually replies within an hour';
     } else if (activeChat === 'garden') {
-      chatHeader.innerHTML = "Garden Paradise Manager";
-      chatStatus.textContent = "Active now";
+      if (chatHeaderTitle) chatHeaderTitle.textContent = "Garden Paradise Manager";
+      if (chatHeaderStatus) chatHeaderStatus.innerHTML = '<i class="mr-1 fas fa-circle text-[8px]"></i>Online';
     } else if (activeChat === 'skyline') {
-      chatHeader.innerHTML = "Skyline Rooftop Manager";
-      chatStatus.textContent = "Online";
+      if (chatHeaderTitle) chatHeaderTitle.textContent = "Skyline Rooftop Manager";
+      if (chatHeaderStatus) chatHeaderStatus.innerHTML = '<i class="mr-1 fas fa-circle text-[8px]"></i>Online';
     }
 
     displayMessages(activeChat);
@@ -241,5 +245,8 @@ conversations.forEach(conv => {
 });
 
 // Initial load + auto refresh
-loadMessages();
-setInterval(() => loadMessages(activeChat), 3000);
+if (chatMessages) {
+  displayMessages(activeChat);
+  loadMessages();
+  setInterval(() => loadMessages(activeChat), 3000);
+}
