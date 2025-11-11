@@ -29,6 +29,20 @@ $services_by_category = [];
 while ($service = $services_result->fetch_assoc()) {
     $services_by_category[$service['category']][] = $service;
 }
+
+// Fetch all venues into array for UI
+$venues_all = [];
+$venues_result->data_seek(0);
+while ($v = $venues_result->fetch_assoc()) {
+    $venues_all[$v['venue_id']] = $v;
+}
+
+// ONLY pre-select if ?venue_id is provided and valid
+$preselected_id = isset($_GET['venue_id']) && is_numeric($_GET['venue_id']) ? (int)$_GET['venue_id'] : null;
+$selected_venue = null;
+if ($preselected_id && isset($venues_all[$preselected_id])) {
+    $selected_venue = $venues_all[$preselected_id];
+}
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +102,8 @@ while ($service = $services_result->fetch_assoc()) {
         <!-- Header -->
         <div class="mb-8">
             <div class="flex items-center gap-4 mb-4">
-                <a href="organizer-dashboard.php" class="text-gray-600 transition-colors hover:text-indigo-600">
+                <a href="organizer-dashboard.php" 
+                   class="text-gray-600 transition-colors hover:text-indigo-600">
                     <i class="text-2xl fas fa-arrow-left"></i>
                 </a>
                 <div>
@@ -169,33 +184,42 @@ while ($service = $services_result->fetch_assoc()) {
                     <div class="p-6 mb-6 bg-white shadow-lg rounded-2xl">
                         <h2 class="flex items-center gap-2 mb-6 text-2xl font-bold text-gray-800">
                             <i class="text-indigo-600 fas fa-building"></i>
-                            Select Venue <span class="text-red-500">*</span>
+                            Selected Venue <span class="text-red-500">*</span>
                         </h2>
 
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <?php while ($venue = $venues_result->fetch_assoc()): ?>
-                                <div class="p-4 transition-all border-2 border-gray-200 cursor-pointer venue-card rounded-xl hover:border-indigo-500 hover:shadow-lg"
-                                    data-venue-id="<?php echo $venue['venue_id']; ?>"
-                                    data-venue-price="<?php echo $venue['base_price']; ?>">
-                                    <div class="flex items-start justify-between mb-3">
-                                        <h3 class="text-lg font-bold text-gray-800">
-                                            <?php echo htmlspecialchars($venue['venue_name']); ?></h3>
-                                        <input type="radio" name="venue_id" value="<?php echo $venue['venue_id']; ?>"
-                                            class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" required>
-                                    </div>
-                                    <p class="mb-2 text-sm text-gray-600">
-                                        <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
-                                        <?php echo htmlspecialchars($venue['location']); ?>
-                                    </p>
-                                    <p class="mb-2 text-sm text-gray-600">
-                                        <i class="mr-1 text-indigo-600 fas fa-users"></i>
-                                        Capacity: <?php echo $venue['capacity']; ?> guests
-                                    </p>
-                                    <p class="text-lg font-bold text-green-600">
-                                        ₱<?php echo number_format($venue['base_price'], 2); ?>
-                                    </p>
-                                </div>
-                            <?php endwhile; ?>
+                        <!-- Selected Venue Card -->
+                        <?php if ($selected_venue): ?>
+                        <div id="selected-venue-card" class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
+                            <div class="flex items-start justify-between mb-3">
+                                <h3 class="text-lg font-bold text-gray-800">
+                                    <?php echo htmlspecialchars($selected_venue['venue_name']); ?>
+                                </h3>
+                                <input type="radio" name="venue_id" value="<?php echo $selected_venue['venue_id']; ?>"
+                                    class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" checked>
+                            </div>
+                            <p class="mb-2 text-sm text-gray-600">
+                                <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
+                                <?php echo htmlspecialchars($selected_venue['location']); ?>
+                            </p>
+                            <p class="mb-2 text-sm text-gray-600">
+                                <i class="mr-1 text-indigo-600 fas fa-users"></i>
+                                Capacity: <?php echo $selected_venue['capacity']; ?> guests
+                            </p>
+                            <p class="text-lg font-bold text-green-600">
+                                ₱<?php echo number_format($selected_venue['base_price'], 2); ?>
+                            </p>
+                        </div>
+                        <?php else: ?>
+                        <div id="selected-venue-card" class="hidden"></div>
+                        <?php endif; ?>
+
+                        <!-- Choose Other Venue Button -->
+                        <div class="mt-4">
+                            <a href="find-venues.php"
+                               class="inline-flex items-center px-4 py-2 text-indigo-600 font-medium bg-indigo-100 rounded-lg hover:bg-indigo-200 transition-colors">
+                                <i class="fas fa-exchange-alt mr-2"></i>
+                                Choose other venue
+                            </a>
                         </div>
                     </div>
 
@@ -268,7 +292,9 @@ while ($service = $services_result->fetch_assoc()) {
                             <!-- Venue Cost -->
                             <div class="flex justify-between pb-3 border-b border-gray-200">
                                 <span class="text-gray-700">Venue</span>
-                                <span id="venue-cost" class="font-semibold text-gray-800">₱0.00</span>
+                                <span id="venue-cost" class="font-semibold text-gray-800">
+                                    ₱<?php echo $selected_venue ? number_format($selected_venue['base_price'], 2) : '0.00'; ?>
+                                </span>
                             </div>
 
                             <!-- Services Cost -->
@@ -280,10 +306,13 @@ while ($service = $services_result->fetch_assoc()) {
                             <!-- Total Cost -->
                             <div class="flex justify-between pt-3">
                                 <span class="text-lg font-bold text-gray-800">Total Cost</span>
-                                <span id="total-cost" class="text-2xl font-bold text-indigo-600">₱0.00</span>
+                                <span id="total-cost" class="text-2xl font-bold text-indigo-600">
+                                    ₱<?php echo $selected_venue ? number_format($selected_venue['base_price'], 2) : '0.00'; ?>
+                                </span>
                             </div>
 
-                            <input type="hidden" id="total_cost" name="total_cost" value="0">
+                            <input type="hidden" id="total_cost" name="total_cost" 
+                                value="<?php echo $selected_venue ? $selected_venue['base_price'] : '0'; ?>">
                         </div>
 
                         <!-- Submit Button -->
@@ -307,11 +336,9 @@ while ($service = $services_result->fetch_assoc()) {
 
     <script>
         function updateCostSummary() {
-            // Update venue cost
             const selectedVenue = document.querySelector('input[name="venue_id"]:checked');
-            const venueCost = selectedVenue ? parseFloat(selectedVenue.closest('.venue-card').dataset.venuePrice) : 0;
+            const venueCost = selectedVenue ? parseFloat(document.getElementById('total_cost').value) : 0;
 
-            // Update services cost
             let servicesCost = 0;
             document.querySelectorAll('input.service-checkbox:checked').forEach(checkbox => {
                 servicesCost += parseFloat(checkbox.dataset.price) || 0;
@@ -319,45 +346,31 @@ while ($service = $services_result->fetch_assoc()) {
 
             const total = venueCost + servicesCost;
 
-            // Update UI
             document.getElementById('venue-cost').textContent = '₱' + venueCost.toFixed(2);
             document.getElementById('services-cost').textContent = '₱' + servicesCost.toFixed(2);
             document.getElementById('total-cost').textContent = '₱' + total.toFixed(2);
             document.getElementById('total_cost').value = total.toFixed(2);
         }
 
-        // Handle venue selection
-        document.querySelectorAll('input[name="venue_id"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.querySelectorAll('.venue-card').forEach(card => {
-                    card.classList.remove('border-indigo-500', 'shadow-lg');
-                });
-                if (this.checked) {
-                    this.closest('.venue-card').classList.add('border-indigo-500', 'shadow-lg');
-                }
-                updateCostSummary();
-            });
-        });
-
-        // Handle service selection
-        document.querySelectorAll('input.service-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', updateCostSummary);
-        });
-
-        // Auto-select venue from URL
-        document.addEventListener('DOMContentLoaded', function() {
-            <?php if (isset($_GET['venue_id']) && is_numeric($_GET['venue_id'])): ?>
-            const venueId = <?php echo (int)$_GET['venue_id']; ?>;
-            const radio = document.querySelector(`input[name="venue_id"][value="${venueId}"]`);
-            if (radio) {
-                radio.checked = true;
-                const card = radio.closest('.venue-card');
-                if (card) {
-                    card.classList.add('border-indigo-500', 'shadow-lg');
+        // Toggle radio selection
+        let lastCheckedRadio = null;
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('input[name="venue_id"]')) {
+                if (e.target === lastCheckedRadio) {
+                    e.target.checked = false;
+                    document.getElementById('selected-venue-card').classList.add('hidden');
+                    lastCheckedRadio = null;
+                } else {
+                    lastCheckedRadio = e.target;
+                    document.getElementById('selected-venue-card').classList.remove('hidden');
                 }
                 updateCostSummary();
             }
-            <?php endif; ?>
+        });
+
+        // Services
+        document.querySelectorAll('input.service-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateCostSummary);
         });
     </script>
 </body>
