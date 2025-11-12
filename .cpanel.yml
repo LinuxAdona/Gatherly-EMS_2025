@@ -25,11 +25,11 @@ deployment:
     # Deploy configuration files (IMPORTANT: needed for database connection)
     - echo "Deploying config files..."
     - /bin/cp -R $REPOPATH/config $DEPLOYPATH
-    
+
     # Deploy .env file if it exists in repository (for initial setup)
     - if [ -f $REPOPATH/.env ]; then /bin/cp $REPOPATH/.env $DEPLOYPATH/.env 2>&1 || true; fi
     - echo "NOTE: If .env is missing, create it manually in $DEPLOYPATH with your database credentials"
-    
+
     # Deploy other configuration files
     - /bin/cp $REPOPATH/tailwind.config.js $DEPLOYPATH
     - /bin/cp $REPOPATH/package.json $DEPLOYPATH
