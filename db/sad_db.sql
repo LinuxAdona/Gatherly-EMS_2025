@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 11, 2025 at 06:17 PM
+-- Generation Time: Nov 12, 2025 at 10:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -376,6 +376,44 @@ INSERT INTO `venues` (`venue_id`, `manager_id`, `venue_name`, `location`, `capac
 (3, NULL, 'Emerald Garden', 'Quezon City', 150, 35000.00, 50000.00, 30000.00, 37000.00, 45000.00, 'Outdoor garden venue surrounded by lush greenery.', 'available', NULL, 'active', '2025-11-08 15:04:09', NULL),
 (4, NULL, 'Sunset Veranda', 'Pasay City', 250, 45000.00, 60000.00, 35000.00, 40000.00, 55000.00, 'Seaside view venue perfect for receptions.', 'available', NULL, 'active', '2025-11-08 15:04:09', NULL);
 
+--
+-- Triggers `venues`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_venue_update` BEFORE UPDATE ON `venues` FOR EACH ROW BEGIN
+
+
+    IF NEW.base_price <> OLD.base_price 
+
+
+       OR NEW.price_percentage <> OLD.price_percentage THEN
+
+
+
+
+
+        SET NEW.peak_price = NEW.base_price * (1 + (NEW.price_percentage / 100));
+
+
+        SET NEW.offpeak_price = NEW.base_price * (1 - (NEW.price_percentage / 100));
+
+
+        SET NEW.weekday_price = NEW.base_price * (1 - (NEW.price_percentage / 200));
+
+
+        SET NEW.weekend_price = NEW.base_price * (1 + (NEW.price_percentage / 200));
+
+
+
+
+
+    END IF;
+
+
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -385,22 +423,46 @@ INSERT INTO `venues` (`venue_id`, `manager_id`, `venue_name`, `location`, `capac
 CREATE TABLE `venue_amenities` (
   `venue_amenity_id` int(11) NOT NULL,
   `venue_id` int(11) NOT NULL,
-  `amenity_name` varchar(50) NOT NULL
+  `amenity_id` int(11) NOT NULL,
+  `custom_price` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `venue_amenities`
 --
 
-INSERT INTO `venue_amenities` (`venue_amenity_id`, `venue_id`, `amenity_name`) VALUES
-(1, 1, 'Air Conditioning'),
-(2, 1, 'Stage Lighting'),
-(3, 2, 'Parking Space'),
-(4, 2, 'Wi-Fi'),
-(5, 3, 'Garden Setup'),
-(6, 3, 'Outdoor Seating'),
-(7, 4, 'Ocean View'),
-(8, 4, 'VIP Lounge');
+INSERT INTO `venue_amenities` (`venue_amenity_id`, `venue_id`, `amenity_id`, `custom_price`) VALUES
+(4, 2, 2, 700.00),
+(5, 2, 3, NULL),
+(6, 2, 6, 6500.00),
+(7, 2, 7, NULL),
+(8, 3, 1, NULL),
+(9, 3, 8, 3500.00),
+(10, 3, 9, NULL),
+(11, 3, 10, 2800.00),
+(12, 4, 1, 1300.00),
+(13, 4, 5, 950.00),
+(14, 4, 6, NULL),
+(15, 4, 7, NULL),
+(16, 4, 11, NULL),
+(17, 13, 3, 1550.00),
+(18, 13, 4, NULL),
+(19, 13, 5, 1000.00),
+(20, 14, 6, 6200.00),
+(21, 14, 7, NULL),
+(22, 14, 8, NULL),
+(23, 14, 9, 6800.00),
+(24, 15, 2, 675.00),
+(25, 15, 3, NULL),
+(26, 15, 4, 1250.00),
+(27, 15, 10, 2600.00),
+(32, 1, 1, 1500.00),
+(33, 1, 2, NULL),
+(34, 1, 3, NULL),
+(35, 1, 5, NULL),
+(44, 16, 1, NULL),
+(45, 16, 2, NULL),
+(46, 16, 5, NULL);
 
 --
 -- Indexes for dumped tables
@@ -496,13 +558,6 @@ ALTER TABLE `venues`
   ADD PRIMARY KEY (`venue_id`);
 
 --
--- Indexes for table `venue_amenities`
---
-ALTER TABLE `venue_amenities`
-  ADD PRIMARY KEY (`venue_amenity_id`),
-  ADD KEY `venue_id` (`venue_id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -579,12 +634,6 @@ ALTER TABLE `venues`
   MODIFY `venue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `venue_amenities`
---
-ALTER TABLE `venue_amenities`
-  MODIFY `venue_amenity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- Constraints for dumped tables
 --
 
@@ -637,12 +686,6 @@ ALTER TABLE `recommendations`
 --
 ALTER TABLE `services`
   ADD CONSTRAINT `services_ibfk_1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`) ON DELETE SET NULL;
-
---
--- Constraints for table `venue_amenities`
---
-ALTER TABLE `venue_amenities`
-  ADD CONSTRAINT `venue_amenities_ibfk_1` FOREIGN KEY (`venue_id`) REFERENCES `venues` (`venue_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
