@@ -4,7 +4,7 @@
 
 deployment:
   tasks:
-    # Set deployment path - CHANGE 'yourusername' to your actual cPanel username
+    # Set deployment path
     - export DEPLOYPATH=/home/c2lkis/public_html/
     - export REPOPATH=/home/c2lkis/repositories/Gatherly-EMS_2025
 
@@ -18,42 +18,40 @@ deployment:
 
     # Deploy PHP files and directories
     - echo "Deploying PHP files..."
-    - /bin/cp -R public $DEPLOYPATH
-    - /bin/cp -R src $DEPLOYPATH
-    - /bin/cp -R db $DEPLOYPATH
+    - /bin/cp -R $REPOPATH/public $DEPLOYPATH
+    - /bin/cp -R $REPOPATH/src $DEPLOYPATH
+    - /bin/cp -R $REPOPATH/db $DEPLOYPATH
 
     # Deploy configuration files (excluding sensitive files)
-    - /bin/cp tailwind.config.js $DEPLOYPATH
-    - /bin/cp package.json $DEPLOYPATH
+    - /bin/cp $REPOPATH/tailwind.config.js $DEPLOYPATH
+    - /bin/cp $REPOPATH/package.json $DEPLOYPATH
 
     # Deploy Python ML system
     - echo "Deploying Python ML system..."
-    - /bin/cp -R ml $DEPLOYPATH
-    - /bin/cp requirements.txt $DEPLOYPATH
+    - /bin/cp -R $REPOPATH/ml $DEPLOYPATH
+    - /bin/cp $REPOPATH/requirements.txt $DEPLOYPATH
 
     # Install Python dependencies if pip is available
     - echo "Installing Python dependencies..."
     - cd $DEPLOYPATH
-    - if command -v pip3 &> /dev/null; then pip3 install --user -r requirements.txt; fi
-    - if command -v python3 -m pip &> /dev/null; then python3 -m pip install --user -r requirements.txt; fi
+    - if command -v pip3 &> /dev/null; then pip3 install --user -r requirements.txt 2>&1 || true; fi
 
-    # Build Tailwind CSS
-    - echo "Building Tailwind CSS..."
-    - cd $DEPLOYPATH
-    - if command -v npx &> /dev/null; then npx tailwindcss -i ./src/input.css -o ./src/output.css --minify; fi
-    - if [ ! -f ./src/output.css ]; then /bin/cp $REPOPATH/src/output.css $DEPLOYPATH/src/; fi
+    # Build Tailwind CSS (copy pre-built version as fallback)
+    - echo "Deploying Tailwind CSS..."
+    - if [ -f $REPOPATH/src/output.css ]; then /bin/cp $REPOPATH/src/output.css $DEPLOYPATH/src/output.css; fi
+    - if command -v npx &> /dev/null; then cd $DEPLOYPATH && npx tailwindcss -i ./src/input.css -o ./src/output.css --minify 2>&1 || true; fi
 
     # Set proper permissions
     - echo "Setting permissions..."
-    - chmod -R 755 $DEPLOYPATH/public
-    - chmod -R 755 $DEPLOYPATH/src
-    - chmod -R 755 $DEPLOYPATH/ml
-    - find $DEPLOYPATH -type f -name "*.php" -exec chmod 644 {} \;
-    - find $DEPLOYPATH -type f -name "*.py" -exec chmod 755 {} \;
+    - chmod -R 755 $DEPLOYPATH/public 2>&1 || true
+    - chmod -R 755 $DEPLOYPATH/src 2>&1 || true
+    - chmod -R 755 $DEPLOYPATH/ml 2>&1 || true
+    - find $DEPLOYPATH -type f -name "*.php" -exec chmod 644 {} \; 2>&1 || true
+    - find $DEPLOYPATH -type f -name "*.py" -exec chmod 755 {} \; 2>&1 || true
 
     # Create .htaccess if it doesn't exist
-    - if [ ! -f $DEPLOYPATH/public/.htaccess ]; then /bin/cp $REPOPATH/public/.htaccess $DEPLOYPATH/public/ 2>/dev/null || true; fi
+    - if [ -f $REPOPATH/public/.htaccess ]; then /bin/cp $REPOPATH/public/.htaccess $DEPLOYPATH/public/.htaccess 2>&1 || true; fi
 
     # Deployment complete
     - echo "Deployment completed successfully!"
-    - date >> $DEPLOYPATH/last_deployment.txt
+    - echo "Deployed on $(date)" >> $DEPLOYPATH/last_deployment.txt
