@@ -7,6 +7,6 @@
     "tailwindcss": "^4.1.16"
   },
   "scripts": {
-    "dev": "browser-sync start --proxy 'localhost/Gatherly-EMS_2025' --files '/opt/lampp/htdocs/Gatherly-EMS_2025/**/**'"
+    "dev": "browser-sync start --proxy 'localhost/Gatherly-EMS_2025/public/pages/home.php' --files '/opt/lampp/htdocs/Gatherly-EMS_2025/**/**'"
   }
 }
