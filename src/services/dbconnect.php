@@ -3,7 +3,7 @@
 require_once '../../config/database.php';
 
 // Create MySQLi connection for compatibility with existing code
-$conn = new mysqli('localhost', 'c2lkis_linux', '_CN$QfIgM18X', 'c2lkis_sad_db');
+$conn = new mysqli('localhost', 'c2lkis', '?~Hl0iIW0W}F', 'c2lkis_sad_db');
 
 // Check connection
 if ($conn->connect_error) {
