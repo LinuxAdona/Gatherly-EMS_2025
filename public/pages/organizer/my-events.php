@@ -68,11 +68,11 @@ $conn->close();
                 <div class="items-center hidden gap-6 md:flex">
                     <a href="organizer-dashboard.php"
                         class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
-                    <a href="my-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">My Events</a>
+                    <a href="my-events.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">My Events</a>
                     <a href="find-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Find
                         Venues</a>
                     <a href="ai-planner.php"
-                        class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">AI Planner</a>
+                        class="text-gray-700 transition-colors hover:text-indigo-600">AI Planner</a>
                     <a href="chats.php" class="text-gray-700 transition-colors hover:text-indigo-600">Chat</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
@@ -102,19 +102,19 @@ $conn->close();
                 <i class="text-2xl fas fa-arrow-left"></i>
             </a>
             <div>
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">My Venues</h1>
+                <h1 class="mb-2 text-3xl font-bold text-gray-800">My Venues</h1>
                 <p class="text-gray-600">View your booked or upcoming venue assignments</p>
             </div>
         </div>
 
         <!-- Event Cards -->
         <?php if ($result && $result->num_rows > 0): ?>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <?php while ($event = $result->fetch_assoc()): ?>
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        class="overflow-hidden transition-shadow bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
                         <div class="p-6">
-                            <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-start justify-between mb-3">
                                 <h3 class="text-xl font-bold text-gray-900">
                                     <?php echo htmlspecialchars($event['event_name']); ?></h3>
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full
@@ -134,27 +134,27 @@ $conn->close();
                                 </span>
                             </div>
 
-                            <p class="text-sm text-gray-600 mb-2">
-                                <i class="fas fa-building mr-2 text-indigo-600"></i>
+                            <p class="mb-2 text-sm text-gray-600">
+                                <i class="mr-2 text-indigo-600 fas fa-building"></i>
                                 <?php echo htmlspecialchars($event['venue_name'] ?? '—'); ?>
                             </p>
 
-                            <p class="text-sm text-gray-600 mb-2">
-                                <i class="fas fa-map-marker-alt mr-2 text-indigo-600"></i>
+                            <p class="mb-2 text-sm text-gray-600">
+                                <i class="mr-2 text-indigo-600 fas fa-map-marker-alt"></i>
                                 <?php echo htmlspecialchars($event['location'] ?? 'No location'); ?>
                             </p>
 
-                            <p class="text-sm text-gray-600 mb-2">
-                                <i class="fas fa-calendar mr-2 text-indigo-600"></i>
+                            <p class="mb-2 text-sm text-gray-600">
+                                <i class="mr-2 text-indigo-600 fas fa-calendar"></i>
                                 <?php echo date('M d, Y \a\t g:i A', strtotime($event['event_date'])); ?>
                             </p>
 
-                            <p class="text-sm text-gray-600 mb-2">
-                                <i class="fas fa-users mr-2 text-indigo-600"></i>
+                            <p class="mb-2 text-sm text-gray-600">
+                                <i class="mr-2 text-indigo-600 fas fa-users"></i>
                                 Capacity: <?php echo $event['capacity'] ?? '—'; ?>
                             </p>
 
-                            <p class="text-lg font-bold text-indigo-600 mt-3">
+                            <p class="mt-3 text-lg font-bold text-indigo-600">
                                 ₱<?php echo number_format($event['total_cost'] ?? 0, 2); ?>
                             </p>
                         </div>
@@ -162,14 +162,14 @@ $conn->close();
                 <?php endwhile; ?>
             </div>
         <?php else: ?>
-            <div class="text-center py-12">
-                <div class="text-gray-400 mb-4">
-                    <i class="fas fa-calendar-check text-4xl"></i>
+            <div class="py-12 text-center">
+                <div class="mb-4 text-gray-400">
+                    <i class="text-4xl fas fa-calendar-check"></i>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No upcoming venue bookings</h3>
+                <h3 class="mb-2 text-lg font-medium text-gray-900">No upcoming venue bookings</h3>
                 <p class="text-gray-600">You haven’t booked any venues for future events yet.</p>
                 <a href="find-venues.php"
-                    class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                    class="inline-block px-4 py-2 mt-4 font-medium text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                     Find a Venue
                 </a>
             </div>

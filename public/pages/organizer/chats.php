@@ -134,9 +134,11 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                     <a href="organizer-dashboard.php"
                         class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
                     <a href="my-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">My Events</a>
+                    <a href="find-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Find
+                        Venues</a>
                     <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI
                         Planner</a>
-                    <a href="chats.php" class="font-semibold text-indigo-600">Messages</a>
+                    <a href="chats.php" class="font-semibold text-indigo-600">Chat</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
                             class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
@@ -192,20 +194,20 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
         <div class="relative flex gap-5 h-[calc(100vh-250px)]">
             <!-- Sidebar - Conversations List -->
             <div id="chatSidebar"
-                class="fixed inset-y-0 left-0 z-50 w-80 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:w-80 bg-white border border-gray-200 shadow-lg rounded-xl md:rounded-xl flex flex-col overflow-hidden">
+                class="fixed inset-y-0 left-0 z-50 flex flex-col overflow-hidden transition-transform duration-300 transform -translate-x-full bg-white border border-gray-200 shadow-lg w-80 md:relative md:translate-x-0 md:w-80 rounded-xl md:rounded-xl">
                 <!-- Close button for mobile -->
                 <button id="closeSidebar"
-                    class="absolute top-4 right-4 p-2 text-gray-600 transition-colors rounded-lg md:hidden hover:bg-gray-100 z-10">
+                    class="absolute z-10 p-2 text-gray-600 transition-colors rounded-lg top-4 right-4 md:hidden hover:bg-gray-100">
                     <i class="fas fa-times"></i>
                 </button>
-                <div class="shrink-0 p-5 border-b border-gray-200 bg-linear-to-r from-indigo-50 to-purple-50">
+                <div class="p-5 border-b border-gray-200 shrink-0 bg-linear-to-r from-indigo-50 to-purple-50">
                     <h3 class="text-sm font-semibold text-gray-700">All Conversations</h3>
                     <p class="text-xs text-gray-500">3 active chats</p>
                 </div>
 
-                <div class="flex-1 overflow-y-auto overflow-x-hidden">
+                <div class="flex-1 overflow-x-hidden overflow-y-auto">
                     <!-- Conversation 1 -->
-                    <div class="conversation active flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50 transition border-b border-gray-100"
+                    <div class="flex items-center justify-between p-4 transition border-b border-gray-100 cursor-pointer conversation active hover:bg-indigo-50"
                         data-chat="ballroom">
                         <div class="flex items-center gap-3">
                             <div class="relative">
@@ -230,7 +232,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                     </div>
 
                     <!-- Conversation 2 -->
-                    <div class="conversation flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50 transition border-b border-gray-100"
+                    <div class="flex items-center justify-between p-4 transition border-b border-gray-100 cursor-pointer conversation hover:bg-indigo-50"
                         data-chat="garden">
                         <div class="flex items-center gap-3">
                             <div class="relative">
@@ -252,12 +254,12 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                     </div>
 
                     <!-- Conversation 3 -->
-                    <div class="conversation flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50 transition border-b border-gray-100"
+                    <div class="flex items-center justify-between p-4 transition border-b border-gray-100 cursor-pointer conversation hover:bg-indigo-50"
                         data-chat="skyline">
                         <div class="flex items-center gap-3">
                             <div class="relative">
                                 <div
-                                    class="flex items-center justify-center w-12 h-12 text-sm font-bold text-white bg-cyan-600 rounded-full shadow-md">
+                                    class="flex items-center justify-center w-12 h-12 text-sm font-bold text-white rounded-full shadow-md bg-cyan-600">
                                     EM
                                 </div>
                                 <span
@@ -318,7 +320,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                 </div>
 
                 <!-- Chat Messages -->
-                <div id="chatMessages" class="px-6 py-5 flex flex-col gap-4 overflow-y-auto bg-gray-50"
+                <div id="chatMessages" class="flex flex-col gap-4 px-6 py-5 overflow-y-auto bg-gray-50"
                     style="height: calc(100vh - 450px);">
                     <!-- Date Divider -->
                     <div class="flex items-center justify-center my-2">
@@ -340,7 +342,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                 </div>
 
                 <!-- Chat Input -->
-                <div class="flex items-center px-5 py-4 gap-3 border-t border-gray-200 bg-white">
+                <div class="flex items-center gap-3 px-5 py-4 bg-white border-t border-gray-200">
                     <button id="attachFile"
                         class="p-2 text-lg text-gray-600 transition-colors rounded-lg hover:bg-gray-100 hover:text-indigo-600">
                         <i class="fas fa-paperclip"></i>
@@ -349,9 +351,9 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                     <div
                         class="flex-1 flex items-center gap-2 px-4 py-2.5 bg-gray-100 rounded-lg border border-gray-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-200">
                         <input type="text" placeholder="Type your message..."
-                            class="flex-1 bg-transparent border-none outline-none text-sm text-gray-900 placeholder-gray-500" />
+                            class="flex-1 text-sm text-gray-900 placeholder-gray-500 bg-transparent border-none outline-none" />
                         <button class="p-1 text-gray-500 transition-colors hover:text-indigo-600">
-                            <i class="far fa-smile text-lg"></i>
+                            <i class="text-lg far fa-smile"></i>
                         </button>
                     </div>
                     <button

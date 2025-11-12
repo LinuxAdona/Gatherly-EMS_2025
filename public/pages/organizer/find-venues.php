@@ -22,7 +22,7 @@ $venues_query = "
 $venues_result = $conn->query($venues_query);
 
 // Fetch all amenities grouped by venue_id
-$amenities_query = "SELECT venue_id, amenity_name FROM venue_amenities";
+$amenities_query = "SELECT va.venue_id, a.amenity_name FROM venue_amenities va JOIN amenities a ON va.amenity_id = a.amenity_id";
 $amenities_result = $conn->query($amenities_query);
 $amenities_by_venue = [];
 $all_amenities = [];
@@ -125,6 +125,7 @@ $conn->close();
                     <a href="my-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">My Events</a>
                     <a href="find-venues.php" class="font-semibold text-indigo-600 transition-colors hover:text-indigo-700">Find Venues</a>
                     <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI Planner</a>
+                    <a href="chats.php" class="text-gray-700 transition-colors hover:text-indigo-600">Chat</a>
                     <div class="relative">
                         <button id="profile-dropdown-btn"
                             class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
@@ -153,30 +154,30 @@ $conn->close();
                 <i class="text-2xl fas fa-arrow-left"></i>
             </a>
             <div>
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Find Venues</h1>
+                <h1 class="mb-2 text-3xl font-bold text-gray-800">Find Venues</h1>
                 <p class="text-gray-600">Browse and select the perfect venue for your upcoming events</p>
             </div>
         </div>
 
         <!-- Search + Filter Button: SIDE-BY-SIDE -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-6 flex flex-col sm:flex-row gap-2">
+        <div class="flex flex-col gap-2 p-2 mb-6 bg-white border border-gray-200 shadow-sm rounded-xl sm:flex-row">
             <div class="relative flex-1">
-                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <i class="absolute text-gray-400 transform -translate-y-1/2 fas fa-search left-3 top-1/2"></i>
                 <input
                     type="text"
                     id="searchInput"
                     placeholder="Search venues by name or location..."
-                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                     oninput="applyFilters()">
             </div>
             <button onclick="openFilterDrawer()"
-                class="px-4 py-2 bg-indigo-100 text-indigo-700 font-medium rounded-lg hover:bg-indigo-200 whitespace-nowrap flex items-center justify-center">
-                <i class="fas fa-filter mr-2"></i> Filters
+                class="flex items-center justify-center px-4 py-2 font-medium text-indigo-700 bg-indigo-100 rounded-lg hover:bg-indigo-200 whitespace-nowrap">
+                <i class="mr-2 fas fa-filter"></i> Filters
             </button>
         </div>
 
         <!-- Venue Listings -->
-        <div id="venuesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div id="venuesContainer" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
             <?php if ($venues_result && $venues_result->num_rows > 0): ?>
                 <?php while ($venue = $venues_result->fetch_assoc()): ?>
                     <?php
@@ -190,57 +191,57 @@ $conn->close();
                         $display = $amenities;
                     }
                     foreach ($display as $a) {
-                        $amenities_html .= '<span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">' . htmlspecialchars($a) . '</span>';
+                        $amenities_html .= '<span class="px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-md">' . htmlspecialchars($a) . '</span>';
                     }
                     if ($more_count > 0) {
-                        $amenities_html .= '<span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-md">+' . $more_count . ' more</span>';
+                        $amenities_html .= '<span class="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-md">+' . $more_count . ' more</span>';
                     }
                     ?>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow venue-card"
+                    <div class="overflow-hidden transition-shadow bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md venue-card"
                         data-name="<?php echo htmlspecialchars($venue['venue_name']); ?>"
                         data-location="<?php echo htmlspecialchars($venue['location']); ?>"
                         data-capacity="<?php echo $venue['capacity']; ?>"
                         data-price="<?php echo $venue['base_price']; ?>"
                         data-amenities="<?php echo implode(',', array_map('htmlspecialchars', $amenities)); ?>">
                         <div class="relative">
-                            <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                            <div class="flex items-center justify-center w-full h-48 bg-gray-200">
                                 <span class="text-gray-500">No image</span>
                             </div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2"><?php echo htmlspecialchars($venue['venue_name']); ?></h3>
-                            <div class="flex items-center text-gray-600 mb-3">
-                                <i class="fas fa-map-marker-alt mr-2"></i>
+                            <h3 class="mb-2 text-xl font-bold text-gray-900"><?php echo htmlspecialchars($venue['venue_name']); ?></h3>
+                            <div class="flex items-center mb-3 text-gray-600">
+                                <i class="mr-2 fas fa-map-marker-alt"></i>
                                 <span class="text-sm"><?php echo htmlspecialchars($venue['location']); ?></span>
                             </div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-users mr-2"></i>
+                                    <i class="mr-2 fas fa-users"></i>
                                     <span class="text-sm"><?php echo $venue['capacity']; ?> capacity</span>
                                 </div>
                                 <span class="text-lg font-bold text-indigo-600">₱<?php echo number_format($venue['base_price'], 2); ?></span>
                             </div>
                             <?php if (!empty($amenities)): ?>
                                 <div class="mb-4">
-                                    <p class="text-sm font-medium text-gray-900 mb-2">Amenities:</p>
+                                    <p class="mb-2 text-sm font-medium text-gray-900">Amenities:</p>
                                     <div class="flex flex-wrap gap-2">
                                         <?php echo $amenities_html; ?>
                                     </div>
                                 </div>
                             <?php endif; ?>
                             <a href="create-event.php?venue_id=<?php echo $venue['venue_id']; ?>"
-                                class="w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                                class="block w-full px-4 py-2 font-medium text-center text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                                 Select Venue
                             </a>
                         </div>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <div class="col-span-full text-center py-12">
-                    <div class="text-gray-400 mb-4">
-                        <i class="fas fa-map-marker-alt text-4xl"></i>
+                <div class="py-12 text-center col-span-full">
+                    <div class="mb-4 text-gray-400">
+                        <i class="text-4xl fas fa-map-marker-alt"></i>
                     </div>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">No venues available</h3>
+                    <h3 class="mb-2 text-lg font-medium text-gray-900">No venues available</h3>
                     <p class="text-gray-600">Check back later or contact support.</p>
                 </div>
             <?php endif; ?>
@@ -250,18 +251,18 @@ $conn->close();
     <!-- Filter Drawer -->
     <div id="filterDrawer" class="filter-drawer">
         <div class="p-4">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-gray-800 text-lg">Filters</h3>
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Filters</h3>
                 <button onclick="closeFilterDrawer()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-xl"></i>
+                    <i class="text-xl fas fa-times"></i>
                 </button>
             </div>
 
             <div class="space-y-5">
                 <!-- Price Range -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Price Range (₱)</label>
-                    <div class="text-sm text-gray-600 mb-1">
+                    <label class="block mb-2 text-sm font-semibold text-gray-700">Price Range (₱)</label>
+                    <div class="mb-1 text-sm text-gray-600">
                         <span id="priceRangeText">₱<?php echo number_format($min_price, 0); ?> – ₱<?php echo number_format($max_price, 0); ?></span>
                     </div>
                     <div class="flex items-center gap-2">
@@ -272,8 +273,8 @@ $conn->close();
 
                 <!-- Capacity -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Capacity (guests)</label>
-                    <div class="text-sm text-gray-600 mb-1">
+                    <label class="block mb-2 text-sm font-semibold text-gray-700">Capacity (guests)</label>
+                    <div class="mb-1 text-sm text-gray-600">
                         <span id="capRangeText"><?php echo $min_cap; ?> – <?php echo $max_cap; ?></span>
                     </div>
                     <div class="flex items-center gap-2">
@@ -284,8 +285,8 @@ $conn->close();
 
                 <!-- Location -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Location</label>
-                    <select id="locationFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                    <label class="block mb-2 text-sm font-semibold text-gray-700">Location</label>
+                    <select id="locationFilter" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg">
                         <option value="">All Locations</option>
                         <?php foreach ($locations as $loc): ?>
                             <option value="<?php echo htmlspecialchars($loc); ?>"><?php echo htmlspecialchars($loc); ?></option>
@@ -295,18 +296,18 @@ $conn->close();
 
                 <!-- Amenities -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Amenities</label>
-                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                    <label class="block mb-2 text-sm font-semibold text-gray-700">Amenities</label>
+                    <div class="space-y-2 overflow-y-auto max-h-40">
                         <?php foreach ($all_amenities as $amenity): ?>
                             <label class="flex items-center text-sm">
-                                <input type="checkbox" class="amenity-checkbox rounded text-indigo-600" value="<?php echo htmlspecialchars($amenity); ?>">
+                                <input type="checkbox" class="text-indigo-600 rounded amenity-checkbox" value="<?php echo htmlspecialchars($amenity); ?>">
                                 <span class="ml-2"><?php echo htmlspecialchars($amenity); ?></span>
                             </label>
                         <?php endforeach; ?>
                     </div>
                 </div>
 
-                <button onclick="clearAllFilters()" class="w-full py-2 text-indigo-600 font-medium border border-indigo-200 rounded-lg hover:bg-indigo-50">
+                <button onclick="clearAllFilters()" class="w-full py-2 font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50">
                     Clear All Filters
                 </button>
             </div>
