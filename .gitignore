@@ -1,17 +1,36 @@
-# Tailwind CSS output
-/src/output.css
-
-# Node modules
-node_modules/
-
-# Python virtual environment
+# Python
 ml/venv/
-*.pyc
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 
-# IDE files
-.vscode/
+# TailwindCSS
+node_modules/
+src/output.css
 
 # Environment files
 .env
-.env.local
+config.php
+
+# Database
+*.sql
+db/backups/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
