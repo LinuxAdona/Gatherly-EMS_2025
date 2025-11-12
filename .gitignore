@@ -1,36 +1,41 @@
-# Python
-ml/venv/
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
+# Tailwind CSS output
+/src/output.css
 
-# TailwindCSS
+# Node modules
 node_modules/
-src/output.css
+
+# Python virtual environment
+ml/venv/
+*.pyc
+__pycache__/
+
+# IDE files
+.vscode/
+.idea/
 
 # Environment files
 .env
-config.php
-
-# Database
-*.sql
-db/backups/
-
-# Logs
-*.log
+.env.local
+.env.production
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Deployment
+last_deployment.txt
+
+# Database backups (keep original schema)
+db/backups/
+*.sql.backup
 
 # Temporary files
 tmp/
 temp/
+*.tmp

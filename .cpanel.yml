@@ -1,0 +1,59 @@
+---
+# cPanel Git Deployment Configuration for Gatherly EMS
+# This file automatically deploys your project when you push to the repository
+
+deployment:
+  tasks:
+    # Set deployment path - CHANGE 'yourusername' to your actual cPanel username
+    - export DEPLOYPATH=/home/c2lkis/public_html/
+    - export REPOPATH=/home/c2lkis/repositories/Gatherly-EMS_2025
+
+    # Create necessary directories if they don't exist
+    - mkdir -p $DEPLOYPATH
+    - mkdir -p $DEPLOYPATH/public
+    - mkdir -p $DEPLOYPATH/src
+    - mkdir -p $DEPLOYPATH/ml
+    - mkdir -p $DEPLOYPATH/db
+    - mkdir -p $DEPLOYPATH/config
+
+    # Deploy PHP files and directories
+    - echo "Deploying PHP files..."
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R src $DEPLOYPATH
+    - /bin/cp -R db $DEPLOYPATH
+
+    # Deploy configuration files (excluding sensitive files)
+    - /bin/cp tailwind.config.js $DEPLOYPATH
+    - /bin/cp package.json $DEPLOYPATH
+
+    # Deploy Python ML system
+    - echo "Deploying Python ML system..."
+    - /bin/cp -R ml $DEPLOYPATH
+    - /bin/cp requirements.txt $DEPLOYPATH
+
+    # Install Python dependencies if pip is available
+    - echo "Installing Python dependencies..."
+    - cd $DEPLOYPATH
+    - if command -v pip3 &> /dev/null; then pip3 install --user -r requirements.txt; fi
+    - if command -v python3 -m pip &> /dev/null; then python3 -m pip install --user -r requirements.txt; fi
+
+    # Build Tailwind CSS
+    - echo "Building Tailwind CSS..."
+    - cd $DEPLOYPATH
+    - if command -v npx &> /dev/null; then npx tailwindcss -i ./src/input.css -o ./src/output.css --minify; fi
+    - if [ ! -f ./src/output.css ]; then /bin/cp $REPOPATH/src/output.css $DEPLOYPATH/src/; fi
+
+    # Set proper permissions
+    - echo "Setting permissions..."
+    - chmod -R 755 $DEPLOYPATH/public
+    - chmod -R 755 $DEPLOYPATH/src
+    - chmod -R 755 $DEPLOYPATH/ml
+    - find $DEPLOYPATH -type f -name "*.php" -exec chmod 644 {} \;
+    - find $DEPLOYPATH -type f -name "*.py" -exec chmod 755 {} \;
+
+    # Create .htaccess if it doesn't exist
+    - if [ ! -f $DEPLOYPATH/public/.htaccess ]; then /bin/cp $REPOPATH/public/.htaccess $DEPLOYPATH/public/ 2>/dev/null || true; fi
+
+    # Deployment complete
+    - echo "Deployment completed successfully!"
+    - date >> $DEPLOYPATH/last_deployment.txt
