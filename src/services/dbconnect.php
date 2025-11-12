@@ -1,5 +1,6 @@
 <?php
-require_once '../../config/database.php';
+// Use absolute path to ensure it works on both local and server
+require_once __DIR__ . '/../../config/database.php';
 
 // Create MySQLi connection for compatibility with existing code
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
