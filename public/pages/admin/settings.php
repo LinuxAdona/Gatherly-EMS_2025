@@ -23,12 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
     $_SESSION['email_notifications'] = isset($_POST['email_notifications']);
     $_SESSION['items_per_page'] = (int)($_POST['items_per_page'] ?? 10);
     $_SESSION['timezone'] = $_POST['timezone'] ?? 'Asia/Manila';
-    
+
     $notifications_enabled = $_SESSION['notifications_enabled'];
     $email_notifications = $_SESSION['email_notifications'];
     $items_per_page = $_SESSION['items_per_page'];
     $timezone = $_SESSION['timezone'];
-    
+
     $success_message = "Settings saved successfully!";
 }
 ?>
@@ -41,7 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
     <title>Settings | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     <link rel="stylesheet" href="../../../src/output.css">
-    <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
@@ -93,15 +101,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
 
         <!-- Messages -->
         <?php if ($success_message): ?>
-        <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
-            <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
-        </div>
+            <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
+                <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($error_message): ?>
-        <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
-            <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
-        </div>
+            <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
+                <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
+            </div>
         <?php endif; ?>
 
         <form method="POST" class="space-y-6">
@@ -203,15 +211,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
     <?php include '../../../src/components/Footer.php'; ?>
 
     <script>
-    // Profile dropdown toggle
-    document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
-        e.stopPropagation();
-        document.getElementById('profile-dropdown').classList.toggle('hidden');
-    });
+        // Profile dropdown toggle
+        document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
 
-    document.addEventListener('click', function() {
-        document.getElementById('profile-dropdown')?.classList.add('hidden');
-    });
+        document.addEventListener('click', function() {
+            document.getElementById('profile-dropdown')?.classList.add('hidden');
+        });
     </script>
 </body>
 

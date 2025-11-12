@@ -18,15 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $package_name = $conn->real_escape_string($_POST['package_name']);
         $package_price = floatval($_POST['package_price']);
         $package_description = $conn->real_escape_string($_POST['package_description']);
-        
+
         // Create premium package (you might need to create this table)
         $stmt = $conn->prepare("INSERT INTO premium_packages 
             (venue_id, package_name, package_price, package_description, created_at) 
             VALUES (?, ?, ?, ?, NOW())");
-        
+
         if ($stmt) {
             $stmt->bind_param("isds", $venue_id, $package_name, $package_price, $package_description);
-            
+
             if ($stmt->execute()) {
                 $_SESSION['success_message'] = "Premium package created successfully!";
             } else {
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $_SESSION['error_message'] = "Error preparing package creation.";
         }
-        
+
         header("Location: pricing.php");
         exit();
     }
@@ -154,9 +154,18 @@ if (!empty($seasonal_data)) {
 
 // Month names for display
 $month_names = [
-    1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
-    5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
-    9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
+    1 => 'January',
+    2 => 'February',
+    3 => 'March',
+    4 => 'April',
+    5 => 'May',
+    6 => 'June',
+    7 => 'July',
+    8 => 'August',
+    9 => 'September',
+    10 => 'October',
+    11 => 'November',
+    12 => 'December'
 ];
 
 $conn->close();
@@ -164,24 +173,33 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricing Intelligence | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     <link rel="stylesheet" href="../../../src/output.css">
-    <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="bg-gray-50 font-['Montserrat']">
-   <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
                 <div class="flex items-center h-full">
                     <a href="../home.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
-                             src="../../assets/images/logo.png" alt="Gatherly Logo">
+                            src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
                     </a>
                 </div>
@@ -224,7 +242,8 @@ $conn->close();
             <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <div class="flex items-center">
                     <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                    <span class="text-green-700"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></span>
+                    <span class="text-green-700"><?php echo $_SESSION['success_message'];
+                                                    unset($_SESSION['success_message']); ?></span>
                 </div>
             </div>
         <?php endif; ?>
@@ -233,7 +252,8 @@ $conn->close();
             <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div class="flex items-center">
                     <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
-                    <span class="text-red-700"><?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?></span>
+                    <span class="text-red-700"><?php echo $_SESSION['error_message'];
+                                                unset($_SESSION['error_message']); ?></span>
                 </div>
             </div>
         <?php endif; ?>
@@ -256,8 +276,8 @@ $conn->close();
                             <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
                                 <?php
                                 if (!empty($peak_months)) {
-                                    $peak_month_names = array_map(function($m) use ($month_names) { 
-                                        return $month_names[$m]; 
+                                    $peak_month_names = array_map(function ($m) use ($month_names) {
+                                        return $month_names[$m];
                                     }, $peak_months);
                                     echo implode(', ', array_slice($peak_month_names, 0, 2));
                                 } else {
@@ -271,19 +291,19 @@ $conn->close();
                         </p>
                         <div class="bg-white rounded-lg p-3 border border-orange-300">
                             <p class="text-sm text-orange-600">
-                                Avg. Booking Value: 
+                                Avg. Booking Value:
                                 <strong>
-                                    ₱<?php 
-                                    $peak_avg = 0;
-                                    $peak_count = 0;
-                                    foreach ($peak_months as $month) {
-                                        if (isset($seasonal_data[$month])) {
-                                            $peak_avg += $seasonal_data[$month]['avg_price'];
-                                            $peak_count++;
+                                    ₱<?php
+                                        $peak_avg = 0;
+                                        $peak_count = 0;
+                                        foreach ($peak_months as $month) {
+                                            if (isset($seasonal_data[$month])) {
+                                                $peak_avg += $seasonal_data[$month]['avg_price'];
+                                                $peak_count++;
+                                            }
                                         }
-                                    }
-                                    echo $peak_count > 0 ? number_format($peak_avg / $peak_count, 0) : '0';
-                                    ?>
+                                        echo $peak_count > 0 ? number_format($peak_avg / $peak_count, 0) : '0';
+                                        ?>
                                 </strong>
                             </p>
                         </div>
@@ -296,8 +316,8 @@ $conn->close();
                             <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
                                 <?php
                                 if (!empty($regular_months)) {
-                                    $regular_month_names = array_map(function($m) use ($month_names) { 
-                                        return $month_names[$m]; 
+                                    $regular_month_names = array_map(function ($m) use ($month_names) {
+                                        return $month_names[$m];
                                     }, array_slice($regular_months, 0, 2));
                                     echo implode(', ', $regular_month_names);
                                 } else {
@@ -311,19 +331,19 @@ $conn->close();
                         </p>
                         <div class="bg-white rounded-lg p-3 border border-green-300">
                             <p class="text-sm text-green-600">
-                                Avg. Booking Value: 
+                                Avg. Booking Value:
                                 <strong>
-                                    ₱<?php 
-                                    $regular_avg = 0;
-                                    $regular_count = 0;
-                                    foreach ($regular_months as $month) {
-                                        if (isset($seasonal_data[$month])) {
-                                            $regular_avg += $seasonal_data[$month]['avg_price'];
-                                            $regular_count++;
+                                    ₱<?php
+                                        $regular_avg = 0;
+                                        $regular_count = 0;
+                                        foreach ($regular_months as $month) {
+                                            if (isset($seasonal_data[$month])) {
+                                                $regular_avg += $seasonal_data[$month]['avg_price'];
+                                                $regular_count++;
+                                            }
                                         }
-                                    }
-                                    echo $regular_count > 0 ? number_format($regular_avg / $regular_count, 0) : '0';
-                                    ?>
+                                        echo $regular_count > 0 ? number_format($regular_avg / $regular_count, 0) : '0';
+                                        ?>
                                 </strong>
                             </p>
                         </div>
@@ -336,8 +356,8 @@ $conn->close();
                             <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
                                 <?php
                                 if (!empty($low_months)) {
-                                    $low_month_names = array_map(function($m) use ($month_names) { 
-                                        return $month_names[$m]; 
+                                    $low_month_names = array_map(function ($m) use ($month_names) {
+                                        return $month_names[$m];
                                     }, $low_months);
                                     echo implode(', ', array_slice($low_month_names, 0, 2));
                                 } else {
@@ -351,25 +371,25 @@ $conn->close();
                         </p>
                         <div class="bg-white rounded-lg p-3 border border-blue-300">
                             <p class="text-sm text-blue-600">
-                                Avg. Booking Value: 
+                                Avg. Booking Value:
                                 <strong>
-                                    ₱<?php 
-                                    $low_avg = 0;
-                                    $low_count = 0;
-                                    foreach ($low_months as $month) {
-                                        if (isset($seasonal_data[$month])) {
-                                            $low_avg += $seasonal_data[$month]['avg_price'];
-                                            $low_count++;
+                                    ₱<?php
+                                        $low_avg = 0;
+                                        $low_count = 0;
+                                        foreach ($low_months as $month) {
+                                            if (isset($seasonal_data[$month])) {
+                                                $low_avg += $seasonal_data[$month]['avg_price'];
+                                                $low_count++;
+                                            }
                                         }
-                                    }
-                                    echo $low_count > 0 ? number_format($low_avg / $low_count, 0) : '0';
-                                    ?>
+                                        echo $low_count > 0 ? number_format($low_avg / $low_count, 0) : '0';
+                                        ?>
                                 </strong>
                             </p>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Pro Tip -->
                 <div class="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
                     <div class="flex items-start">
@@ -378,7 +398,7 @@ $conn->close();
                             <p class="font-semibold text-purple-800">Pro Tip</p>
                             <p class="text-purple-700 text-sm">
                                 Monitor booking patterns and adjust your price percentage monthly for maximum revenue.
-                                Current average price percentage across venues: 
+                                Current average price percentage across venues:
                                 <strong>
                                     <?php
                                     $avg_percentage = 0;
@@ -418,9 +438,9 @@ $conn->close();
                             <select id="calc_venue" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 <?php if ($venues_result && $venues_result->num_rows > 0): ?>
                                     <?php while ($venue = $venues_result->fetch_assoc()): ?>
-                                        <option value="<?php echo $venue['venue_id']; ?>" 
-                                                data-base-price="<?php echo $venue['base_price']; ?>"
-                                                data-percentage="<?php echo $venue['price_percentage'] ?? 15; ?>">
+                                        <option value="<?php echo $venue['venue_id']; ?>"
+                                            data-base-price="<?php echo $venue['base_price']; ?>"
+                                            data-percentage="<?php echo $venue['price_percentage'] ?? 15; ?>">
                                             <?php echo htmlspecialchars($venue['venue_name']); ?>
                                         </option>
                                     <?php endwhile; ?>
@@ -455,8 +475,8 @@ $conn->close();
                             </select>
                         </div>
 
-                        <button type="button" id="calculatePrice" 
-                                class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                        <button type="button" id="calculatePrice"
+                            class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold">
                             Calculate Optimal Price
                         </button>
                     </form>
@@ -484,7 +504,7 @@ $conn->close();
                 <div class="p-6">
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                         <?php if ($peak_hours_result && $peak_hours_result->num_rows > 0): ?>
-                            <?php while ($hour = $peak_hours_result->fetch_assoc()): 
+                            <?php while ($hour = $peak_hours_result->fetch_assoc()):
                                 $is_peak = $hour['booking_count'] >= 3;
                             ?>
                                 <div class="text-center p-4 border rounded-lg <?php echo $is_peak ? 'bg-red-50 border-red-200' : 'bg-gray-50 border-gray-200'; ?>">
@@ -570,8 +590,8 @@ $conn->close();
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                <button onclick="openPackageModal(<?php echo $venue['venue_id']; ?>, '<?php echo htmlspecialchars($venue['venue_name']); ?>', <?php echo $venue['base_price']; ?>, <?php echo $venue['actual_avg_price']; ?>)" 
-                                        class="w-full bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold">
+                                <button onclick="openPackageModal(<?php echo $venue['venue_id']; ?>, '<?php echo htmlspecialchars($venue['venue_name']); ?>', <?php echo $venue['base_price']; ?>, <?php echo $venue['actual_avg_price']; ?>)"
+                                    class="w-full bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold">
                                     Create Premium Package
                                 </button>
                             </div>
@@ -669,22 +689,22 @@ $conn->close();
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            
+
             <form method="POST" class="space-y-4">
                 <input type="hidden" name="venue_id" id="package_venue_id">
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Venue</label>
                     <p class="text-lg font-semibold text-gray-900" id="package_venue_name"></p>
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Package Name</label>
-                    <input type="text" name="package_name" id="package_name" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg" 
-                           placeholder="e.g., Premium Wedding Package" required>
+                    <input type="text" name="package_name" id="package_name"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        placeholder="e.g., Premium Wedding Package" required>
                 </div>
-                
+
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Base Price</label>
@@ -695,28 +715,28 @@ $conn->close();
                         <p class="text-lg font-semibold text-blue-600" id="package_avg_price"></p>
                     </div>
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Package Price (₱)</label>
                     <input type="number" name="package_price" id="package_price" step="0.01" min="0"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
                     <p class="text-xs text-gray-500 mt-1">Suggested: 20-30% above base price</p>
                 </div>
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Package Description</label>
                     <textarea name="package_description" id="package_description" rows="3"
-                              class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                              placeholder="Describe what's included in this premium package..." required></textarea>
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        placeholder="Describe what's included in this premium package..." required></textarea>
                 </div>
-                
+
                 <div class="flex space-x-3 pt-4">
-                    <button type="button" onclick="closePackageModal()" 
-                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    <button type="button" onclick="closePackageModal()"
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
-                    <button type="submit" name="create_premium_package" 
-                            class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <button type="submit" name="create_premium_package"
+                        class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
                         Create Package
                     </button>
                 </div>
@@ -736,17 +756,17 @@ $conn->close();
             const selectedOption = venueSelect.selectedOptions[0];
             const basePrice = parseFloat(selectedOption.dataset.basePrice) || 0;
             const currentPercentage = parseFloat(selectedOption.dataset.percentage) || 15;
-            
+
             const seasonMultiplier = parseFloat(document.getElementById('calc_season').value);
             const dayMultiplier = parseFloat(document.getElementById('calc_day').value);
             const demandMultiplier = parseFloat(document.getElementById('calc_demand').value);
-            
+
             const optimalPrice = basePrice * seasonMultiplier * dayMultiplier * demandMultiplier;
             const priceDifference = ((optimalPrice - basePrice) / basePrice * 100).toFixed(1);
-            
+
             // Update results
             document.getElementById('optimalPrice').textContent = `₱${optimalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            
+
             let explanation = '';
             if (priceDifference > 0) {
                 explanation = `+${priceDifference}% from base price due to favorable conditions`;
@@ -756,7 +776,7 @@ $conn->close();
                 explanation = 'Same as base price - standard conditions';
             }
             document.getElementById('priceExplanation').textContent = explanation;
-            
+
             // Show results
             document.getElementById('calcResults').classList.remove('hidden');
         });
@@ -776,14 +796,14 @@ $conn->close();
             document.getElementById('package_venue_name').textContent = venueName;
             document.getElementById('package_base_price').textContent = '₱' + basePrice.toLocaleString();
             document.getElementById('package_avg_price').textContent = '₱' + avgPrice.toLocaleString();
-            
+
             // Suggest package price (25% above base)
             const suggestedPrice = basePrice * 1.25;
             document.getElementById('package_price').value = suggestedPrice.toFixed(0);
-            
+
             // Auto-generate package name
             document.getElementById('package_name').value = venueName + ' Premium Package';
-            
+
             document.getElementById('packageModal').classList.remove('hidden');
             document.getElementById('packageModal').classList.add('flex');
         }
@@ -801,4 +821,5 @@ $conn->close();
         });
     </script>
 </body>
+
 </html>

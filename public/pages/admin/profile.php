@@ -37,14 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $stmt->bind_param("si", $email, $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows > 0) {
             $error_message = "Email already exists.";
         } else {
             // Update profile
             $stmt = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE user_id = ?");
             $stmt->bind_param("ssssi", $first_name_input, $last_name, $email, $phone, $user_id);
-            
+
             if ($stmt->execute()) {
                 $_SESSION['first_name'] = $first_name_input;
                 $success_message = "Profile updated successfully!";
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ?");
             $stmt->bind_param("si", $hashed_password, $user_id);
-            
+
             if ($stmt->execute()) {
                 $success_message = "Password changed successfully!";
             } else {
@@ -104,7 +104,15 @@ $conn->close();
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     <link rel="stylesheet"
         href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
-    <script src="https://kit.fontawesome.com/2a99de0fa5.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
@@ -160,15 +168,15 @@ $conn->close();
 
         <!-- Messages -->
         <?php if ($success_message): ?>
-        <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
-            <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
-        </div>
+            <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
+                <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($error_message): ?>
-        <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
-            <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
-        </div>
+            <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
+                <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
+            </div>
         <?php endif; ?>
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -202,12 +210,12 @@ $conn->close();
                             </span>
                         </div>
                         <?php if ($user['phone']): ?>
-                        <div class="flex items-center justify-between">
-                            <span class="text-gray-600">Phone</span>
-                            <span class="font-semibold text-gray-800">
-                                <?php echo htmlspecialchars($user['phone']); ?>
-                            </span>
-                        </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Phone</span>
+                                <span class="font-semibold text-gray-800">
+                                    <?php echo htmlspecialchars($user['phone']); ?>
+                                </span>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -294,15 +302,15 @@ $conn->close();
     <?php include '../../../src/components/Footer.php'; ?>
 
     <script>
-    // Profile dropdown toggle
-    document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
-        e.stopPropagation();
-        document.getElementById('profile-dropdown').classList.toggle('hidden');
-    });
+        // Profile dropdown toggle
+        document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
 
-    document.addEventListener('click', function() {
-        document.getElementById('profile-dropdown')?.classList.add('hidden');
-    });
+        document.addEventListener('click', function() {
+            document.getElementById('profile-dropdown')?.classList.add('hidden');
+        });
     </script>
 </body>
 
