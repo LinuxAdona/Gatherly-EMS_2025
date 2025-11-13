@@ -26,15 +26,15 @@ try {
     $debug_info[] = "Loading dbconnect.php...";
     require_once __DIR__ . '/../../../src/services/dbconnect.php';
     $debug_info[] = "dbconnect.php loaded successfully";
-    
+
     if (!isset($conn)) {
         throw new Exception("Database connection variable \$conn is not set");
     }
-    
+
     if ($conn->connect_error) {
         throw new Exception("Database connection failed: " . $conn->connect_error);
     }
-    
+
     $debug_info[] = "Database connection verified";
 } catch (Exception $e) {
     $has_error = true;
@@ -60,7 +60,7 @@ $recent_events = null;
 if (!$has_error && isset($conn)) {
     try {
         $debug_info[] = "Fetching organizer statistics...";
-        
+
         // Get organizer's events count
         $result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id");
         if ($result === false) {
@@ -106,7 +106,7 @@ if (!$has_error && isset($conn)) {
             throw new Exception("Failed to fetch recent events: " . $conn->error);
         }
         $debug_info[] = "Recent events fetched: " . $recent_events->num_rows . " rows";
-        
+
         $debug_info[] = "All queries completed successfully";
     } catch (Exception $e) {
         $has_error = true;
@@ -114,7 +114,7 @@ if (!$has_error && isset($conn)) {
         $debug_info[] = "ERROR: " . $e->getMessage();
         error_log("ERROR in organizer-dashboard.php queries: " . $e->getMessage());
     }
-    
+
     if (isset($conn)) {
         $conn->close();
         $debug_info[] = "Database connection closed";
@@ -186,9 +186,11 @@ if (!$has_error && isset($conn)) {
     <!-- Debug Information Section -->
     <?php if (!empty($debug_info)): ?>
         <div class="container px-4 py-4 mx-auto sm:px-6 lg:px-8">
-            <div class="p-4 border rounded-lg <?php echo $has_error ? 'bg-red-50 border-red-300' : 'bg-blue-50 border-blue-300'; ?>">
+            <div
+                class="p-4 border rounded-lg <?php echo $has_error ? 'bg-red-50 border-red-300' : 'bg-blue-50 border-blue-300'; ?>">
                 <div class="flex items-start gap-3">
-                    <i class="mt-1 text-xl <?php echo $has_error ? 'fas fa-exclamation-circle text-red-600' : 'fas fa-info-circle text-blue-600'; ?>"></i>
+                    <i
+                        class="mt-1 text-xl <?php echo $has_error ? 'fas fa-exclamation-circle text-red-600' : 'fas fa-info-circle text-blue-600'; ?>"></i>
                     <div class="flex-1">
                         <h3 class="mb-2 text-lg font-bold <?php echo $has_error ? 'text-red-900' : 'text-blue-900'; ?>">
                             <?php echo $has_error ? 'Error Detected' : 'Debug Information'; ?>
@@ -198,7 +200,8 @@ if (!$has_error && isset($conn)) {
                                 <?php echo htmlspecialchars($error_message); ?>
                             </div>
                         <?php endif; ?>
-                        <div class="space-y-1 text-sm font-mono <?php echo $has_error ? 'text-red-800' : 'text-blue-800'; ?>">
+                        <div
+                            class="space-y-1 text-sm font-mono <?php echo $has_error ? 'text-red-800' : 'text-blue-800'; ?>">
                             <?php foreach ($debug_info as $info): ?>
                                 <div class="flex items-start gap-2">
                                     <span class="mt-1 text-xs">•</span>
