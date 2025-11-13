@@ -21,14 +21,14 @@ if (empty($message)) {
 }
 
 // Call Python conversational planner script
-$pythonScript = __DIR__ . '/../../../ml/conversational_planner.py';
+$pythonScript = __DIR__ . '/home2/c2lkis/public_html/ml/conversational_planner.py';
 
 // Detect OS and set Python path accordingly
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     $pythonPath = 'C:/Python313/python.exe';
 } else {
     // Linux/Unix - use virtual environment python
-    $venvPython = __DIR__ . '/../../../ml/venv/bin/python3';
+    $venvPython = __DIR__ . '/home2/c2lkis/public_html/ml/venv/bin/python3';
     $pythonPath = file_exists($venvPython) ? $venvPython : '/usr/bin/python3';
 }
 
