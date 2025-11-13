@@ -21,7 +21,6 @@ deployment:
     - /bin/cp -R $REPOPATH/public $DEPLOYPATH
     - /bin/cp -R $REPOPATH/src $DEPLOYPATH
     - /bin/cp -R $REPOPATH/db $DEPLOYPATH
-    - /bin/cp $REPOPATH/*.php $DEPLOYPATH 2>/dev/null || true
 
     # Deploy configuration files (IMPORTANT: needed for database connection)
     - echo "Deploying config files..."
@@ -34,6 +33,10 @@ deployment:
     # Deploy other configuration files
     - /bin/cp $REPOPATH/tailwind.config.js $DEPLOYPATH
     - /bin/cp $REPOPATH/package.json $DEPLOYPATH
+    
+    # Deploy root index.php file
+    - echo "Deploying index.php..."
+    - if [ -f $REPOPATH/index.php ]; then /bin/cp $REPOPATH/index.php $DEPLOYPATH/index.php; fi
 
     # Deploy Python ML system
     - echo "Deploying Python ML system..."
