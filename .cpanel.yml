@@ -36,8 +36,18 @@ deployment:
 
     # Deploy Python ML system
     - echo "Deploying Python ML system..."
+    - echo "Checking ml directory in repo..."
+    - ls -la $REPOPATH/ml || echo "ml directory not found in repo"
+    - echo "Copying ml directory..."
     - /bin/cp -R $REPOPATH/ml $DEPLOYPATH
+    - echo "Verifying ml directory in deployment..."
+    - ls -la $DEPLOYPATH/ml || echo "ml directory not found in deployment"
+    - echo "Copying requirements.txt..."
     - /bin/cp $REPOPATH/requirements.txt $DEPLOYPATH
+    - echo "Files in deployed ml directory:"
+    - find $DEPLOYPATH/ml -type f | wc -l
+    - echo "Python files in deployed ml directory:"
+    - find $DEPLOYPATH/ml -name "*.py" | wc -l
 
     # Install Python dependencies if pip is available
     - echo "Installing Python dependencies..."
