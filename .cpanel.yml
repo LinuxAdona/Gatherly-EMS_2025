@@ -21,7 +21,7 @@ deployment:
     - /bin/cp -R $REPOPATH/public $DEPLOYPATH
     - /bin/cp -R $REPOPATH/src $DEPLOYPATH
     - /bin/cp -R $REPOPATH/db $DEPLOYPATH
-    - /bin/cp -R $REPOPATH $DEPLOYPATH
+    - /bin/cp $REPOPATH/index.php $DEPLOYPATH
 
     # Deploy configuration files (IMPORTANT: needed for database connection)
     - echo "Deploying config files..."
