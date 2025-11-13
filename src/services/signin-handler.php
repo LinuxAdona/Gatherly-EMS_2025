@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (password_verify($password, $password_hash)) {
-            echo "<!-- Debug: Password verification successful! -->\n";
 
             // Successful login - store user info in session
             $_SESSION['user_id'] = $user_id;
@@ -94,13 +93,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: ../../public/pages/supplier/supplier-dashboard.php");
                     break;
                 default:
-                    echo "<!-- Debug: Unknown role: $role, redirecting to home -->\n";
                     header("Location: ../../public/pages/home.php");
             }
             exit();
         } else {
-            // Invalid credentials
-            echo "<!-- Debug: Password verification FAILED! -->\n";
             $_SESSION['error'] = "DEBUG: Password verification failed. The password you entered does not match the hashed password in the database.";
             $stmt->close();
             $conn->close();
@@ -108,8 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
     } else {
-        // No user found with that email
-        echo "<!-- Debug: No user found with email: " . htmlspecialchars($email) . " -->\n";
         $_SESSION['error'] = "DEBUG: No user found with email: " . htmlspecialchars($email) . ". Check if the user exists in the 'users' table.";
         $stmt->close();
         $conn->close();
@@ -117,6 +111,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 } else {
-    echo "<!-- Debug: Not a POST request. Request method: " . $_SERVER['REQUEST_METHOD'] . " -->\n";
     die("ERROR: Invalid request method. Expected POST, got: " . $_SERVER['REQUEST_METHOD']);
 }
