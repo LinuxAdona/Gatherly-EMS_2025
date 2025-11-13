@@ -5,8 +5,8 @@
 deployment:
   tasks:
     # Set deployment path
-    - export DEPLOYPATH=/home/linuxman/public_html/
-    - export REPOPATH=/home/linuxman/repositories/Gatherly-EMS_2025
+    - export DEPLOYPATH=/home/gatherly/public_html/
+    - export REPOPATH=/home/gatherly/repositories/Gatherly-EMS_2025
 
     # Create necessary directories if they don't exist
     - mkdir -p $DEPLOYPATH

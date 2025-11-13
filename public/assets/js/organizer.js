@@ -75,7 +75,7 @@ if (chatForm) {
 
         try {
             // Send message to AI conversational planner API
-            const response = await fetch('/home2/linuxman/public_html/src/services/ai-conversation.php', {
+            const response = await fetch('/home2/gatherly/public_html/src/services/ai-conversation.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
