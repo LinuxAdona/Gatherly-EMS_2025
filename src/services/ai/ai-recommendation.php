@@ -20,14 +20,14 @@ if (empty($message)) {
 }
 
 // Call Python ML script for recommendations
-$pythonScript = __DIR__ . '/home2/c2lkis/public_html/ml/venue_recommender.py';
+$pythonScript = '/home2/c2lkis/public_html/ml/venue_recommender.py';
 
 // Detect OS and set Python path accordingly
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     $pythonPath = 'C:/Python314/python.exe';
 } else {
     // Linux/Unix - use virtual environment python
-    $venvPython = __DIR__ . '/home2/c2lkis/public_html/ml/venv/bin/python3';
+    $venvPython = '/home2/c2lkis/public_html/ml/venv/bin/python3';
     $pythonPath = file_exists($venvPython) ? $venvPython : '/usr/bin/python3';
 }
 
