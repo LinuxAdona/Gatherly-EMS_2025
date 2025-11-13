@@ -13,8 +13,8 @@ warnings=0
 # Check 1: .cpanel.yml exists and is valid
 echo "1. Checking .cpanel.yml..."
 if [ -f ".cpanel.yml" ]; then
-    if grep -q "c2lkis" .cpanel.yml; then
-        echo "   ⚠ WARNING: .cpanel.yml still contains 'c2lkis'"
+    if grep -q "linuxman" .cpanel.yml; then
+        echo "   ⚠ WARNING: .cpanel.yml still contains 'linuxman'"
         echo "   Run: bash deploy-scripts/setup.sh"
         warnings=$((warnings + 1))
     else
