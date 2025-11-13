@@ -1,10 +1,6 @@
 {
   "dependencies": {
-    "@parcel/watcher": "^2.5.1",
-    "@tailwindcss/cli": "^4.1.16"
-  },
-  "devDependencies": {
-    "tailwindcss": "^4.1.16"
+    "@parcel/watcher": "^2.5.1"
   },
   "scripts": {
     "dev": "browser-sync start --proxy 'localhost/Gatherly-EMS_2025/public/pages/home.php' --files '/opt/lampp/htdocs/Gatherly-EMS_2025/**/**'"
