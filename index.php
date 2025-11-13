@@ -28,7 +28,7 @@
                     <div class="flex items-center h-full">
                         <a href="index.php" class="flex items-center group">
                             <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
-                                src="../assets/images/logo.png" alt="Gatherly Logo">
+                                src="public/assets/images/logo.png" alt="Gatherly Logo">
                             <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
                         </a>
                     </div>
@@ -76,7 +76,7 @@
             <!-- Hero Section -->
             <div id="home"
                 class="relative pt-8 overflow-hidden bg-center bg-no-repeat bg-cover sm:pt-12 md:pt-16 hero-section"
-                style="background-image: url('../assets/images/hero-bg.png'); will-change: background-position; min-height: 500px; height: calc(100vh - 4rem);"
+                style="background-image: url('public/assets/images/hero-bg.png'); will-change: background-position; min-height: 500px; height: calc(100vh - 4rem);"
                 data-pan-speed="0.45">
                 <div class="absolute inset-0 bg-linear-to-br from-indigo-900/30 via-purple-900/10 to-transparent">
                 </div>
@@ -385,11 +385,11 @@
                     </div>
                 </div>
             </div>
-            <?php include '../../src/components/Footer.php'; ?>
+            <?php include 'src/components/Footer.php'; ?>
         </div>
     </div>
 
-    <script src="../assets/js/home.js"></script>
+    <script src="public/assets/js/home.js"></script>
 </body>
 
 </html>

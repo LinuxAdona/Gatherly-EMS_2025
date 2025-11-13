@@ -33,7 +33,7 @@ deployment:
     # Deploy other configuration files
     - /bin/cp $REPOPATH/tailwind.config.js $DEPLOYPATH
     - /bin/cp $REPOPATH/package.json $DEPLOYPATH
-    
+
     # Deploy root index.php file
     - echo "Deploying index.php..."
     - if [ -f $REPOPATH/index.php ]; then /bin/cp $REPOPATH/index.php $DEPLOYPATH/index.php; fi
