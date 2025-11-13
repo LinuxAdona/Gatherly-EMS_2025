@@ -2,6 +2,7 @@
 function loadEnv($path)
 {
     if (!file_exists($path)) {
+        error_log("WARNING: .env file not found at: $path");
         return;
     }
 
@@ -9,6 +10,16 @@ function loadEnv($path)
     foreach ($lines as $line) {
         // Skip comments
         if (strpos(trim($line), '#') === 0) {
+            continue;
+        }
+
+        // Skip empty lines
+        if (empty(trim($line))) {
+            continue;
+        }
+
+        // Check if line contains '='
+        if (strpos($line, '=') === false) {
             continue;
         }
 
@@ -20,8 +31,9 @@ function loadEnv($path)
         // Remove quotes if present
         $value = trim($value, '"\'');
 
-        // Store in $_ENV and putenv
-        putenv("$name=$value");
+        // Store in both $_ENV, $_SERVER, and putenv for maximum compatibility
         $_ENV[$name] = $value;
+        $_SERVER[$name] = $value;
+        putenv("$name=$value");
     }
 }
