@@ -52,7 +52,7 @@ if (chatForm) {
             console.log('Sending message:', message);
             console.log('Conversation state:', conversationState);
             
-            const response = await fetch('../../../src/services/ai/ai-conversation.php', {
+            const response = await fetch('/home2/c2lkis/public_html/src/services/ai/ai-conversation.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
