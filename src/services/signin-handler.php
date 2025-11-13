@@ -2,102 +2,82 @@
 
 session_start();
 
-// Enable error logging (errors go to PHP error log, not displayed)
+// Enable error reporting for debugging
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
+ini_set('display_errors', 1);
 
 require_once 'dbconnect.php';
 
 // Check if database connection was successful
 if (!isset($conn)) {
-    $_SESSION['error'] = "Database connection failed. The connection variable is not set.";
-    error_log("ERROR: Database connection failed in signin-handler.php - \$conn variable not set");
-    header("Location: ../../public/pages/signin.php");
-    exit();
+    die("ERROR: Database connection failed. The \$conn variable is not set. Check dbconnect.php file.");
 }
 
 if ($conn->connect_error) {
-    $_SESSION['error'] = "Database connection failed: " . $conn->connect_error;
-    error_log("ERROR: Database connection failed: " . $conn->connect_error);
-    header("Location: ../../public/pages/signin.php");
-    exit();
+    die("ERROR: Database connection failed: " . $conn->connect_error);
 }
+
+echo "<!-- Debug: Database connected successfully -->\n";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-    error_log("DEBUG: Sign in attempt for email: " . $email);
+    echo "<!-- Debug: Attempting to sign in user with email: " . htmlspecialchars($email) . " -->\n";
 
     // Check if email and password are provided
     if (empty($email)) {
-        $_SESSION['error'] = "Email field is required.";
-        error_log("DEBUG: Email field is empty");
+        $_SESSION['error'] = "DEBUG: Email field is empty!";
         header("Location: ../../public/pages/signin.php");
         exit();
     }
 
     if (empty($password)) {
-        $_SESSION['error'] = "Password field is required.";
-        error_log("DEBUG: Password field is empty");
+        $_SESSION['error'] = "DEBUG: Password field is empty!";
         header("Location: ../../public/pages/signin.php");
         exit();
     }
 
     // Prepare the SQL statement
     $sql = "SELECT user_id, password, role, first_name, last_name FROM users WHERE email = ?";
-    
+    echo "<!-- Debug: SQL Query: $sql -->\n";
+
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
-        $_SESSION['error'] = "Database query failed. Please try again.";
-        error_log("ERROR: Failed to prepare statement: " . $conn->error);
-        header("Location: ../../public/pages/signin.php");
-        exit();
+        die("ERROR: Failed to prepare statement: " . $conn->error . "<br>SQL: $sql");
     }
+
+    echo "<!-- Debug: Statement prepared successfully -->\n";
 
     $stmt->bind_param("s", $email);
 
     if (!$stmt->execute()) {
-        $_SESSION['error'] = "Database query execution failed. Please try again.";
-        error_log("ERROR: Failed to execute statement: " . $stmt->error);
-        $stmt->close();
-        $conn->close();
-        header("Location: ../../public/pages/signin.php");
-        exit();
+        die("ERROR: Failed to execute statement: " . $stmt->error);
     }
 
+    echo "<!-- Debug: Statement executed successfully -->\n";
+
     $stmt->store_result();
-    
-    error_log("DEBUG: Number of rows found for email '$email': " . $stmt->num_rows);
+
+    echo "<!-- Debug: Number of rows found: " . $stmt->num_rows . " -->\n";
 
     if ($stmt->num_rows > 0) {
-        error_log("DEBUG: User found in database");
+        echo "<!-- Debug: User found in database! -->\n";
 
         if (!$stmt->bind_result($user_id, $password_hash, $role, $first_name, $last_name)) {
-            $_SESSION['error'] = "Failed to retrieve user data. Please try again.";
-            error_log("ERROR: Failed to bind result: " . $stmt->error);
-            $stmt->close();
-            $conn->close();
-            header("Location: ../../public/pages/signin.php");
-            exit();
+            die("ERROR: Failed to bind result: " . $stmt->error);
         }
 
         if (!$stmt->fetch()) {
-            $_SESSION['error'] = "Failed to retrieve user data. Please try again.";
-            error_log("ERROR: Failed to fetch result: " . $stmt->error);
-            $stmt->close();
-            $conn->close();
-            header("Location: ../../public/pages/signin.php");
-            exit();
+            die("ERROR: Failed to fetch result: " . $stmt->error);
         }
 
-        error_log("DEBUG: User ID: $user_id, Role: $role, Name: $first_name $last_name");
-        error_log("DEBUG: Password hash exists: " . (!empty($password_hash) ? "YES" : "NO"));
+        echo "<!-- Debug: User ID: $user_id, Role: $role, Name: $first_name $last_name -->\n";
+        echo "<!-- Debug: Password hash from DB exists: " . (!empty($password_hash) ? "YES" : "NO") . " -->\n";
 
         if (password_verify($password, $password_hash)) {
-            error_log("DEBUG: Password verification successful for user: $email");
+            echo "<!-- Debug: Password verification successful! -->\n";
 
             // Successful login - store user info in session
             $_SESSION['user_id'] = $user_id;
@@ -114,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->close();
             $conn->close();
 
-            error_log("DEBUG: Redirecting to $role dashboard");
+            echo "<!-- Debug: Redirecting to $role dashboard -->\n";
 
             // Role-based redirection to specific dashboards
             switch ($role) {
@@ -131,14 +111,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: ../../public/pages/supplier/supplier-dashboard.php");
                     break;
                 default:
-                    error_log("DEBUG: Unknown role: $role, redirecting to home");
+                    echo "<!-- Debug: Unknown role: $role, redirecting to home -->\n";
                     header("Location: ../../public/pages/home.php");
             }
             exit();
         } else {
             // Invalid credentials
-            error_log("DEBUG: Password verification FAILED for email: $email");
-            $_SESSION['error'] = "Invalid email or password.";
+            echo "<!-- Debug: Password verification FAILED! -->\n";
+            $_SESSION['error'] = "DEBUG: Password verification failed. The password you entered does not match the hashed password in the database.";
             $stmt->close();
             $conn->close();
             header("Location: ../../public/pages/signin.php");
@@ -146,16 +126,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         // No user found with that email
-        error_log("DEBUG: No user found with email: $email");
-        $_SESSION['error'] = "Invalid email or password.";
+        echo "<!-- Debug: No user found with email: " . htmlspecialchars($email) . " -->\n";
+        $_SESSION['error'] = "DEBUG: No user found with email: " . htmlspecialchars($email) . ". Check if the user exists in the 'users' table.";
         $stmt->close();
         $conn->close();
         header("Location: ../../public/pages/signin.php");
         exit();
     }
 } else {
-    error_log("DEBUG: Invalid request method: " . $_SERVER['REQUEST_METHOD']);
-    $_SESSION['error'] = "Invalid request method.";
-    header("Location: ../../public/pages/signin.php");
-    exit();
+    echo "<!-- Debug: Not a POST request. Request method: " . $_SERVER['REQUEST_METHOD'] . " -->\n";
+    die("ERROR: Invalid request method. Expected POST, got: " . $_SERVER['REQUEST_METHOD']);
 }
