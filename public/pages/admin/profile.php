@@ -121,7 +121,7 @@ $conn->close();
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
                 <div class="flex items-center h-full">
-                    <a href="../home.php" class="flex items-center group">
+                    <a href="../../../index.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
                             src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
@@ -233,14 +233,14 @@ $conn->close();
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-700">First Name *</label>
-                                <input type="text" name="first_name" value="<?php echo htmlspecialchars($user['first_name']); ?>"
-                                    required
+                                <input type="text" name="first_name"
+                                    value="<?php echo htmlspecialchars($user['first_name']); ?>" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-700">Last Name *</label>
-                                <input type="text" name="last_name" value="<?php echo htmlspecialchars($user['last_name']); ?>"
-                                    required
+                                <input type="text" name="last_name"
+                                    value="<?php echo htmlspecialchars($user['last_name']); ?>" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                         </div>

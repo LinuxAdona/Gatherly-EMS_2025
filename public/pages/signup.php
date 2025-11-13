@@ -38,7 +38,7 @@
                 header("Location: supplier/supplier-dashboard.php");
                 exit();
             default:
-                header("Location: home.php");
+                header("Location: ../../index.php");
                 exit();
         }
     }
@@ -51,7 +51,7 @@
                     <!-- Header -->
                     <div class="flex flex-col items-start justify-center w-full">
                         <div class="flex flex-col items-start text-xl font-bold sm:text-2xl">
-                            <a class="flex flex-col group" href="home.php">
+                            <a class="flex flex-col group" href="index.php">
                                 <img class="w-12 mb-6 transition-transform sm:w-16 sm:mb-10 drop-shadow-lg group-hover:scale-110"
                                     src="../assets/images/logo.png" alt="Logo">
                                 <span class="text-gray-800">Create your new account</span>

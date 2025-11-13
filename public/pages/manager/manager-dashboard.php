@@ -88,7 +88,7 @@ $conn->close();
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
                 <div class="flex items-center h-full">
-                    <a href="../home.php" class="flex items-center group">
+                    <a href="../../../index.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
                             src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>

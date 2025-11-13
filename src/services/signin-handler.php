@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: ../../public/pages/supplier/supplier-dashboard.php");
                     break;
                 default:
-                    header("Location: ../../public/pages/home.php");
+                    header("Location: ../../index.php");
             }
             exit();
         } else {

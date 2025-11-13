@@ -132,7 +132,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <a href="../home.php" class="flex items-center group">
+                    <a href="../../../index.php" class="flex items-center group">
                         <img class="w-10 h-10 mr-2 transition-transform group-hover:scale-110"
                             src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-xl font-bold text-gray-800">Gatherly</span>

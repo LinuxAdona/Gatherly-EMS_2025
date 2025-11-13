@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
                 <div class="flex items-center h-full">
-                    <a href="../home.php" class="flex items-center group">
+                    <a href="../../../index.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
                             src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
@@ -88,7 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                             <a href="settings.php"
                                 class="block px-4 py-2 font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-gray-600">Settings</a>
                             <a href="../../../src/services/signout-handler.php"
-                                class="block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-600">Sign Out</a>
+                                class="block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-600">Sign
+                                Out</a>
                         </div>
                     </div>
                 </div>
@@ -129,11 +130,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                 </h2>
                 <div class="space-y-4">
                     <div>
-                        <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Theme</label>
+                        <label
+                            class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Theme</label>
                         <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                            <label class="relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all border-gray-200 dark:border-gray-600 dark:bg-gray-700/50">
-                                <input type="radio" name="theme" value="light"
-                                    class="mr-3">
+                            <label
+                                class="relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all border-gray-200 dark:border-gray-600 dark:bg-gray-700/50">
+                                <input type="radio" name="theme" value="light" class="mr-3">
                                 <div class="flex items-center gap-3">
                                     <i class="text-xl text-yellow-500 fas fa-sun"></i>
                                     <div>
@@ -142,9 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                                     </div>
                                 </div>
                             </label>
-                            <label class="relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all border-gray-200 dark:border-gray-600 dark:bg-gray-700/50">
-                                <input type="radio" name="theme" value="dark"
-                                    class="mr-3">
+                            <label
+                                class="relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all border-gray-200 dark:border-gray-600 dark:bg-gray-700/50">
+                                <input type="radio" name="theme" value="dark" class="mr-3">
                                 <div class="flex items-center gap-3">
                                     <i class="text-xl text-indigo-600 dark:text-indigo-400 fas fa-moon"></i>
                                     <div>
@@ -153,9 +155,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                                     </div>
                                 </div>
                             </label>
-                            <label class="relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all border-gray-200 dark:border-gray-600 dark:bg-gray-700/50">
-                                <input type="radio" name="theme" value="auto"
-                                    class="mr-3">
+                            <label
+                                class="relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all border-gray-200 dark:border-gray-600 dark:bg-gray-700/50">
+                                <input type="radio" name="theme" value="auto" class="mr-3">
                                 <div class="flex items-center gap-3">
                                     <i class="text-xl text-gray-600 dark:text-gray-400 fas fa-adjust"></i>
                                     <div>
@@ -176,27 +178,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                     Notifications
                 </h2>
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg dark:bg-gray-700/50 transition-colors">
+                    <div
+                        class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg dark:bg-gray-700/50 transition-colors">
                         <div>
                             <p class="font-semibold text-gray-800 dark:text-white">Enable Notifications</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Receive in-app notifications</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="notifications_enabled" <?php echo $notifications_enabled ? 'checked' : ''; ?>
-                                class="sr-only peer">
+                            <input type="checkbox" name="notifications_enabled"
+                                <?php echo $notifications_enabled ? 'checked' : ''; ?> class="sr-only peer">
                             <div
                                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
                             </div>
                         </label>
                     </div>
-                    <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg dark:bg-gray-700/50 transition-colors">
+                    <div
+                        class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg dark:bg-gray-700/50 transition-colors">
                         <div>
                             <p class="font-semibold text-gray-800 dark:text-white">Email Notifications</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Receive notifications via email</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="email_notifications" <?php echo $email_notifications ? 'checked' : ''; ?>
-                                class="sr-only peer">
+                            <input type="checkbox" name="email_notifications"
+                                <?php echo $email_notifications ? 'checked' : ''; ?> class="sr-only peer">
                             <div
                                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
                             </div>
@@ -213,26 +217,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                 </h2>
                 <div class="space-y-4">
                     <div>
-                        <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Items per Page</label>
+                        <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Items per
+                            Page</label>
                         <select name="items_per_page"
                             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 md:w-1/2 bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors">
                             <option value="10" <?php echo $items_per_page === 10 ? 'selected' : ''; ?>>10 items</option>
                             <option value="25" <?php echo $items_per_page === 25 ? 'selected' : ''; ?>>25 items</option>
                             <option value="50" <?php echo $items_per_page === 50 ? 'selected' : ''; ?>>50 items</option>
-                            <option value="100" <?php echo $items_per_page === 100 ? 'selected' : ''; ?>>100 items</option>
+                            <option value="100" <?php echo $items_per_page === 100 ? 'selected' : ''; ?>>100 items
+                            </option>
                         </select>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Number of items to display in tables</p>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Number of items to display in tables
+                        </p>
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Timezone</label>
+                        <label
+                            class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Timezone</label>
                         <select name="timezone"
                             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 md:w-1/2 bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors">
-                            <option value="Asia/Manila" <?php echo $timezone === 'Asia/Manila' ? 'selected' : ''; ?>>Asia/Manila (PHT)</option>
+                            <option value="Asia/Manila" <?php echo $timezone === 'Asia/Manila' ? 'selected' : ''; ?>>
+                                Asia/Manila (PHT)</option>
                             <option value="UTC" <?php echo $timezone === 'UTC' ? 'selected' : ''; ?>>UTC</option>
-                            <option value="America/New_York" <?php echo $timezone === 'America/New_York' ? 'selected' : ''; ?>>America/New York (EST)</option>
-                            <option value="America/Los_Angeles" <?php echo $timezone === 'America/Los_Angeles' ? 'selected' : ''; ?>>America/Los Angeles (PST)</option>
-                            <option value="Europe/London" <?php echo $timezone === 'Europe/London' ? 'selected' : ''; ?>>Europe/London (GMT)</option>
-                            <option value="Asia/Tokyo" <?php echo $timezone === 'Asia/Tokyo' ? 'selected' : ''; ?>>Asia/Tokyo (JST)</option>
+                            <option value="America/New_York"
+                                <?php echo $timezone === 'America/New_York' ? 'selected' : ''; ?>>America/New York (EST)
+                            </option>
+                            <option value="America/Los_Angeles"
+                                <?php echo $timezone === 'America/Los_Angeles' ? 'selected' : ''; ?>>America/Los Angeles
+                                (PST)</option>
+                            <option value="Europe/London"
+                                <?php echo $timezone === 'Europe/London' ? 'selected' : ''; ?>>Europe/London (GMT)
+                            </option>
+                            <option value="Asia/Tokyo" <?php echo $timezone === 'Asia/Tokyo' ? 'selected' : ''; ?>>
+                                Asia/Tokyo (JST)</option>
                         </select>
                         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Choose your preferred timezone</p>
                     </div>
@@ -331,7 +347,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
                         // Force a small delay to ensure the DOM updates
                         setTimeout(function() {
                             const html = document.documentElement;
-                            console.log('Dark class present:', html.classList.contains('dark'));
+                            console.log('Dark class present:', html.classList.contains(
+                                'dark'));
                         }, 100);
                     }
                 });

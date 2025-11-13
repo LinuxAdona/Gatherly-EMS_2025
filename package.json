@@ -3,6 +3,6 @@
     "@parcel/watcher": "^2.5.1"
   },
   "scripts": {
-    "dev": "browser-sync start --proxy 'localhost/Gatherly-EMS_2025/public/pages/home.php' --files '/opt/lampp/htdocs/Gatherly-EMS_2025/**/**'"
+    "dev": "browser-sync start --proxy 'localhost/Gatherly-EMS_2025/index.php' --files '/opt/lampp/htdocs/Gatherly-EMS_2025/**/**'"
   }
 }

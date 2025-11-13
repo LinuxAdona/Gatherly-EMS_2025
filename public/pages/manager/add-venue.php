@@ -83,7 +83,8 @@ $default_amenities = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Venue | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -101,7 +102,7 @@ $default_amenities = [
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
                 <div class="flex items-center h-full">
-                    <a href="../home.php" class="flex items-center group">
+                    <a href="../../../index.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
                             src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
@@ -114,7 +115,8 @@ $default_amenities = [
                     <a href="pricing.php" class="text-gray-700 hover:text-green-600">Pricing</a>
                     <a href="analytics.php" class="text-gray-700 hover:text-green-600">Analytics</a>
                     <div class="relative">
-                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-green-600">
+                        <button id="profile-dropdown-btn"
+                            class="flex items-center gap-2 text-gray-700 hover:text-green-600">
                             <i class="text-2xl fas fa-user-tie"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="text-xs fas fa-chevron-down"></i>
@@ -168,7 +170,8 @@ $default_amenities = [
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700">Base Price (₱)</label>
-                        <input type="number" id="base_price" name="base_price" placeholder="e.g., 50000" step="0.01" required
+                        <input type="number" id="base_price" name="base_price" placeholder="e.g., 50000" step="0.01"
+                            required
                             class="w-full mt-2 rounded-lg border border-gray-300 px-4 py-2.5 shadow-sm focus:ring-green-500 focus:border-green-500">
                     </div>
                 </div>
@@ -176,7 +179,8 @@ $default_amenities = [
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700">Price Percentage (%)</label>
-                        <input type="number" id="price_percentage" name="price_percentage" placeholder="e.g., 15" step="0.01" min="0"
+                        <input type="number" id="price_percentage" name="price_percentage" placeholder="e.g., 15"
+                            step="0.01" min="0"
                             class="w-full mt-2 rounded-lg border border-gray-300 px-4 py-2.5 shadow-sm focus:ring-green-500 focus:border-green-500">
                     </div>
                     <div>
@@ -220,7 +224,8 @@ $default_amenities = [
 
                 <div>
                     <label class="block text-sm font-semibold text-gray-700">Venue Image</label>
-                    <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition relative">
+                    <label
+                        class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition relative">
                         <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
                         <p class="text-sm text-gray-600">Click to upload image</p>
                         <p class="text-xs text-gray-400">PNG, JPG up to 10MB</p>
@@ -231,20 +236,24 @@ $default_amenities = [
 
                 <div>
                     <label class="block text-sm font-semibold text-gray-700">Amenities</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2 bg-gray-50 p-4 rounded-lg border border-gray-300">
+                    <div
+                        class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2 bg-gray-50 p-4 rounded-lg border border-gray-300">
                         <?php foreach ($default_amenities as $amenity): ?>
-                            <label class="flex items-center gap-2 text-sm text-gray-700">
-                                <input type="checkbox" name="venue_amenities[]" value="<?php echo htmlspecialchars($amenity); ?>"
-                                    class="text-green-600 focus:ring-green-500">
-                                <?php echo htmlspecialchars($amenity); ?>
-                            </label>
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input type="checkbox" name="venue_amenities[]"
+                                value="<?php echo htmlspecialchars($amenity); ?>"
+                                class="text-green-600 focus:ring-green-500">
+                            <?php echo htmlspecialchars($amenity); ?>
+                        </label>
                         <?php endforeach; ?>
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                    <a href="my-venues.php" class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition">Cancel</a>
-                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md transition">
+                    <a href="my-venues.php"
+                        class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition">Cancel</a>
+                    <button type="submit"
+                        class="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md transition">
                         <i class="fas fa-plus-circle mr-1"></i> Add Venue
                     </button>
                 </div>
@@ -257,46 +266,46 @@ $default_amenities = [
     <?php include '../../../src/components/footer.php'; ?>
 
     <script>
-        // Dynamic pricing auto-compute
-        const baseInput = document.getElementById('base_price');
-        const percentInput = document.getElementById('price_percentage');
-        const peak = document.getElementById('peak_price');
-        const offpeak = document.getElementById('offpeak_price');
-        const weekday = document.getElementById('weekday_price');
-        const weekend = document.getElementById('weekend_price');
+    // Dynamic pricing auto-compute
+    const baseInput = document.getElementById('base_price');
+    const percentInput = document.getElementById('price_percentage');
+    const peak = document.getElementById('peak_price');
+    const offpeak = document.getElementById('offpeak_price');
+    const weekday = document.getElementById('weekday_price');
+    const weekend = document.getElementById('weekend_price');
 
-        function computePrices() {
-            const base = parseFloat(baseInput.value) || 0;
-            const percent = parseFloat(percentInput.value) || 0;
-            const peakPrice = base + (base * (percent / 100));
-            const offpeakPrice = base - (base * (percent / 100));
-            const weekdayPrice = base;
-            const weekendPrice = peakPrice;
+    function computePrices() {
+        const base = parseFloat(baseInput.value) || 0;
+        const percent = parseFloat(percentInput.value) || 0;
+        const peakPrice = base + (base * (percent / 100));
+        const offpeakPrice = base - (base * (percent / 100));
+        const weekdayPrice = base;
+        const weekendPrice = peakPrice;
 
-            peak.value = peakPrice.toFixed(2);
-            offpeak.value = offpeakPrice.toFixed(2);
-            weekday.value = weekdayPrice.toFixed(2);
-            weekend.value = weekendPrice.toFixed(2);
+        peak.value = peakPrice.toFixed(2);
+        offpeak.value = offpeakPrice.toFixed(2);
+        weekday.value = weekdayPrice.toFixed(2);
+        weekend.value = weekendPrice.toFixed(2);
+    }
+
+    baseInput.addEventListener('input', computePrices);
+    percentInput.addEventListener('input', computePrices);
+
+    const imageInput = document.getElementById('imageInput');
+    const imageStatus = document.getElementById('imageStatus');
+    imageInput.addEventListener('change', () => {
+        if (imageInput.files && imageInput.files.length > 0) {
+            imageStatus.textContent = `Image selected: ${imageInput.files[0].name}`;
+            imageStatus.classList.remove('hidden');
+        } else {
+            imageStatus.textContent = '';
+            imageStatus.classList.add('hidden');
         }
+    });
 
-        baseInput.addEventListener('input', computePrices);
-        percentInput.addEventListener('input', computePrices);
-
-        const imageInput = document.getElementById('imageInput');
-        const imageStatus = document.getElementById('imageStatus');
-        imageInput.addEventListener('change', () => {
-            if (imageInput.files && imageInput.files.length > 0) {
-                imageStatus.textContent = `Image selected: ${imageInput.files[0].name}`;
-                imageStatus.classList.remove('hidden');
-            } else {
-                imageStatus.textContent = '';
-                imageStatus.classList.add('hidden');
-            }
-        });
-
-        document.getElementById('profile-dropdown-btn').addEventListener('click', () => {
-            document.getElementById('profile-dropdown').classList.toggle('hidden');
-        });
+    document.getElementById('profile-dropdown-btn').addEventListener('click', () => {
+        document.getElementById('profile-dropdown').classList.toggle('hidden');
+    });
     </script>
 
 </body>

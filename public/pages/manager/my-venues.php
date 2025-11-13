@@ -133,7 +133,8 @@ if ($result && $result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Venues | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet" href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
+    <link rel="stylesheet"
+        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -192,7 +193,7 @@ if ($result && $result->num_rows > 0) {
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-12 sm:h-16">
                 <div class="flex items-center h-full">
-                    <a href="../home.php" class="flex items-center group">
+                    <a href="../../../index.php" class="flex items-center group">
                         <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
                             src="../../assets/images/logo.png" alt="Gatherly Logo">
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
@@ -205,15 +206,18 @@ if ($result && $result->num_rows > 0) {
                     <a href="pricing.php" class="text-gray-700 hover:text-green-600">Pricing</a>
                     <a href="analytics.php" class="text-gray-700 hover:text-green-600">Analytics</a>
                     <div class="relative">
-                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-green-600">
+                        <button id="profile-dropdown-btn"
+                            class="flex items-center gap-2 text-gray-700 hover:text-green-600">
                             <i class="text-2xl fas fa-user-tie"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="text-xs fas fa-chevron-down"></i>
                         </button>
-                        <div id="profile-dropdown" class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
+                        <div id="profile-dropdown"
+                            class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
                             <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Profile</a>
                             <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Settings</a>
-                            <a href="../../../src/services/signout-handler.php" class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
+                            <a href="../../../src/services/signout-handler.php"
+                                class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +232,8 @@ if ($result && $result->num_rows > 0) {
                 <h1 class="text-3xl font-bold text-gray-800">My Venues</h1>
                 <p class="text-gray-600">Manage your venues, view details, and track availability</p>
             </div>
-            <a href="add-venue.php" class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg shadow-md flex items-center gap-2 transition-all hover:scale-105">
+            <a href="add-venue.php"
+                class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg shadow-md flex items-center gap-2 transition-all hover:scale-105">
                 <i class="fas fa-plus-circle"></i> Add New Venue
             </a>
         </div>
@@ -260,17 +265,18 @@ if ($result && $result->num_rows > 0) {
                     }
                     ?>
 
-                    <div class="venue-card bg-white border border-gray-200 shadow-md rounded-xl hover:shadow-lg transition-all overflow-hidden">
+                    <div
+                        class="venue-card bg-white border border-gray-200 shadow-md rounded-xl hover:shadow-lg transition-all overflow-hidden">
                         <!-- Image Container -->
                         <div class="venue-image-container relative w-full h-48 overflow-hidden bg-gray-100 rounded-t-xl">
-                            <img src="<?php echo $imageSrc; ?>"
-                                alt="Venue Image"
+                            <img src="<?php echo $imageSrc; ?>" alt="Venue Image"
                                 class="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105">
                         </div>
 
                         <!-- Content -->
                         <div class="p-5">
-                            <h2 class="text-lg font-bold text-gray-800 mb-1"><?php echo htmlspecialchars($venue['venue_name']); ?></h2>
+                            <h2 class="text-lg font-bold text-gray-800 mb-1">
+                                <?php echo htmlspecialchars($venue['venue_name']); ?></h2>
                             <p class="text-sm text-gray-600 mb-2">
                                 <i class="fas fa-map-marker-alt text-green-500 mr-1.5"></i>
                                 <?php echo htmlspecialchars($venue['location']); ?>
@@ -281,19 +287,26 @@ if ($result && $result->num_rows > 0) {
                             </p>
                             <div class="mb-3 bg-gray-50 rounded-lg p-3 border border-gray-100">
                                 <p class="text-sm font-semibold text-green-700">
-                                    <i class="fas fa-peso-sign mr-1"></i>Base Price: ₱<?php echo number_format($venue['base_price'], 2); ?>
+                                    <i class="fas fa-peso-sign mr-1"></i>Base Price:
+                                    ₱<?php echo number_format($venue['base_price'], 2); ?>
                                 </p>
-                                <p class="text-xs text-gray-700 mt-1">Peak Price: ₱<?php echo number_format($venue['peak_price'], 2); ?></p>
-                                <p class="text-xs text-gray-700">Off-Peak Price: ₱<?php echo number_format($venue['offpeak_price'], 2); ?></p>
-                                <p class="text-xs text-gray-700">Weekday Price: ₱<?php echo number_format($venue['weekday_price'], 2); ?></p>
-                                <p class="text-xs text-gray-700">Weekend Price: ₱<?php echo number_format($venue['weekend_price'], 2); ?></p>
+                                <p class="text-xs text-gray-700 mt-1">Peak Price:
+                                    ₱<?php echo number_format($venue['peak_price'], 2); ?></p>
+                                <p class="text-xs text-gray-700">Off-Peak Price:
+                                    ₱<?php echo number_format($venue['offpeak_price'], 2); ?></p>
+                                <p class="text-xs text-gray-700">Weekday Price:
+                                    ₱<?php echo number_format($venue['weekday_price'], 2); ?></p>
+                                <p class="text-xs text-gray-700">Weekend Price:
+                                    ₱<?php echo number_format($venue['weekend_price'], 2); ?></p>
                             </div>
-                            <p class="text-sm text-gray-700 line-clamp-3 mb-4"><?php echo htmlspecialchars($venue['description']); ?></p>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-4">
+                                <?php echo htmlspecialchars($venue['description']); ?></p>
 
                             <div class="flex items-center justify-between">
                                 <div class="venue-actions flex gap-3">
                                     <!-- EDIT BUTTON -->
-                                    <button class="edit-btn flex items-center gap-1 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors hover:underline"
+                                    <button
+                                        class="edit-btn flex items-center gap-1 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors hover:underline"
                                         data-venue-id="<?php echo $venue['venue_id']; ?>"
                                         data-venue-name="<?php echo htmlspecialchars($venue['venue_name']); ?>"
                                         data-venue-location="<?php echo htmlspecialchars($venue['location']); ?>"
@@ -307,7 +320,8 @@ if ($result && $result->num_rows > 0) {
                                     </button>
 
                                     <!-- DELETE BUTTON -->
-                                    <button class="delete-btn flex items-center gap-1 text-red-600 hover:text-red-700 font-semibold text-sm transition-colors hover:underline"
+                                    <button
+                                        class="delete-btn flex items-center gap-1 text-red-600 hover:text-red-700 font-semibold text-sm transition-colors hover:underline"
                                         data-id="<?php echo $venue['venue_id']; ?>"
                                         data-name="<?php echo htmlspecialchars($venue['venue_name']); ?>">
                                         <i class="fas fa-trash-alt"></i> Delete
@@ -336,11 +350,13 @@ if ($result && $result->num_rows > 0) {
                 <?php endwhile; ?>
             </div>
         <?php else: ?>
-            <div class="flex flex-col items-center justify-center py-20 text-center bg-white border border-gray-200 rounded-2xl shadow-md">
+            <div
+                class="flex flex-col items-center justify-center py-20 text-center bg-white border border-gray-200 rounded-2xl shadow-md">
                 <i class="mb-3 text-5xl text-gray-400 fas fa-building"></i>
                 <h3 class="mb-2 text-xl font-semibold text-gray-700">No venues added yet</h3>
                 <p class="mb-4 text-gray-500">Start by adding your first venue to display it here.</p>
-                <a href="add-venue.php" class="px-6 py-3 font-semibold text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 transition-all">
+                <a href="add-venue.php"
+                    class="px-6 py-3 font-semibold text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 transition-all">
                     <i class="mr-2 fas fa-plus-circle"></i> Add Venue
                 </a>
             </div>
@@ -354,7 +370,8 @@ if ($result && $result->num_rows > 0) {
         <div class="modal-content shadow-xl bg-white rounded-2xl p-6 max-w-lg mx-auto relative">
             <div class="flex items-center justify-between mb-5 border-b pb-3">
                 <h2 class="text-2xl font-bold text-gray-800">Edit Venue</h2>
-                <button onclick="closeModal('editModal')" class="text-gray-400 hover:text-gray-700 text-3xl font-bold">&times;</button>
+                <button onclick="closeModal('editModal')"
+                    class="text-gray-400 hover:text-gray-700 text-3xl font-bold">&times;</button>
             </div>
 
             <form method="POST" enctype="multipart/form-data" class="space-y-5">
@@ -364,11 +381,15 @@ if ($result && $result->num_rows > 0) {
                 <div class="grid grid-cols-1 gap-3">
                     <div>
                         <label class="block font-semibold mb-1 text-sm">Venue Name</label>
-                        <input type="text" name="venue_name" id="edit_venue_name" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500" required>
+                        <input type="text" name="venue_name" id="edit_venue_name"
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500"
+                            required>
                     </div>
                     <div>
                         <label class="block font-semibold mb-1 text-sm">Location</label>
-                        <input type="text" name="location" id="edit_location" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500" required>
+                        <input type="text" name="location" id="edit_location"
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500"
+                            required>
                     </div>
                 </div>
 
@@ -376,42 +397,53 @@ if ($result && $result->num_rows > 0) {
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold mb-1 text-sm">Capacity</label>
-                        <input type="number" name="capacity" id="edit_capacity" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500" required>
+                        <input type="number" name="capacity" id="edit_capacity"
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500"
+                            required>
                     </div>
                     <div>
                         <label class="block font-semibold mb-1 text-sm">Base Price (₱)</label>
-                        <input type="number" step="0.01" name="base_price" id="edit_base_price" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500" required>
+                        <input type="number" step="0.01" name="base_price" id="edit_base_price"
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500"
+                            required>
                     </div>
                 </div>
 
                 <!-- Price Percentage -->
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Price Percentage (%)</label>
-                    <input type="number" step="0.01" name="price_percentage" id="edit_price_percentage" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500" required>
+                    <input type="number" step="0.01" name="price_percentage" id="edit_price_percentage"
+                        class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500"
+                        required>
                 </div>
 
                 <!-- Description -->
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Description</label>
-                    <textarea name="description" id="edit_description" rows="3" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500" required></textarea>
+                    <textarea name="description" id="edit_description" rows="3"
+                        class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500"
+                        required></textarea>
                 </div>
 
                 <!-- Amenities Section -->
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Amenities</label>
-                    <div id="amenitiesContainer" class="grid grid-cols-2 gap-3 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50 shadow-inner">
+                    <div id="amenitiesContainer"
+                        class="grid grid-cols-2 gap-3 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50 shadow-inner">
                         <?php foreach ($allAmenities as $amenityName => $defaultPrice): ?>
-                            <div class="flex items-center justify-between gap-2 p-2 rounded-lg hover:bg-green-50 transition-all">
+                            <div
+                                class="flex items-center justify-between gap-2 p-2 rounded-lg hover:bg-green-50 transition-all">
                                 <label class="flex items-center gap-2">
-                                    <input type="checkbox" name="amenities[<?php echo htmlspecialchars($amenityName); ?>][enabled]"
-                                        class="checkbox-amenity"
-                                        value="1"
+                                    <input type="checkbox"
+                                        name="amenities[<?php echo htmlspecialchars($amenityName); ?>][enabled]"
+                                        class="checkbox-amenity" value="1"
                                         data-default-price="<?php echo $defaultPrice; ?>">
                                     <span class="text-sm font-medium"><?php echo htmlspecialchars($amenityName); ?></span>
                                 </label>
                                 <input type="number" name="amenities[<?php echo htmlspecialchars($amenityName); ?>][price]"
                                     value="<?php echo $defaultPrice; ?>"
-                                    class="w-12 text-sm border border-gray-300 rounded p-1 text-right shadow-sm focus:ring-1 focus:ring-green-500" step="0.01">
+                                    class="w-12 text-sm border border-gray-300 rounded p-1 text-right shadow-sm focus:ring-1 focus:ring-green-500"
+                                    step="0.01">
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -420,7 +452,8 @@ if ($result && $result->num_rows > 0) {
                 <!-- Availability -->
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Availability Status</label>
-                    <select name="availability_status" id="edit_availability_status" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500">
+                    <select name="availability_status" id="edit_availability_status"
+                        class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-1 focus:ring-green-500">
                         <option value="available">Available</option>
                         <option value="unavailable">Unavailable</option>
                     </select>
@@ -429,14 +462,18 @@ if ($result && $result->num_rows > 0) {
                 <!-- Image Upload -->
                 <div>
                     <label class="block font-semibold mb-1 text-sm">Update Image (Optional)</label>
-                    <input type="file" name="image" accept="image/*" class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm">
+                    <input type="file" name="image" accept="image/*"
+                        class="w-full border border-gray-300 rounded-lg p-2 text-sm shadow-sm">
                     <p class="text-xs text-gray-500 mt-1">Leave empty to keep current image</p>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="flex justify-end gap-3 pt-3">
-                    <button type="button" onclick="closeModal('editModal')" class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 font-semibold text-sm">Cancel</button>
-                    <button type="submit" name="update_venue" class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm">Save Changes</button>
+                    <button type="button" onclick="closeModal('editModal')"
+                        class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 font-semibold text-sm">Cancel</button>
+                    <button type="submit" name="update_venue"
+                        class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm">Save
+                        Changes</button>
                 </div>
             </form>
         </div>
@@ -452,7 +489,8 @@ if ($result && $result->num_rows > 0) {
 
             <form method="GET" class="flex justify-center gap-3">
                 <input type="hidden" name="delete" id="delete_venue_id">
-                <button type="button" onclick="closeModal('deleteModal')" class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 font-semibold">
+                <button type="button" onclick="closeModal('deleteModal')"
+                    class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 font-semibold">
                     Cancel
                 </button>
                 <button type="submit" class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold">
