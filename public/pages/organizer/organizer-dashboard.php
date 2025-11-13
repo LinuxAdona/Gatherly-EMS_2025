@@ -14,7 +14,7 @@ $error_message = '';
 
 // Check if user is logged in and is an organizer
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
-    header("Location: ../signin.php");
+    header("Location: /home2/linuxman/public_html/public/pages/signin.php");
     exit();
 }
 
@@ -24,7 +24,7 @@ $debug_info[] = "Current directory: " . __DIR__;
 
 try {
     $debug_info[] = "Loading dbconnect.php...";
-    require_once __DIR__ . '/../../../src/services/dbconnect.php';
+    require_once '/home2/linuxman/public_html/src/services/dbconnect.php';
     $debug_info[] = "dbconnect.php loaded successfully";
 
     if (!isset($conn)) {
@@ -319,37 +319,37 @@ if (!$has_error && isset($conn)) {
                 </h2>
                 <div class="space-y-3">
                     <?php if ($recent_events && $recent_events->num_rows > 0): ?>
-                    <?php while ($event = $recent_events->fetch_assoc()): ?>
-                    <div
-                        class="p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h3 class="mb-1 font-semibold text-gray-800">
-                                    <?php echo htmlspecialchars($event['event_name']); ?></h3>
-                                <p class="text-sm text-gray-600">
-                                    <i class="mr-1 fas fa-map-marker-alt"></i>
-                                    <?php echo htmlspecialchars($event['venue_name'] ?? 'No venue assigned'); ?>
-                                </p>
-                                <p class="text-sm text-gray-600">
-                                    <i class="mr-1 fas fa-calendar"></i>
-                                    <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
-                                </p>
-                            </div>
-                            <span class="px-3 py-1 text-xs font-semibold rounded-full
+                        <?php while ($event = $recent_events->fetch_assoc()): ?>
+                            <div
+                                class="p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <h3 class="mb-1 font-semibold text-gray-800">
+                                            <?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                        <p class="text-sm text-gray-600">
+                                            <i class="mr-1 fas fa-map-marker-alt"></i>
+                                            <?php echo htmlspecialchars($event['venue_name'] ?? 'No venue assigned'); ?>
+                                        </p>
+                                        <p class="text-sm text-gray-600">
+                                            <i class="mr-1 fas fa-calendar"></i>
+                                            <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
+                                        </p>
+                                    </div>
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full
                                         <?php
                                         echo $event['status'] == 'confirmed' ? 'bg-green-100 text-green-700' : ($event['status'] == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($event['status'] == 'completed' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'));
                                         ?>">
-                                <?php echo ucfirst($event['status']); ?>
-                            </span>
-                        </div>
-                    </div>
-                    <?php endwhile; ?>
+                                        <?php echo ucfirst($event['status']); ?>
+                                    </span>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
                     <?php else: ?>
-                    <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
-                        <i class="mb-3 text-4xl fas fa-calendar-times"></i>
-                        <p class="mb-2 font-semibold">No events yet</p>
-                        <p class="text-sm">Create your first event to get started!</p>
-                    </div>
+                        <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
+                            <i class="mb-3 text-4xl fas fa-calendar-times"></i>
+                            <p class="mb-2 font-semibold">No events yet</p>
+                            <p class="text-sm">Create your first event to get started!</p>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
