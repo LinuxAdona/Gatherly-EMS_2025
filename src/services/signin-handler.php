@@ -17,13 +17,9 @@ if ($conn->connect_error) {
     die("ERROR: Database connection failed: " . $conn->connect_error);
 }
 
-echo "<!-- Debug: Database connected successfully -->\n";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
-
-    echo "<!-- Debug: Attempting to sign in user with email: " . htmlspecialchars($email) . " -->\n";
 
     // Check if email and password are provided
     if (empty($email)) {
@@ -40,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Prepare the SQL statement
     $sql = "SELECT user_id, password, role, first_name, last_name FROM users WHERE email = ?";
-    echo "<!-- Debug: SQL Query: $sql -->\n";
 
     $stmt = $conn->prepare($sql);
 
@@ -48,22 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("ERROR: Failed to prepare statement: " . $conn->error . "<br>SQL: $sql");
     }
 
-    echo "<!-- Debug: Statement prepared successfully -->\n";
-
     $stmt->bind_param("s", $email);
 
     if (!$stmt->execute()) {
         die("ERROR: Failed to execute statement: " . $stmt->error);
     }
 
-    echo "<!-- Debug: Statement executed successfully -->\n";
-
     $stmt->store_result();
 
-    echo "<!-- Debug: Number of rows found: " . $stmt->num_rows . " -->\n";
-
     if ($stmt->num_rows > 0) {
-        echo "<!-- Debug: User found in database! -->\n";
 
         if (!$stmt->bind_result($user_id, $password_hash, $role, $first_name, $last_name)) {
             die("ERROR: Failed to bind result: " . $stmt->error);
@@ -72,9 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$stmt->fetch()) {
             die("ERROR: Failed to fetch result: " . $stmt->error);
         }
-
-        echo "<!-- Debug: User ID: $user_id, Role: $role, Name: $first_name $last_name -->\n";
-        echo "<!-- Debug: Password hash from DB exists: " . (!empty($password_hash) ? "YES" : "NO") . " -->\n";
 
         if (password_verify($password, $password_hash)) {
             echo "<!-- Debug: Password verification successful! -->\n";
@@ -93,8 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt->close();
             $conn->close();
-
-            echo "<!-- Debug: Redirecting to $role dashboard -->\n";
 
             // Role-based redirection to specific dashboards
             switch ($role) {
