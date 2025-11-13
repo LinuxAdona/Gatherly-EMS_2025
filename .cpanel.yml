@@ -34,47 +34,20 @@ deployment:
     - /bin/cp $REPOPATH/tailwind.config.js $DEPLOYPATH
     - /bin/cp $REPOPATH/package.json $DEPLOYPATH
 
-    # Deploy Python ML system (with debug log file)
-    - echo "========================================" > $DEPLOYPATH/deployment-debug.log
-    - echo "ML Directory Deployment Debug Log" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Deployed on: $(date)" >> $DEPLOYPATH/deployment-debug.log
-    - echo "========================================" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Repository path: $REPOPATH" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Deployment path: $DEPLOYPATH" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Checking if ml directory exists in repo..." >> $DEPLOYPATH/deployment-debug.log
-    - test -d $REPOPATH/ml && echo "✓ ml directory exists in repo" >> $DEPLOYPATH/deployment-debug.log || echo "✗ ml directory NOT FOUND in repo" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Listing ml files in repo:" >> $DEPLOYPATH/deployment-debug.log
-    - ls -1 $REPOPATH/ml/ >> $DEPLOYPATH/deployment-debug.log 2>&1 || echo "Failed to list ml files" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Removing old ml directory from deployment if exists..." >> $DEPLOYPATH/deployment-debug.log
-    - rm -rf $DEPLOYPATH/ml >> $DEPLOYPATH/deployment-debug.log 2>&1 || true
-    - echo "Creating fresh ml directory..." >> $DEPLOYPATH/deployment-debug.log
-    - mkdir -p $DEPLOYPATH/ml
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Copying ml directory contents..." >> $DEPLOYPATH/deployment-debug.log
-    - /bin/cp -v $REPOPATH/ml/* $DEPLOYPATH/ml/ >> $DEPLOYPATH/deployment-debug.log 2>&1 || echo "Copy failed with exit code: $?" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Verifying deployed ml directory..." >> $DEPLOYPATH/deployment-debug.log
-    - test -d $DEPLOYPATH/ml && echo "✓ ml directory exists in deployment" >> $DEPLOYPATH/deployment-debug.log || echo "✗ ml directory NOT FOUND in deployment" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Listing deployed ml files:" >> $DEPLOYPATH/deployment-debug.log
-    - ls -1 $DEPLOYPATH/ml/ >> $DEPLOYPATH/deployment-debug.log 2>&1 || echo "Failed to list deployed ml files" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "File counts:" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Total files: $(find $DEPLOYPATH/ml -type f 2>/dev/null | wc -l)" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Python files: $(find $DEPLOYPATH/ml -name '*.py' 2>/dev/null | wc -l)" >> $DEPLOYPATH/deployment-debug.log
-    - echo "PHP files: $(find $DEPLOYPATH/ml -name '*.php' 2>/dev/null | wc -l)" >> $DEPLOYPATH/deployment-debug.log
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Copying root requirements.txt..." >> $DEPLOYPATH/deployment-debug.log
-    - /bin/cp -v $REPOPATH/requirements.txt $DEPLOYPATH/requirements.txt >> $DEPLOYPATH/deployment-debug.log 2>&1 || true
-    - echo "" >> $DEPLOYPATH/deployment-debug.log
-    - echo "========================================" >> $DEPLOYPATH/deployment-debug.log
-    - echo "Deployment log complete!" >> $DEPLOYPATH/deployment-debug.log
-    - echo "View this file at: http://c2lkis.com/deployment-debug.log" >> $DEPLOYPATH/deployment-debug.log
-    - echo "========================================" >> $DEPLOYPATH/deployment-debug.log
+    # Deploy Python ML system
+    - echo "Deploying Python ML system..."
+    - echo "Checking ml directory in repo..."
+    - ls -la $REPOPATH/ml || echo "ml directory not found in repo"
+    - echo "Copying ml directory..."
+    - /bin/cp -R $REPOPATH/ml $DEPLOYPATH
+    - echo "Verifying ml directory in deployment..."
+    - ls -la $DEPLOYPATH/ml || echo "ml directory not found in deployment"
+    - echo "Copying requirements.txt..."
+    - /bin/cp $REPOPATH/requirements.txt $DEPLOYPATH
+    - echo "Files in deployed ml directory:"
+    - find $DEPLOYPATH/ml -type f | wc -l
+    - echo "Python files in deployed ml directory:"
+    - find $DEPLOYPATH/ml -name "*.py" | wc -l
 
     # Install Python dependencies if pip is available
     - echo "Installing Python dependencies..."
