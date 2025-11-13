@@ -1,5 +1,16 @@
 <?php
+// TEMPORARY: Enable error display for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('log_errors', 1);
+
 session_start();
+
+// Initialize debug info array
+$debug_info = [];
+$has_error = false;
+$error_message = '';
 
 // Check if user is logged in and is an organizer
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
@@ -7,7 +18,30 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
     exit();
 }
 
-require_once '../../../src/services/dbconnect.php';
+$debug_info[] = "User ID: " . $_SESSION['user_id'];
+$debug_info[] = "User Role: " . $_SESSION['role'];
+$debug_info[] = "Current directory: " . __DIR__;
+
+try {
+    $debug_info[] = "Loading dbconnect.php...";
+    require_once __DIR__ . '/../../../src/services/dbconnect.php';
+    $debug_info[] = "dbconnect.php loaded successfully";
+    
+    if (!isset($conn)) {
+        throw new Exception("Database connection variable \$conn is not set");
+    }
+    
+    if ($conn->connect_error) {
+        throw new Exception("Database connection failed: " . $conn->connect_error);
+    }
+    
+    $debug_info[] = "Database connection verified";
+} catch (Exception $e) {
+    $has_error = true;
+    $error_message = $e->getMessage();
+    $debug_info[] = "ERROR: " . $e->getMessage();
+    error_log("ERROR in organizer-dashboard.php: " . $e->getMessage());
+}
 
 $first_name = $_SESSION['first_name'] ?? 'Organizer';
 $user_id = $_SESSION['user_id'];
@@ -20,32 +54,72 @@ $stats = [
     'total_spent' => 0
 ];
 
-// Get organizer's events count
-$result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id");
-$stats['my_events'] = $result->fetch_assoc()['count'];
+$recent_events = null;
 
-// Get pending events
-$result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id AND status = 'pending'");
-$stats['pending_events'] = $result->fetch_assoc()['count'];
+// Only proceed with queries if database connection is successful
+if (!$has_error && isset($conn)) {
+    try {
+        $debug_info[] = "Fetching organizer statistics...";
+        
+        // Get organizer's events count
+        $result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id");
+        if ($result === false) {
+            throw new Exception("Failed to fetch events count: " . $conn->error);
+        }
+        $stats['my_events'] = $result->fetch_assoc()['count'];
+        $debug_info[] = "My events count: " . $stats['my_events'];
 
-// Get confirmed events
-$result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id AND status = 'confirmed'");
-$stats['confirmed_events'] = $result->fetch_assoc()['count'];
+        // Get pending events
+        $result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id AND status = 'pending'");
+        if ($result === false) {
+            throw new Exception("Failed to fetch pending events: " . $conn->error);
+        }
+        $stats['pending_events'] = $result->fetch_assoc()['count'];
+        $debug_info[] = "Pending events count: " . $stats['pending_events'];
 
-// Get total spent
-$result = $conn->query("SELECT SUM(total_cost) as total FROM events WHERE client_id = $user_id AND status IN ('confirmed', 'completed')");
-$stats['total_spent'] = $result->fetch_assoc()['total'] ?? 0;
+        // Get confirmed events
+        $result = $conn->query("SELECT COUNT(*) as count FROM events WHERE client_id = $user_id AND status = 'confirmed'");
+        if ($result === false) {
+            throw new Exception("Failed to fetch confirmed events: " . $conn->error);
+        }
+        $stats['confirmed_events'] = $result->fetch_assoc()['count'];
+        $debug_info[] = "Confirmed events count: " . $stats['confirmed_events'];
 
-// Get recent events
-$recent_events_query = "SELECT e.event_id, e.event_name, e.event_date, e.status, e.total_cost, v.venue_name 
-                        FROM events e 
-                        LEFT JOIN venues v ON e.venue_id = v.venue_id 
-                        WHERE e.client_id = $user_id 
-                        ORDER BY e.event_date DESC 
-                        LIMIT 5";
-$recent_events = $conn->query($recent_events_query);
+        // Get total spent
+        $result = $conn->query("SELECT SUM(total_cost) as total FROM events WHERE client_id = $user_id AND status IN ('confirmed', 'completed')");
+        if ($result === false) {
+            throw new Exception("Failed to fetch total spent: " . $conn->error);
+        }
+        $stats['total_spent'] = $result->fetch_assoc()['total'] ?? 0;
+        $debug_info[] = "Total spent: ₱" . number_format($stats['total_spent'], 2);
 
-$conn->close();
+        // Get recent events
+        $debug_info[] = "Fetching recent events...";
+        $recent_events_query = "SELECT e.event_id, e.event_name, e.event_date, e.status, e.total_cost, v.venue_name 
+                                FROM events e 
+                                LEFT JOIN venues v ON e.venue_id = v.venue_id 
+                                WHERE e.client_id = $user_id 
+                                ORDER BY e.event_date DESC 
+                                LIMIT 5";
+        $recent_events = $conn->query($recent_events_query);
+        if ($recent_events === false) {
+            throw new Exception("Failed to fetch recent events: " . $conn->error);
+        }
+        $debug_info[] = "Recent events fetched: " . $recent_events->num_rows . " rows";
+        
+        $debug_info[] = "All queries completed successfully";
+    } catch (Exception $e) {
+        $has_error = true;
+        $error_message = $e->getMessage();
+        $debug_info[] = "ERROR: " . $e->getMessage();
+        error_log("ERROR in organizer-dashboard.php queries: " . $e->getMessage());
+    }
+    
+    if (isset($conn)) {
+        $conn->close();
+        $debug_info[] = "Database connection closed";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,6 +182,38 @@ $conn->close();
             </div>
         </div>
     </nav>
+
+    <!-- Debug Information Section -->
+    <?php if (!empty($debug_info)): ?>
+        <div class="container px-4 py-4 mx-auto sm:px-6 lg:px-8">
+            <div class="p-4 border rounded-lg <?php echo $has_error ? 'bg-red-50 border-red-300' : 'bg-blue-50 border-blue-300'; ?>">
+                <div class="flex items-start gap-3">
+                    <i class="mt-1 text-xl <?php echo $has_error ? 'fas fa-exclamation-circle text-red-600' : 'fas fa-info-circle text-blue-600'; ?>"></i>
+                    <div class="flex-1">
+                        <h3 class="mb-2 text-lg font-bold <?php echo $has_error ? 'text-red-900' : 'text-blue-900'; ?>">
+                            <?php echo $has_error ? 'Error Detected' : 'Debug Information'; ?>
+                        </h3>
+                        <?php if ($has_error && !empty($error_message)): ?>
+                            <div class="p-3 mb-3 font-semibold text-red-900 bg-red-100 border border-red-200 rounded">
+                                <?php echo htmlspecialchars($error_message); ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="space-y-1 text-sm font-mono <?php echo $has_error ? 'text-red-800' : 'text-blue-800'; ?>">
+                            <?php foreach ($debug_info as $info): ?>
+                                <div class="flex items-start gap-2">
+                                    <span class="mt-1 text-xs">•</span>
+                                    <span class="flex-1"><?php echo htmlspecialchars($info); ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <button onclick="this.closest('.p-4').remove()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <!-- Main Content -->
     <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
