@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <a href="signin.php"
+                        <a href="public/pages/signin.php"
                             class="px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold text-white transition-all bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5">Sign
                             in</a>
                         <button id="mobile-menu-button"
@@ -96,7 +96,7 @@
                                 </p>
                                 <div
                                     class="flex flex-col items-center justify-center gap-3 mt-6 sm:mt-8 sm:flex-row sm:gap-4 lg:justify-start">
-                                    <a href="signup.php"
+                                    <a href="public/pages/signup.php"
                                         class="w-full px-6 py-3 text-sm font-semibold text-white transition-all bg-indigo-600 shadow-xl sm:w-auto sm:px-8 sm:py-4 sm:text-base lg:text-lg rounded-xl hover:bg-indigo-700 hover:shadow-2xl hover:-translate-y-1">
                                         Get Started Free
                                     </a>
@@ -374,7 +374,7 @@
                     <p class="mt-3 text-base font-medium text-indigo-100 sm:mt-4 sm:text-lg md:text-xl">Join Gatherly
                         today and experience the future of event planning!</p>
                     <div class="flex flex-col items-center justify-center gap-3 mt-6 sm:mt-8 sm:flex-row sm:gap-4">
-                        <a href="signup.php"
+                        <a href="public/pages/signup.php"
                             class="inline-block w-full px-6 py-3 text-base font-semibold text-indigo-600 transition-all bg-white shadow-xl sm:w-auto sm:px-8 sm:py-4 sm:text-lg rounded-xl hover:bg-gray-50 hover:shadow-2xl hover:-translate-y-1">
                             Get Started Now
                         </a>
