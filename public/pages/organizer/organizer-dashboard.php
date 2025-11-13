@@ -183,41 +183,6 @@ if (!$has_error && isset($conn)) {
         </div>
     </nav>
 
-    <!-- Debug Information Section -->
-    <?php if (!empty($debug_info)): ?>
-        <div class="container px-4 py-4 mx-auto sm:px-6 lg:px-8">
-            <div
-                class="p-4 border rounded-lg <?php echo $has_error ? 'bg-red-50 border-red-300' : 'bg-blue-50 border-blue-300'; ?>">
-                <div class="flex items-start gap-3">
-                    <i
-                        class="mt-1 text-xl <?php echo $has_error ? 'fas fa-exclamation-circle text-red-600' : 'fas fa-info-circle text-blue-600'; ?>"></i>
-                    <div class="flex-1">
-                        <h3 class="mb-2 text-lg font-bold <?php echo $has_error ? 'text-red-900' : 'text-blue-900'; ?>">
-                            <?php echo $has_error ? 'Error Detected' : 'Debug Information'; ?>
-                        </h3>
-                        <?php if ($has_error && !empty($error_message)): ?>
-                            <div class="p-3 mb-3 font-semibold text-red-900 bg-red-100 border border-red-200 rounded">
-                                <?php echo htmlspecialchars($error_message); ?>
-                            </div>
-                        <?php endif; ?>
-                        <div
-                            class="space-y-1 text-sm font-mono <?php echo $has_error ? 'text-red-800' : 'text-blue-800'; ?>">
-                            <?php foreach ($debug_info as $info): ?>
-                                <div class="flex items-start gap-2">
-                                    <span class="mt-1 text-xs">•</span>
-                                    <span class="flex-1"><?php echo htmlspecialchars($info); ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <button onclick="this.closest('.p-4').remove()" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-
     <!-- Main Content -->
     <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
         <div class="flex flex-col gap-6 mb-8 lg:flex-row lg:items-start lg:justify-between">
@@ -354,37 +319,37 @@ if (!$has_error && isset($conn)) {
                 </h2>
                 <div class="space-y-3">
                     <?php if ($recent_events && $recent_events->num_rows > 0): ?>
-                        <?php while ($event = $recent_events->fetch_assoc()): ?>
-                            <div
-                                class="p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <h3 class="mb-1 font-semibold text-gray-800">
-                                            <?php echo htmlspecialchars($event['event_name']); ?></h3>
-                                        <p class="text-sm text-gray-600">
-                                            <i class="mr-1 fas fa-map-marker-alt"></i>
-                                            <?php echo htmlspecialchars($event['venue_name'] ?? 'No venue assigned'); ?>
-                                        </p>
-                                        <p class="text-sm text-gray-600">
-                                            <i class="mr-1 fas fa-calendar"></i>
-                                            <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
-                                        </p>
-                                    </div>
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full
+                    <?php while ($event = $recent_events->fetch_assoc()): ?>
+                    <div
+                        class="p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="mb-1 font-semibold text-gray-800">
+                                    <?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                <p class="text-sm text-gray-600">
+                                    <i class="mr-1 fas fa-map-marker-alt"></i>
+                                    <?php echo htmlspecialchars($event['venue_name'] ?? 'No venue assigned'); ?>
+                                </p>
+                                <p class="text-sm text-gray-600">
+                                    <i class="mr-1 fas fa-calendar"></i>
+                                    <?php echo date('M d, Y', strtotime($event['event_date'])); ?>
+                                </p>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full
                                         <?php
                                         echo $event['status'] == 'confirmed' ? 'bg-green-100 text-green-700' : ($event['status'] == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($event['status'] == 'completed' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'));
                                         ?>">
-                                        <?php echo ucfirst($event['status']); ?>
-                                    </span>
-                                </div>
-                            </div>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
-                            <i class="mb-3 text-4xl fas fa-calendar-times"></i>
-                            <p class="mb-2 font-semibold">No events yet</p>
-                            <p class="text-sm">Create your first event to get started!</p>
+                                <?php echo ucfirst($event['status']); ?>
+                            </span>
                         </div>
+                    </div>
+                    <?php endwhile; ?>
+                    <?php else: ?>
+                    <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
+                        <i class="mb-3 text-4xl fas fa-calendar-times"></i>
+                        <p class="mb-2 font-semibold">No events yet</p>
+                        <p class="text-sm">Create your first event to get started!</p>
+                    </div>
                     <?php endif; ?>
                 </div>
             </div>
