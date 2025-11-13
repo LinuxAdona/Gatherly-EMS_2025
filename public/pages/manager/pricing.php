@@ -210,7 +210,8 @@ $conn->close();
                     <a href="pricing.php" class="font-semibold text-green-600 hover:text-green-700">Pricing</a>
                     <a href="analytics.php" class="text-gray-700 hover:text-green-600">Analytics</a>
                     <div class="relative">
-                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-green-600">
+                        <button id="profile-dropdown-btn"
+                            class="flex items-center gap-2 text-gray-700 hover:text-green-600">
                             <i class="text-2xl fas fa-user-tie"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="text-xs fas fa-chevron-down"></i>
@@ -435,7 +436,8 @@ $conn->close();
                     <form id="priceCalculator" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Select Venue</label>
-                            <select id="calc_venue" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <select id="calc_venue"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 <?php if ($venues_result && $venues_result->num_rows > 0): ?>
                                     <?php while ($venue = $venues_result->fetch_assoc()): ?>
                                         <option value="<?php echo $venue['venue_id']; ?>"
@@ -451,7 +453,8 @@ $conn->close();
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Season</label>
-                                <select id="calc_season" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                <select id="calc_season"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                     <option value="0.8">Off-Peak (-20%)</option>
                                     <option value="1.0" selected>Regular</option>
                                     <option value="1.2">Peak (+20%)</option>
@@ -459,7 +462,8 @@ $conn->close();
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Day Type</label>
-                                <select id="calc_day" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                <select id="calc_day"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                     <option value="1.0">Weekday</option>
                                     <option value="1.15" selected>Weekend (+15%)</option>
                                 </select>
@@ -468,7 +472,8 @@ $conn->close();
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Current Demand Level</label>
-                            <select id="calc_demand" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <select id="calc_demand"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                 <option value="0.9">Low (-10%)</option>
                                 <option value="1.0">Normal</option>
                                 <option value="1.1" selected>High (+10%)</option>
@@ -507,7 +512,8 @@ $conn->close();
                             <?php while ($hour = $peak_hours_result->fetch_assoc()):
                                 $is_peak = $hour['booking_count'] >= 3;
                             ?>
-                                <div class="text-center p-4 border rounded-lg <?php echo $is_peak ? 'bg-red-50 border-red-200' : 'bg-gray-50 border-gray-200'; ?>">
+                                <div
+                                    class="text-center p-4 border rounded-lg <?php echo $is_peak ? 'bg-red-50 border-red-200' : 'bg-gray-50 border-gray-200'; ?>">
                                     <p class="text-lg font-bold <?php echo $is_peak ? 'text-red-600' : 'text-gray-600'; ?>">
                                         <?php echo $hour['hour']; ?>:00
                                     </p>
@@ -567,12 +573,15 @@ $conn->close();
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <?php if ($package_result && $package_result->num_rows > 0): ?>
                         <?php while ($venue = $package_result->fetch_assoc()): ?>
-                            <div class="border border-green-200 rounded-xl p-4 bg-green-50 hover:border-green-300 transition-colors">
-                                <h3 class="font-semibold text-green-800 text-lg mb-3"><?php echo htmlspecialchars($venue['venue_name']); ?></h3>
+                            <div
+                                class="border border-green-200 rounded-xl p-4 bg-green-50 hover:border-green-300 transition-colors">
+                                <h3 class="font-semibold text-green-800 text-lg mb-3">
+                                    <?php echo htmlspecialchars($venue['venue_name']); ?></h3>
                                 <div class="space-y-2 text-sm mb-4">
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Base Price:</span>
-                                        <span class="font-semibold">₱<?php echo number_format($venue['base_price'], 0); ?></span>
+                                        <span
+                                            class="font-semibold">₱<?php echo number_format($venue['base_price'], 0); ?></span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Amenities:</span>
@@ -586,11 +595,13 @@ $conn->close();
                                     </div>
                                     <?php if (!empty($venue['amenities_list'])): ?>
                                         <div class="mt-2">
-                                            <p class="text-xs text-gray-600">Includes: <?php echo htmlspecialchars(substr($venue['amenities_list'], 0, 50)) . '...'; ?></p>
+                                            <p class="text-xs text-gray-600">Includes:
+                                                <?php echo htmlspecialchars(substr($venue['amenities_list'], 0, 50)) . '...'; ?></p>
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                <button onclick="openPackageModal(<?php echo $venue['venue_id']; ?>, '<?php echo htmlspecialchars($venue['venue_name']); ?>', <?php echo $venue['base_price']; ?>, <?php echo $venue['actual_avg_price']; ?>)"
+                                <button
+                                    onclick="openPackageModal(<?php echo $venue['venue_id']; ?>, '<?php echo htmlspecialchars($venue['venue_name']); ?>', <?php echo $venue['base_price']; ?>, <?php echo $venue['actual_avg_price']; ?>)"
                                     class="w-full bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold">
                                     Create Premium Package
                                 </button>
@@ -622,7 +633,8 @@ $conn->close();
                         <?php while ($range = $elasticity_result->fetch_assoc()): ?>
                             <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-colors">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-semibold text-gray-800 text-lg"><?php echo $range['price_range']; ?></span>
+                                    <span
+                                        class="font-semibold text-gray-800 text-lg"><?php echo $range['price_range']; ?></span>
                                     <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
                                         <?php echo $range['bookings']; ?> bookings
                                     </span>
@@ -765,7 +777,8 @@ $conn->close();
             const priceDifference = ((optimalPrice - basePrice) / basePrice * 100).toFixed(1);
 
             // Update results
-            document.getElementById('optimalPrice').textContent = `₱${optimalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('optimalPrice').textContent =
+                `₱${optimalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
             let explanation = '';
             if (priceDifference > 0) {
