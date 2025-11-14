@@ -41,11 +41,22 @@ try {
 
     // Return response
     echo json_encode($result);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Database error: ' . $e->getMessage(),
+        'trace' => $e->getTraceAsString(),
+        'line' => $e->getLine(),
+        'file' => $e->getFile()
+    ]);
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
         'success' => false,
         'error' => 'AI service error: ' . $e->getMessage(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
+        'line' => $e->getLine(),
+        'file' => $e->getFile()
     ]);
 }

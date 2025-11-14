@@ -379,10 +379,12 @@ class ConversationalPlanner
                     'id' => $venue['venue_id'],
                     'name' => $venue['venue_name'],
                     'capacity' => $venue['capacity'],
-                    'price' => floatval($venue['base_price']),
+                    'price' => isset($venue['base_price']) && is_numeric($venue['base_price']) 
+                              ? floatval($venue['base_price']) 
+                              : 10000.0,
                     'location' => $venue['location'],
                     'description' => $venue['description'],
-                    'amenities' => $venue['amenities'],
+                    'amenities' => $venue['amenities'] ?? '',
                     'score' => round($score, 1)
                 ];
             }
@@ -462,12 +464,14 @@ class ConversationalPlanner
 
         if (empty($services)) return [];
 
-        $category = $services[0]['category'];
+        $category = $services[0]['category'] ?? 'Unknown';
         $budgetForCategory = $totalBudget * ($allocations[$category] ?? 0.10);
 
         $filtered = [];
         foreach ($services as $service) {
-            if ($service['price'] <= $budgetForCategory * 1.3) {
+            // Handle NULL or invalid price values
+            $price = isset($service['price']) && is_numeric($service['price']) ? (float)$service['price'] : 0;
+            if ($price <= $budgetForCategory * 1.3) {
                 $filtered[] = $service;
             }
         }
@@ -566,11 +570,12 @@ class ConversationalPlanner
                 'stage' => 'complete'
             ];
         } catch (Exception $e) {
-            return [
-                'success' => false,
-                'error' => $e->getMessage(),
-                'conversation_state' => $conversationState
-            ];
+            // Log the error with full details
+            error_log('Error in generateFinalRecommendations: ' . $e->getMessage());
+            error_log('Trace: ' . $e->getTraceAsString());
+            
+            // Rethrow to be caught by ai-conversation.php with proper formatting
+            throw new Exception('Failed to generate recommendations: ' . $e->getMessage(), 0, $e);
         }
     }
 
