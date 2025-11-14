@@ -4,9 +4,14 @@
 # Node modules
 node_modules/
 
-# Python virtual environment
+# Python virtual environment (DEPRECATED - Now using PHP)
 *.pyc
 __pycache__/
+ml/venv
+*.py
+
+# Python ML backup (keep in repo for reference)
+# ml_backup/ is kept in version control
 
 # IDE files
 .vscode/
@@ -38,4 +43,3 @@ db/backups/
 tmp/
 temp/
 *.tmp
-ml/venv

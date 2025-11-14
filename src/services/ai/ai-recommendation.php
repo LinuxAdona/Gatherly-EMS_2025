@@ -1,4 +1,9 @@
 <?php
+/**
+ * AI Recommendation API - Pure PHP Implementation
+ * Converted from Python ML system to native PHP
+ */
+
 session_start();
 
 // Check if user is logged in and is an organizer
@@ -19,45 +24,26 @@ if (empty($message)) {
     exit();
 }
 
-// Call Python ML script for recommendations
-$pythonScript = '/home2/gatherly/public_html/ml/venue_recommender.py';
-
-// Detect OS and set Python path accordingly
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $pythonPath = 'C:/Python314/python.exe';
-} else {
-    // Linux/Unix - use virtual environment python
-    $venvPython = '/home2/gatherly/public_html/ml/venv/bin/python3';
-    $pythonPath = file_exists($venvPython) ? $venvPython : '/usr/bin/python3';
-}
-
-// Escape message for command line
-$escapedMessage = escapeshellarg($message);
-
-// Execute Python script
-$command = "$pythonPath " . escapeshellarg($pythonScript) . " $escapedMessage 2>&1";
-$output = shell_exec($command);
-
-// Parse Python output
-if ($output === null || empty($output)) {
+try {
+    // Load database connection
+    require_once __DIR__ . '/../../services/dbconnect.php';
+    
+    // Load VenueRecommender class
+    require_once __DIR__ . '/VenueRecommender.php';
+    
+    // Create recommender instance
+    $recommender = new VenueRecommender($pdo);
+    
+    // Get recommendations
+    $result = $recommender->getRecommendations($message);
+    
+    // Return response
+    echo json_encode($result);
+    
+} catch (Exception $e) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'error' => 'Python ML service is not available. Please ensure Python and required packages are installed.'
+        'error' => 'AI service error: ' . $e->getMessage()
     ]);
-    exit();
 }
-
-// Decode JSON response from Python
-$result = json_decode($output, true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'Failed to parse ML response',
-        'debug' => $output
-    ]);
-    exit();
-}
-
-// Return the ML-based recommendations
-echo json_encode($result);

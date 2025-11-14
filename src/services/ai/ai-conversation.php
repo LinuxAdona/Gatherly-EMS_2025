@@ -1,4 +1,9 @@
 <?php
+/**
+ * AI Conversation API - Pure PHP Implementation
+ * Converted from Python ML system to native PHP
+ */
+
 session_start();
 
 // Check if user is logged in and is an organizer
@@ -20,71 +25,26 @@ if (empty($message)) {
     exit();
 }
 
-// Call Python conversational planner script
-$pythonScript = '/home2/gatherly/public_html/ml/conversational_planner.py';
-
-// Detect OS and set Python path accordingly
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $pythonPath = 'C:/Python313/python.exe';
-} else {
-    // Linux/Unix - use virtual environment python
-    $venvPython = '/home2/gatherly/public_html/ml/venv/bin/python3';
-    $pythonPath = file_exists($venvPython) ? $venvPython : '/usr/bin/python3';
-}
-
-// Verify files exist
-if (!file_exists($pythonScript)) {
+try {
+    // Load database connection
+    require_once __DIR__ . '/../../services/dbconnect.php';
+    
+    // Load ConversationalPlanner class
+    require_once __DIR__ . '/ConversationalPlanner.php';
+    
+    // Create planner instance
+    $planner = new ConversationalPlanner($pdo);
+    
+    // Process conversation
+    $result = $planner->processConversation($message, $conversation_state);
+    
+    // Return response
+    echo json_encode($result);
+    
+} catch (Exception $e) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'error' => 'Python script not found',
-        'debug' => "Script path: $pythonScript"
+        'error' => 'AI service error: ' . $e->getMessage()
     ]);
-    exit();
 }
-
-if (!file_exists($pythonPath)) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'Python interpreter not found',
-        'debug' => "Python path: $pythonPath"
-    ]);
-    exit();
-}
-
-// Escape message for command line (works for both Linux and Windows)
-$escapedMessage = escapeshellarg($message);
-
-// Pass conversation state as second argument if available
-$stateArg = '';
-if (!empty($conversation_state)) {
-    $stateJson = json_encode($conversation_state);
-    $stateArg = ' ' . escapeshellarg($stateJson);
-}
-
-// Execute Python script
-$command = "$pythonPath " . escapeshellarg($pythonScript) . " $escapedMessage$stateArg 2>&1";
-$output = shell_exec($command);
-
-// Parse Python output
-if ($output === null || empty($output)) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'AI service is not available. Please ensure Python and required packages are installed.'
-    ]);
-    exit();
-}
-
-// Decode JSON response from Python
-$result = json_decode($output, true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'Failed to parse AI response',
-        'debug' => $output
-    ]);
-    exit();
-}
-
-// Return the conversational response
-echo json_encode($result);
