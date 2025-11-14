@@ -1,79 +1,22 @@
 ---
-# cPanel Git Deployment Configuration for Gatherly EMS
-# This file automatically deploys your project when you push to the repository
-
 deployment:
   tasks:
-    # Set deployment path
-    - export DEPLOYPATH=/home/gatherly/public_html/
-    - export REPOPATH=/home/gatherly/repositories/Gatherly-EMS_2025
+    - export DEPLOYPATH=/home2/broscafe/public_html/
 
-    # Create necessary directories if they don't exist
     - mkdir -p $DEPLOYPATH
+    - mkdir -p $DEPLOYPATH/config
     - mkdir -p $DEPLOYPATH/public
     - mkdir -p $DEPLOYPATH/src
     - mkdir -p $DEPLOYPATH/ml
-    - mkdir -p $DEPLOYPATH/db
-    - mkdir -p $DEPLOYPATH/config
 
-    # Deploy PHP files and directories
-    - echo "Deploying PHP files..."
-    - /bin/cp -R $REPOPATH/public $DEPLOYPATH
-    - /bin/cp -R $REPOPATH/src $DEPLOYPATH
-    - /bin/cp -R $REPOPATH/db $DEPLOYPATH
-
-    # Deploy configuration files (IMPORTANT: needed for database connection)
-    - echo "Deploying config files..."
-    - /bin/cp -R $REPOPATH/config $DEPLOYPATH
-
-    # Deploy .env file if it exists in repository (for initial setup)
-    - if [ -f $REPOPATH/.env ]; then /bin/cp $REPOPATH/.env $DEPLOYPATH/.env 2>&1 || true; fi
-    - echo "NOTE: If .env is missing, create it manually in $DEPLOYPATH with your database credentials"
-
-    # Deploy other configuration files
-    - /bin/cp $REPOPATH/tailwind.config.js $DEPLOYPATH
-    - /bin/cp $REPOPATH/package.json $DEPLOYPATH
-
-    # Deploy root index.php file
-    - echo "Deploying index.php..."
-    - if [ -f $REPOPATH/index.php ]; then /bin/cp $REPOPATH/index.php $DEPLOYPATH/index.php; fi
-
-    # Deploy Python ML system
-    - echo "Deploying Python ML system..."
-    - echo "Checking ml directory in repo..."
-    - ls -la $REPOPATH/ml || echo "ml directory not found in repo"
-    - echo "Copying ml directory..."
-    - /bin/cp -R $REPOPATH/ml $DEPLOYPATH
-    - echo "Verifying ml directory in deployment..."
-    - ls -la $DEPLOYPATH/ml || echo "ml directory not found in deployment"
-    - echo "Copying requirements.txt..."
-    - /bin/cp $REPOPATH/requirements.txt $DEPLOYPATH
-    - echo "Files in deployed ml directory:"
-    - find $DEPLOYPATH/ml -type f | wc -l
-    - echo "Python files in deployed ml directory:"
-    - find $DEPLOYPATH/ml -name "*.py" | wc -l
-
-    # Install Python dependencies if pip is available
-    - echo "Installing Python dependencies..."
-    - cd $DEPLOYPATH
-    - if command -v pip3 &> /dev/null; then pip3 install --user -r requirements.txt 2>&1 || true; fi
-
-    # Build Tailwind CSS (copy pre-built version as fallback)
-    - echo "Deploying Tailwind CSS..."
-    - if [ -f $REPOPATH/src/output.css ]; then /bin/cp $REPOPATH/src/output.css $DEPLOYPATH/src/output.css; fi
-    - if command -v npx &> /dev/null; then cd $DEPLOYPATH && npx tailwindcss -i ./src/input.css -o ./src/output.css --minify 2>&1 || true; fi
-
-    # Set proper permissions
-    - echo "Setting permissions..."
-    - chmod -R 755 $DEPLOYPATH/public 2>&1 || true
-    - chmod -R 755 $DEPLOYPATH/src 2>&1 || true
-    - chmod -R 755 $DEPLOYPATH/ml 2>&1 || true
-    - find $DEPLOYPATH -type f -name "*.php" -exec chmod 644 {} \; 2>&1 || true
-    - find $DEPLOYPATH -type f -name "*.py" -exec chmod 755 {} \; 2>&1 || true
-
-    # Create .htaccess if it doesn't exist
-    - if [ -f $REPOPATH/public/.htaccess ]; then /bin/cp $REPOPATH/public/.htaccess $DEPLOYPATH/public/.htaccess 2>&1 || true; fi
-
-    # Deployment complete
-    - echo "Deployment completed successfully!"
-    - echo "Deployed on $(date)" >> $DEPLOYPATH/last_deployment.txt
+    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH
+    # - /bin/cp 400.shtml $DEPLOYPATH
+    # - /bin/cp 401.shtml $DEPLOYPATH
+    # - /bin/cp 403.shtml $DEPLOYPATH
+    # - /bin/cp 404.shtml $DEPLOYPATH
+    # - /bin/cp 500.shtml $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R src $DEPLOYPATH
+    - /bin/cp -R ml $DEPLOYPATH
