@@ -107,7 +107,7 @@ if (chatForm) {
         } catch (error) {
             console.error('Chat error:', error);
             removeTypingIndicator();
-            addBotMessage('Sorry, I\'m having trouble connecting. Please try again later.');
+            addBotMessage('Sorry, I\'m having trouble connecting. Please try again later. AI-Planner');
         }
     });
 }
