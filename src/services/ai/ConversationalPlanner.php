@@ -31,7 +31,7 @@ class ConversationalPlanner
         'Equipment Rental'
     ];
 
-    public function __construct($dbConnection)
+    public function __construct(PDO $dbConnection)
     {
         $this->db = $dbConnection;
     }
@@ -379,9 +379,9 @@ class ConversationalPlanner
                     'id' => $venue['venue_id'],
                     'name' => $venue['venue_name'],
                     'capacity' => $venue['capacity'],
-                    'price' => isset($venue['base_price']) && is_numeric($venue['base_price']) 
-                              ? floatval($venue['base_price']) 
-                              : 10000.0,
+                    'price' => isset($venue['base_price']) && is_numeric($venue['base_price'])
+                        ? floatval($venue['base_price'])
+                        : 10000.0,
                     'location' => $venue['location'],
                     'description' => $venue['description'],
                     'amenities' => $venue['amenities'] ?? '',
@@ -573,7 +573,7 @@ class ConversationalPlanner
             // Log the error with full details
             error_log('Error in generateFinalRecommendations: ' . $e->getMessage());
             error_log('Trace: ' . $e->getTraceAsString());
-            
+
             // Rethrow to be caught by ai-conversation.php with proper formatting
             throw new Exception('Failed to generate recommendations: ' . $e->getMessage(), 0, $e);
         }
