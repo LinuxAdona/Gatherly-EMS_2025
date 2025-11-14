@@ -7,7 +7,6 @@ node_modules/
 # Python virtual environment (DEPRECATED - Now using PHP)
 *.pyc
 __pycache__/
-ml/venv
 *.py
 
 # Python ML backup (keep in repo for reference)
