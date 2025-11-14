@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/broscafe/public_html/
+    - export DEPLOYPATH=/home2/gatherly/public_html/
 
     - mkdir -p $DEPLOYPATH
     - mkdir -p $DEPLOYPATH/config
