@@ -52,7 +52,8 @@ if (chatForm) {
             console.log('Sending message:', message);
             console.log('Conversation state:', conversationState);
             
-            const response = await fetch('../../src/services/ai/ai-conversation.php', {
+            // Use absolute path from document root
+            const response = await fetch('/src/services/ai/ai-conversation.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

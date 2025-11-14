@@ -28,23 +28,25 @@ if (empty($message)) {
 
 try {
     // Load database connection
-    require_once __DIR__ . '/../../services/dbconnect.php';
-
+    require_once __DIR__ . '/../dbconnect.php';
+    
     // Load ConversationalPlanner class
     require_once __DIR__ . '/ConversationalPlanner.php';
-
+    
     // Create planner instance
     $planner = new ConversationalPlanner($pdo);
-
+    
     // Process conversation
     $result = $planner->processConversation($message, $conversation_state);
-
+    
     // Return response
     echo json_encode($result);
+    
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'error' => 'AI service error: ' . $e->getMessage()
+        'error' => 'AI service error: ' . $e->getMessage(),
+        'trace' => $e->getTraceAsString()
     ]);
 }
