@@ -17,8 +17,6 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Event Planner | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet"
-        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -89,7 +87,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                 <span class="px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-200 rounded-full">
                     <i class="mr-1 fas fa-brain"></i> Smart Venue Matching
                 </span>
-                <span class="px-4 py-2 text-sm font-semibold text-cyan-700 bg-cyan-200 rounded-full">
+                <span class="px-4 py-2 text-sm font-semibold rounded-full text-cyan-700 bg-cyan-200">
                     <i class="mr-1 fas fa-users"></i> Supplier Recommendations
                 </span>
                 <span class="px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-200 rounded-full">
@@ -117,7 +115,7 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                         </div>
                     </div>
                     <button id="clearChat"
-                        class="px-4 py-2 transition-colors bg-white bg-opacity-20 text-cyan-600 rounded-lg hover:bg-opacity-30">
+                        class="px-4 py-2 transition-colors bg-white rounded-lg bg-opacity-20 text-cyan-600 hover:bg-opacity-30">
                         <i class="mr-2 fas fa-redo"></i>
                         Start Over
                     </button>
