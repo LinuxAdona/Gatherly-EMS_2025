@@ -1,10 +1,21 @@
+#!/usr/bin/env python3.9
 """
 Gatherly AI Venue Recommendation System
 Uses scikit-learn for machine learning-based venue recommendations
+
+Requires: Python 3.9+
 """
 
 import sys
 import json
+
+# Verify Python version compatibility
+if sys.version_info < (3, 9):
+    print(json.dumps({
+        'success': False,
+        'error': f'Python 3.9 or higher required. Current version: {sys.version_info.major}.{sys.version_info.minor}'
+    }))
+    sys.exit(1)
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
@@ -15,11 +26,13 @@ import os
 class VenueRecommendationSystem:
     def __init__(self):
         self.scaler = MinMaxScaler()
+        # Database configuration - supports both local and production
+        import os
         self.db_config = {
-            'host': 'localhost',
-            'user': 'root',
-            'password': '',
-            'database': 'sad_db'
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'user': os.getenv('DB_USERNAME', 'root'),
+            'password': os.getenv('DB_PASSWORD', ''),
+            'database': os.getenv('DB_DATABASE', 'sad_db')
         }
     
     def connect_db(self):

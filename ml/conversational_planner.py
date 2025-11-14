@@ -1,12 +1,22 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.9
 """
 Conversational AI Event Planning Assistant
 Uses incremental questioning to gather requirements and recommends venues + suppliers
 Enhanced with Naive Bayes classifier for intelligent venue matching
+
+Requires: Python 3.9+
 """
 
 import sys
 import json
+
+# Verify Python version compatibility
+if sys.version_info < (3, 9):
+    print(json.dumps({
+        'success': False,
+        'error': f'Python 3.9 or higher required. Current version: {sys.version_info.major}.{sys.version_info.minor}'
+    }))
+    sys.exit(1)
 import re
 import mysql.connector
 import numpy as np
@@ -16,11 +26,13 @@ from typing import Dict, List, Tuple, Any, Optional
 
 class ConversationalEventPlanner:
     def __init__(self):
+        # Database configuration - supports both local and production
+        import os
         self.db_config = {
-            'host': 'localhost',
-            'user': 'root',
-            'password': '',
-            'database': 'sad_db'
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'user': os.getenv('DB_USERNAME', 'root'),
+            'password': os.getenv('DB_PASSWORD', ''),
+            'database': os.getenv('DB_DATABASE', 'sad_db')
         }
         
         # Define conversation stages
