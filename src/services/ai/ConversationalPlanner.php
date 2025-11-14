@@ -31,7 +31,7 @@ class ConversationalPlanner
         'Equipment Rental'
     ];
 
-    public function __construct(PDO $dbConnection)
+    public function __construct($dbConnection)
     {
         $this->db = $dbConnection;
     }
@@ -360,9 +360,10 @@ class ConversationalPlanner
                     v.base_price,
                     v.location,
                     v.description,
-                    GROUP_CONCAT(va.amenity_name SEPARATOR ', ') as amenities
+                    GROUP_CONCAT(a.amenity_name SEPARATOR ', ') as amenities
                 FROM venues v
                 LEFT JOIN venue_amenities va ON v.venue_id = va.venue_id
+                LEFT JOIN amenities a ON va.amenity_id = a.amenity_id
                 WHERE v.availability_status = 'available'
                 GROUP BY v.venue_id";
 

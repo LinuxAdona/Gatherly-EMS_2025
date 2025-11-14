@@ -28,10 +28,10 @@ if (empty($message)) {
 
 try {
     // Load database connection
-    require_once '../dbconnect.php';
+    require_once __DIR__ . '/../dbconnect.php';
 
     // Load ConversationalPlanner class
-    require_once 'ConversationalPlanner.php';
+    require_once __DIR__ . '/ConversationalPlanner.php';
 
     // Create planner instance
     $planner = new ConversationalPlanner($pdo);
