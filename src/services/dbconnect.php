@@ -54,3 +54,20 @@ class Database
         return $this->conn;
     }
 }
+
+// Create a global PDO instance for AI services
+try {
+    $pdo = new PDO(
+        'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME,
+        DB_USER,
+        DB_PASS,
+        array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        )
+    );
+} catch (PDOException $e) {
+    error_log('PDO Connection Error: ' . $e->getMessage());
+    throw $e;
+}
