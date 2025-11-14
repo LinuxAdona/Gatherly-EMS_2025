@@ -30,9 +30,9 @@ class VenueRecommendationSystem:
         import os
         self.db_config = {
             'host': os.getenv('DB_HOST', 'localhost'),
-            'user': os.getenv('DB_USERNAME', 'root'),
-            'password': os.getenv('DB_PASSWORD', ''),
-            'database': os.getenv('DB_DATABASE', 'sad_db')
+            'user': os.getenv('DB_USERNAME', 'gatherly_sys'),
+            'password': os.getenv('DB_PASSWORD', 'zeND{ATJuYIY'),
+            'database': os.getenv('DB_DATABASE', 'gatherly_sad_db')
         }
     
     def connect_db(self):
