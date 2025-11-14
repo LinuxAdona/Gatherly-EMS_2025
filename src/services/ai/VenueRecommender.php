@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Venue Recommendation System
  * PHP implementation of ML-based venue recommendations
@@ -7,19 +8,22 @@
  * Uses rule-based MCDM (Multi-Criteria Decision Making) instead of sklearn
  */
 
-class VenueRecommender {
+class VenueRecommender
+{
     private $db;
-    
-    public function __construct($dbConnection) {
+
+    public function __construct($dbConnection)
+    {
         $this->db = $dbConnection;
     }
-    
+
     /**
      * Parse event requirements from user message
      */
-    public function parseRequirements($message) {
+    public function parseRequirements($message)
+    {
         $messageLower = strtolower($message);
-        
+
         $data = [
             'event_type' => null,
             'guests' => null,
@@ -27,7 +31,7 @@ class VenueRecommender {
             'date' => null,
             'amenities' => []
         ];
-        
+
         // Event type detection
         $eventTypes = [
             'wedding' => ['wedding', 'marriage', 'nuptial', 'wed'],
@@ -35,7 +39,7 @@ class VenueRecommender {
             'birthday' => ['birthday', 'party', 'celebration', 'bday'],
             'concert' => ['concert', 'music', 'show', 'performance', 'gig']
         ];
-        
+
         foreach ($eventTypes as $type => $keywords) {
             foreach ($keywords as $keyword) {
                 if (strpos($messageLower, $keyword) !== false) {
@@ -44,34 +48,34 @@ class VenueRecommender {
                 }
             }
         }
-        
+
         // Extract guest count
         $guestPatterns = [
             '/(\d+)\s*(?:guests?|people|attendees?|pax|persons?)/i',
             '/(?:for|about|around|approximately)\s*(\d+)/i',
         ];
-        
+
         foreach ($guestPatterns as $pattern) {
             if (preg_match($pattern, $messageLower, $matches)) {
                 $data['guests'] = intval($matches[1]);
                 break;
             }
         }
-        
+
         // Extract budget
         $budgetPatterns = [
             '/(?:₱|php|peso|pesos?)\s*([\d,]+)/i',
             '/([\d,]+)\s*(?:₱|php|peso|pesos?|budget)/i',
             '/budget\s*(?:of|is|:)?\s*([\d,]+)/i',
         ];
-        
+
         foreach ($budgetPatterns as $pattern) {
             if (preg_match($pattern, $messageLower, $matches)) {
                 $data['budget'] = intval(str_replace(',', '', $matches[1]));
                 break;
             }
         }
-        
+
         // Extract amenities
         $amenityKeywords = [
             'parking' => ['parking', 'park', 'parking space'],
@@ -81,7 +85,7 @@ class VenueRecommender {
             'ac' => ['air conditioning', 'aircon', 'ac', 'airconditioned', 'cooling'],
             'wifi' => ['wifi', 'wi-fi', 'internet', 'wireless']
         ];
-        
+
         foreach ($amenityKeywords as $amenity => $keywords) {
             foreach ($keywords as $keyword) {
                 if (strpos($messageLower, $keyword) !== false) {
@@ -90,14 +94,15 @@ class VenueRecommender {
                 }
             }
         }
-        
+
         return $data;
     }
-    
+
     /**
      * Get venue features from database
      */
-    public function getVenueFeatures() {
+    public function getVenueFeatures()
+    {
         $query = "SELECT 
                     venue_id,
                     venue_name,
@@ -108,23 +113,24 @@ class VenueRecommender {
                     availability_status
                 FROM venues
                 WHERE availability_status = 'available'";
-        
+
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     /**
      * Calculate ML-based score using MCDM (Multi-Criteria Decision Making)
      */
-    public function calculateMLScore($venue, $requirements) {
+    public function calculateMLScore($venue, $requirements)
+    {
         $scores = [];
         $weights = [];
-        
+
         // Capacity Score (Weight: 30%)
         if (isset($requirements['guests']) && $requirements['guests'] > 0) {
             $capacity = $venue['capacity'];
             $guests = $requirements['guests'];
-            
+
             // Optimal capacity is between guests and 1.5x guests
             if ($capacity >= $guests && $capacity <= $guests * 1.5) {
                 $capacityScore = 1.0;
@@ -137,16 +143,16 @@ class VenueRecommender {
             } else {
                 $capacityScore = max(0.4, ($guests * 1.5) / $capacity);
             }
-            
+
             $scores[] = $capacityScore;
             $weights[] = 0.30;
         }
-        
+
         // Budget Score (Weight: 35%)
         if (isset($requirements['budget']) && $requirements['budget'] > 0) {
             $price = floatval($venue['base_price']);
             $budget = $requirements['budget'];
-            
+
             // Optimal price is at or below budget
             if ($price <= $budget) {
                 $budgetScore = 1.0;
@@ -157,51 +163,52 @@ class VenueRecommender {
             } else {
                 $budgetScore = max(0.2, $budget / $price);
             }
-            
+
             $scores[] = $budgetScore;
             $weights[] = 0.35;
         }
-        
+
         // Location Score (Weight: 15%)
         $locationScore = 0.8; // Default good location
         $scores[] = $locationScore;
         $weights[] = 0.15;
-        
+
         // Amenities Score (Weight: 20%)
         if (!empty($requirements['amenities'])) {
             $amenitiesScore = 0.75; // Partial match
         } else {
             $amenitiesScore = 0.5; // No specific requirements
         }
-        
+
         $scores[] = $amenitiesScore;
         $weights[] = 0.20;
-        
+
         // Normalize weights
         $totalWeight = array_sum($weights);
-        $normalizedWeights = array_map(function($w) use ($totalWeight) {
+        $normalizedWeights = array_map(function ($w) use ($totalWeight) {
             return $w / $totalWeight;
         }, $weights);
-        
+
         // Calculate weighted average
         $finalScore = 0;
         for ($i = 0; $i < count($scores); $i++) {
             $finalScore += $scores[$i] * $normalizedWeights[$i];
         }
-        
+
         return $finalScore * 100; // Convert to percentage
     }
-    
+
     /**
      * Get venue recommendations using ML scoring
      */
-    public function getRecommendations($message) {
+    public function getRecommendations($message)
+    {
         // Parse requirements
         $requirements = $this->parseRequirements($message);
-        
+
         // Get venues
         $venues = $this->getVenueFeatures();
-        
+
         if (empty($venues)) {
             return [
                 'success' => true,
@@ -210,7 +217,7 @@ class VenueRecommender {
                 'parsed_data' => $requirements
             ];
         }
-        
+
         // Calculate ML scores for each venue
         $venueScores = [];
         foreach ($venues as $venue) {
@@ -225,16 +232,16 @@ class VenueRecommender {
                 'score' => round($score, 2)
             ];
         }
-        
+
         // Sort by score (descending) and get top 5
-        usort($venueScores, function($a, $b) {
+        usort($venueScores, function ($a, $b) {
             return $b['score'] - $a['score'];
         });
         $topVenues = array_slice($venueScores, 0, 5);
-        
+
         // Generate response
         $response = $this->generateResponse($requirements, $topVenues);
-        
+
         return [
             'success' => true,
             'response' => $response,
@@ -242,13 +249,14 @@ class VenueRecommender {
             'parsed_data' => $requirements
         ];
     }
-    
+
     /**
      * Generate natural language response
      */
-    private function generateResponse($requirements, $venues) {
+    private function generateResponse($requirements, $venues)
+    {
         $response = "";
-        
+
         // Acknowledge what was understood
         $understood = [];
         if ($requirements['event_type']) {
@@ -260,13 +268,13 @@ class VenueRecommender {
         if ($requirements['budget']) {
             $understood[] = "₱" . number_format($requirements['budget']) . " budget";
         }
-        
+
         if (!empty($understood)) {
             $response = "Great! I understand you're planning " . implode(" for ", $understood) . ". ";
         } else {
             $response = "I'd love to help you find the perfect venue! ";
         }
-        
+
         // Provide recommendations
         if (!empty($venues)) {
             $response .= "Using machine learning analysis, here are my top " . count($venues) . " venue recommendations:";
@@ -277,7 +285,7 @@ class VenueRecommender {
             $response .= "• Type of event (wedding, corporate, birthday, etc.)\n";
             $response .= "• Any special requirements or amenities needed";
         }
-        
+
         return $response;
     }
 }

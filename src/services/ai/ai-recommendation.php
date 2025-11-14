@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AI Recommendation API - Pure PHP Implementation
  * Converted from Python ML system to native PHP
@@ -27,19 +28,18 @@ if (empty($message)) {
 try {
     // Load database connection
     require_once __DIR__ . '/../../services/dbconnect.php';
-    
+
     // Load VenueRecommender class
     require_once __DIR__ . '/VenueRecommender.php';
-    
+
     // Create recommender instance
     $recommender = new VenueRecommender($pdo);
-    
+
     // Get recommendations
     $result = $recommender->getRecommendations($message);
-    
+
     // Return response
     echo json_encode($result);
-    
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([

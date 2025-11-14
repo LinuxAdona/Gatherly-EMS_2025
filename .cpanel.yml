@@ -3,23 +3,20 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home2/gatherly/public_html/
 
-    # Create necessary directories
     - mkdir -p $DEPLOYPATH
     - mkdir -p $DEPLOYPATH/config
     - mkdir -p $DEPLOYPATH/public
     - mkdir -p $DEPLOYPATH/src
-    - mkdir -p $DEPLOYPATH/ml_backup
+    - mkdir -p $DEPLOYPATH/ml
 
-    # Deploy main files
     - /bin/cp index.php $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
-
-    # Deploy directories
+    # - /bin/cp 400.shtml $DEPLOYPATH
+    # - /bin/cp 401.shtml $DEPLOYPATH
+    # - /bin/cp 403.shtml $DEPLOYPATH
+    # - /bin/cp 404.shtml $DEPLOYPATH
+    # - /bin/cp 500.shtml $DEPLOYPATH
     - /bin/cp -R config $DEPLOYPATH
     - /bin/cp -R public $DEPLOYPATH
     - /bin/cp -R src $DEPLOYPATH
-    
-    # Deploy Python backup (for reference only - not used)
-    - /bin/cp -R ml_backup $DEPLOYPATH
-
-    # Note: ml/ directory no longer needed - PHP classes in src/services/ai/
+    - /bin/cp -R ml $DEPLOYPATH

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AI Conversation API - Pure PHP Implementation
  * Converted from Python ML system to native PHP
@@ -28,19 +29,18 @@ if (empty($message)) {
 try {
     // Load database connection
     require_once __DIR__ . '/../../services/dbconnect.php';
-    
+
     // Load ConversationalPlanner class
     require_once __DIR__ . '/ConversationalPlanner.php';
-    
+
     // Create planner instance
     $planner = new ConversationalPlanner($pdo);
-    
+
     // Process conversation
     $result = $planner->processConversation($message, $conversation_state);
-    
+
     // Return response
     echo json_encode($result);
-    
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
