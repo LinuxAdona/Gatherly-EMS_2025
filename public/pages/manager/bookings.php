@@ -205,6 +205,8 @@ $result = $conn->query($sql);
         <a href="bookings.php" class="font-semibold text-green-600 hover:text-green-700">Bookings</a>
         <a href="pricing.php" class="text-gray-700 hover:text-green-600">Pricing</a>
         <a href="analytics.php" class="text-gray-700 hover:text-green-600">Analytics</a>
+        <a href="chats.php" class="text-gray-700 transition-colors hover:text-green-600">Chats</a>
+
         <div class="relative">
               <button id="profile-dropdown-btn"
                   class="flex items-center gap-2 text-gray-700 transition-colors hover:text-green-600">

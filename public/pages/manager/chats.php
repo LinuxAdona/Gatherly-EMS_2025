@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-// Check if user is logged in and is an organizer
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
+// Check if user is logged in and is a manager
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'manager') {
     header("Location: ../signin.php");
     exit();
 }
@@ -49,7 +49,7 @@ function decryptMessage($encrypted) {
     return false;
 }
 
-// API HANDLER
+// API HANDLER 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['action'])) {
     header('Content-Type: application/json');
     
@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['action'])) {
     exit;
 }
 
-$first_name = $_SESSION['first_name'] ?? 'Organizer';
+$first_name = $_SESSION['first_name'] ?? 'Manager';
 $user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
@@ -651,37 +651,35 @@ $user_id = $_SESSION['user_id'];
 </head>
 
 <body class="bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat'] min-h-screen flex flex-col" data-user-id="<?php echo $user_id; ?>">
-    <!-- Navbar -->
+   <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container px-4 mx-auto sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
+            <div class="flex items-center justify-between h-12 sm:h-16">
+                <div class="flex items-center h-full">
                     <a href="../home.php" class="flex items-center group">
-                        <img class="w-10 h-10 mr-2 transition-transform group-hover:scale-110"
-                            src="../../assets/images/logo.png" alt="Gatherly Logo">
-                        <span class="text-xl font-bold text-gray-800">Gatherly</span>
+                        <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
+                             src="../../assets/images/logo.png" alt="Gatherly Logo">
+                        <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
                     </a>
                 </div>
                 <div class="items-center hidden gap-6 md:flex">
-                    <a href="organizer-dashboard.php"
-                        class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
-                    <a href="my-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">My Events</a>
-                    <a href="find-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Find
-                        Venues</a>
-                    <a href="ai-planner.php" class="text-gray-700 transition-colors hover:text-indigo-600">AI
-                        Planner</a>
-                    <a href="chats.php" class="font-semibold text-indigo-600">Chat</a>
+                    <a href="manager-dashboard.php" class="text-gray-700 hover:text-green-600">Dashboard</a>
+                    <a href="my-venues.php" class="text-gray-700 hover:text-green-600">My Venues</a>
+                    <a href="bookings.php" class="text-gray-700 hover:text-green-600">Bookings</a>
+                    <a href="pricing.php" class="ext-gray-700 hover:text-green-600">Pricing</a>
+                    <a href="analytics.php" class="text-gray-700 hover:text-green-600">Analytics</a>
+                    <a href="chats.php" class="font-semibold text-green-600 hover:text-green-700">Chats</a>
+
                     <div class="relative">
-                        <button id="profile-dropdown-btn"
-                            class="flex items-center gap-2 text-gray-700 transition-colors hover:text-indigo-600">
-                            <i class="text-2xl fas fa-user-circle"></i>
+                        <button id="profile-dropdown-btn" class="flex items-center gap-2 text-gray-700 hover:text-green-600">
+                            <i class="text-2xl fas fa-user-tie"></i>
                             <span><?php echo htmlspecialchars($first_name); ?></span>
                             <i class="text-xs fas fa-chevron-down"></i>
                         </button>
                         <div id="profile-dropdown"
                             class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
-                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
-                            <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
+                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Profile</a>
+                            <a href="settings.php" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Settings</a>
                             <a href="../../../src/services/signout-handler.php"
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
@@ -705,7 +703,7 @@ $user_id = $_SESSION['user_id'];
                         <h1 class="text-3xl font-bold text-gray-800">
                             <i class="mr-2 text-indigo-600 fas fa-comments"></i>Messages
                         </h1>
-                        <p class="mt-1 text-gray-600">Connect with venue managers and other organizers</p>
+                        <p class="mt-1 text-gray-600">Connect with event organizers and other managers</p>
                     </div>
                 </div>
                 <div class="flex gap-3">
@@ -885,7 +883,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadConversations();
     setupEventListeners();
     setupEmojiPicker();
-    setInterval(loadConversations, 5000);
+    setInterval(loadConversations, 5000); 
 });
 
 function setupEventListeners() {
@@ -1278,7 +1276,7 @@ function loadInitialMessages(receiverId) {
 }
 
 function loadNewMessages(receiverId) {
-    if (lastMessageId === 0) return;
+    if (lastMessageId === 0) return; 
     
     const url = `?action=get_messages&receiver_id=${receiverId}&last_message_id=${lastMessageId}`;
         

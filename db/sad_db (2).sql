@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 12, 2025 at 10:08 AM
+-- Host: 127.0.0.1
+-- Generation Time: Nov 15, 2025 at 01:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,7 +64,8 @@ CREATE TABLE `chat` (
   `message_text` text DEFAULT NULL,
   `timestamp` datetime DEFAULT current_timestamp(),
   `file_url` varchar(255) DEFAULT NULL,
-  `is_file` tinyint(1) DEFAULT NULL
+  `is_file` tinyint(1) DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -481,7 +482,11 @@ ALTER TABLE `chat`
   ADD PRIMARY KEY (`chat_id`),
   ADD KEY `event_id` (`event_id`),
   ADD KEY `sender_id` (`sender_id`),
-  ADD KEY `receiver_id` (`receiver_id`);
+  ADD KEY `receiver_id` (`receiver_id`),
+  ADD KEY `idx_sender_receiver` (`sender_id`,`receiver_id`),
+  ADD KEY `idx_receiver_sender` (`receiver_id`,`sender_id`),
+  ADD KEY `idx_timestamp` (`timestamp`),
+  ADD KEY `idx_is_read` (`is_read`);
 
 --
 -- Indexes for table `dynamic_pricing`
@@ -625,7 +630,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `venues`
