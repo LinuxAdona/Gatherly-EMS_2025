@@ -44,7 +44,7 @@ $recent_bookings_query = "SELECT e.event_id, e.event_name, e.event_date, e.statu
                           LEFT JOIN venues v ON e.venue_id = v.venue_id 
                           LEFT JOIN users u ON e.client_id = u.user_id 
                           ORDER BY e.created_at DESC 
-                          LIMIT 5";
+                          LIMIT 3";
 $recent_bookings = $conn->query($recent_bookings_query);
 
 // Get venue performance data
