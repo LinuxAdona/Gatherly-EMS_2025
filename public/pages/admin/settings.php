@@ -16,6 +16,7 @@ $notifications_enabled = $_SESSION['notifications_enabled'] ?? true;
 $email_notifications = $_SESSION['email_notifications'] ?? true;
 $items_per_page = $_SESSION['items_per_page'] ?? 10;
 $timezone = $_SESSION['timezone'] ?? 'Asia/Manila';
+$nav_layout = $_SESSION['nav_layout'] ?? 'sidebar';
 
 // Handle settings update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
@@ -23,11 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
     $_SESSION['email_notifications'] = isset($_POST['email_notifications']);
     $_SESSION['items_per_page'] = (int)($_POST['items_per_page'] ?? 10);
     $_SESSION['timezone'] = $_POST['timezone'] ?? 'Asia/Manila';
+    $_SESSION['nav_layout'] = $_POST['nav_layout'] ?? 'sidebar';
 
     $notifications_enabled = $_SESSION['notifications_enabled'];
     $email_notifications = $_SESSION['email_notifications'];
     $items_per_page = $_SESSION['items_per_page'];
     $timezone = $_SESSION['timezone'];
+    $nav_layout = $_SESSION['nav_layout'];
 
     $success_message = "Settings saved successfully!";
 }
@@ -52,199 +55,160 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="bg-linear-to-br from-slate-50 via-white to-blue-50 font-['Montserrat'] flex flex-col min-h-screen">
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 bg-white shadow-md">
-        <div class="container px-4 mx-auto sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-12 sm:h-16">
-                <div class="flex items-center h-full">
-                    <a href="../../../index.php" class="flex items-center group">
-                        <img class="w-8 h-8 mr-2 transition-transform sm:w-10 sm:h-10 group-hover:scale-110"
-                            src="../../assets/images/logo.png" alt="Gatherly Logo">
-                        <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
-                    </a>
-                </div>
-                <div class="items-center hidden gap-6 md:flex">
-                    <a href="admin-dashboard.php"
-                        class="text-gray-700 transition-colors hover:text-indigo-600">Dashboard</a>
-                    <a href="manage-users.php" class="text-gray-700 transition-colors hover:text-indigo-600">Users</a>
-                    <a href="manage-venues.php" class="text-gray-700 transition-colors hover:text-indigo-600">Venues</a>
-                    <a href="manage-events.php" class="text-gray-700 transition-colors hover:text-indigo-600">Events</a>
-                    <a href="reports.php" class="text-gray-700 transition-colors hover:text-indigo-600">Reports</a>
-                    <div class="relative">
-                        <button id="profile-dropdown-btn"
-                            class="flex items-center gap-2 text-gray-700 transition-colors cursor-pointer hover:text-indigo-600">
-                            <i class="text-2xl fas fa-user-shield"></i>
-                            <span><?php echo htmlspecialchars($first_name); ?></span>
-                            <i class="text-xs fas fa-chevron-down"></i>
-                        </button>
-                        <div id="profile-dropdown"
-                            class="absolute right-0 hidden w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
-                            <a href="profile.php" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
-                            <a href="settings.php"
-                                class="block px-4 py-2 font-semibold text-indigo-600 bg-indigo-50">Settings</a>
-                            <a href="../../../src/services/signout-handler.php"
-                                class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+<body
+    class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-slate-50 via-white to-blue-50'; ?> font-['Montserrat']">
+    <?php include '../../../src/components/AdminSidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="container px-4 py-8 mx-auto sm:px-6 lg:px-8 grow">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
-                <i class="mr-2 text-indigo-600 fas fa-cog"></i>
-                Settings
-            </h1>
-            <p class="text-gray-600">Customize your experience and preferences</p>
-        </div>
-
-        <!-- Messages -->
-        <?php if ($success_message): ?>
-            <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
-                <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
+    <div
+        class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
+        <?php if ($nav_layout === 'sidebar'): ?>
+            <!-- Top Bar for Sidebar Layout -->
+            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
+                <h1 class="text-2xl font-bold text-gray-800">
+                    <!-- <i class="mr-2 text-indigo-600 fas fa-cog"></i> -->
+                    Settings
+                </h1>
+                <p class="text-sm text-gray-600">Customize your experience and preferences</p>
             </div>
-        <?php endif; ?>
-
-        <?php if ($error_message): ?>
-            <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
-                <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
-            </div>
-        <?php endif; ?>
-
-        <form method="POST" class="space-y-6">
-            <!-- Notification Settings -->
-            <div class="p-6 bg-white shadow-md rounded-xl">
-                <h2 class="mb-4 text-xl font-bold text-gray-800">
-                    <i class="mr-2 text-indigo-600 fas fa-bell"></i>
-                    Notifications
-                </h2>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                        <div>
-                            <p class="font-semibold text-gray-800">Enable Notifications</p>
-                            <p class="text-sm text-gray-500">Receive in-app notifications</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="notifications_enabled"
-                                <?php echo $notifications_enabled ? 'checked' : ''; ?> class="sr-only peer">
-                            <div
-                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
-                            </div>
-                        </label>
-                    </div>
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                        <div>
-                            <p class="font-semibold text-gray-800">Email Notifications</p>
-                            <p class="text-sm text-gray-500">Receive notifications via email</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="email_notifications"
-                                <?php echo $email_notifications ? 'checked' : ''; ?> class="sr-only peer">
-                            <div
-                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
-                            </div>
-                        </label>
-                    </div>
+            <div class="px-4 sm:px-6 lg:px-8">
+            <?php else: ?>
+                <!-- Header for Navbar Layout -->
+                <div class="mb-8">
+                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
+                        <!-- <i class="mr-2 text-indigo-600 fas fa-cog"></i> -->
+                        Settings
+                    </h1>
+                    <p class="text-gray-600">Customize your experience and preferences</p>
                 </div>
-            </div>
+            <?php endif; ?>
 
-            <!-- Display Settings -->
-            <div class="p-6 bg-white shadow-md rounded-xl">
-                <h2 class="mb-4 text-xl font-bold text-gray-800">
-                    <i class="mr-2 text-indigo-600 fas fa-desktop"></i>
-                    Display Preferences
-                </h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block mb-2 text-sm font-semibold text-gray-700">Items per Page</label>
-                        <select name="items_per_page"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 md:w-1/2 bg-white text-gray-800">
-                            <option value="10" <?php echo $items_per_page === 10 ? 'selected' : ''; ?>>10 items</option>
-                            <option value="25" <?php echo $items_per_page === 25 ? 'selected' : ''; ?>>25 items</option>
-                            <option value="50" <?php echo $items_per_page === 50 ? 'selected' : ''; ?>>50 items</option>
-                            <option value="100" <?php echo $items_per_page === 100 ? 'selected' : ''; ?>>100 items
-                            </option>
-                        </select>
-                        <p class="mt-1 text-xs text-gray-500">Number of items to display in tables</p>
-                    </div>
-                    <div>
-                        <label class="block mb-2 text-sm font-semibold text-gray-700">Timezone</label>
-                        <select name="timezone"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 md:w-1/2 bg-white text-gray-800">
-                            <option value="Asia/Manila" <?php echo $timezone === 'Asia/Manila' ? 'selected' : ''; ?>>
-                                Asia/Manila (PHT)</option>
-                            <option value="UTC" <?php echo $timezone === 'UTC' ? 'selected' : ''; ?>>UTC</option>
-                            <option value="America/New_York"
-                                <?php echo $timezone === 'America/New_York' ? 'selected' : ''; ?>>America/New York (EST)
-                            </option>
-                            <option value="America/Los_Angeles"
-                                <?php echo $timezone === 'America/Los_Angeles' ? 'selected' : ''; ?>>America/Los Angeles
-                                (PST)</option>
-                            <option value="Europe/London"
-                                <?php echo $timezone === 'Europe/London' ? 'selected' : ''; ?>>Europe/London (GMT)
-                            </option>
-                            <option value="Asia/Tokyo" <?php echo $timezone === 'Asia/Tokyo' ? 'selected' : ''; ?>>
-                                Asia/Tokyo (JST)</option>
-                        </select>
-                        <p class="mt-1 text-xs text-gray-500">Choose your preferred timezone</p>
-                    </div>
+            <!-- Messages -->
+            <?php if ($success_message): ?>
+                <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
+                    <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
                 </div>
-            </div>
+            <?php endif; ?>
 
-            <!-- Privacy & Security -->
-            <div class="p-6 bg-white shadow-md rounded-xl">
-                <h2 class="mb-4 text-xl font-bold text-gray-800">
-                    <i class="mr-2 text-indigo-600 fas fa-shield-alt"></i>
-                    Privacy & Security
-                </h2>
-                <div class="space-y-3">
-                    <a href="profile.php"
-                        class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
-                        <div class="flex items-center gap-3">
-                            <i class="text-xl text-indigo-600 fas fa-key"></i>
+            <?php if ($error_message): ?>
+                <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
+                    <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" class="space-y-6">
+                <!-- Notification Settings -->
+                <div class="p-6 bg-white shadow-md rounded-xl">
+                    <h2 class="mb-4 text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-indigo-600 fas fa-bell"></i>
+                        Notifications
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                             <div>
-                                <p class="font-semibold text-gray-800">Change Password</p>
-                                <p class="text-xs text-gray-500">Update your account password</p>
+                                <p class="font-semibold text-gray-800">Enable Notifications</p>
+                                <p class="text-sm text-gray-500">Receive in-app notifications</p>
                             </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" name="notifications_enabled"
+                                    <?php echo $notifications_enabled ? 'checked' : ''; ?> class="sr-only peer">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                                </div>
+                            </label>
                         </div>
-                        <i class="text-gray-400 fas fa-chevron-right"></i>
-                    </a>
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div>
+                                <p class="font-semibold text-gray-800">Email Notifications</p>
+                                <p class="text-sm text-gray-500">Receive notifications via email</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" name="email_notifications"
+                                    <?php echo $email_notifications ? 'checked' : ''; ?> class="sr-only peer">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Save Button -->
-            <div class="flex justify-end gap-4">
-                <a href="admin-dashboard.php"
-                    class="px-6 py-3 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
-                    Cancel
-                </a>
-                <button type="submit" name="update_settings"
-                    class="px-6 py-3 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
-                    <i class="mr-2 fas fa-save"></i>
-                    Save Settings
-                </button>
+                <!-- Display Settings -->
+                <div class="p-6 bg-white shadow-md rounded-xl">
+                    <h2 class="mb-4 text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-indigo-600 fas fa-desktop"></i>
+                        Display Preferences
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">Items per Page</label>
+                            <select name="items_per_page"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 md:w-1/2 bg-white text-gray-800">
+                                <option value="10" <?php echo $items_per_page === 10 ? 'selected' : ''; ?>>10 items
+                                </option>
+                                <option value="25" <?php echo $items_per_page === 25 ? 'selected' : ''; ?>>25 items
+                                </option>
+                                <option value="50" <?php echo $items_per_page === 50 ? 'selected' : ''; ?>>50 items
+                                </option>
+                                <option value="100" <?php echo $items_per_page === 100 ? 'selected' : ''; ?>>100 items
+                                </option>
+                            </select>
+                            <p class="mt-1 text-xs text-gray-500">Number of items to display in tables</p>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">Navigation Layout</label>
+                            <select name="nav_layout"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 md:w-1/2 bg-white text-gray-800">
+                                <option value="sidebar" <?php echo $nav_layout === 'sidebar' ? 'selected' : ''; ?>>
+                                    <i class="fas fa-bars"></i> Sidebar (Modern)
+                                </option>
+                                <option value="navbar" <?php echo $nav_layout === 'navbar' ? 'selected' : ''; ?>>
+                                    <i class="fas fa-window-maximize"></i> Top Navbar (Classic)
+                                </option>
+                            </select>
+                            <p class="mt-1 text-xs text-gray-500">Choose how you want the navigation to be displayed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy & Security -->
+                <div class="p-6 bg-white shadow-md rounded-xl">
+                    <h2 class="mb-4 text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-indigo-600 fas fa-shield-alt"></i>
+                        Privacy & Security
+                    </h2>
+                    <div class="space-y-3">
+                        <a href="profile.php"
+                            class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-indigo-200 hover:bg-indigo-50">
+                            <div class="flex items-center gap-3">
+                                <i class="text-xl text-indigo-600 fas fa-key"></i>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Change Password</p>
+                                    <p class="text-xs text-gray-500">Update your account password</p>
+                                </div>
+                            </div>
+                            <i class="text-gray-400 fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="flex justify-end gap-4 mb-8">
+                    <a href="admin-dashboard.php"
+                        class="px-6 py-3 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
+                        Cancel
+                    </a>
+                    <button type="submit" name="update_settings"
+                        class="px-6 py-3 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                        <i class="mr-2 fas fa-save"></i>
+                        Save Settings
+                    </button>
+                </div>
+            </form>
+            <?php if ($nav_layout === 'sidebar'): ?>
             </div>
-        </form>
+        <?php endif; ?>
     </div>
-
-    <?php include '../../../src/components/Footer.php'; ?>
-
-    <script>
-        // Profile dropdown toggle
-        document.getElementById('profile-dropdown-btn')?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.getElementById('profile-dropdown').classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', function() {
-            document.getElementById('profile-dropdown')?.classList.add('hidden');
-        });
-    </script>
 </body>
 
 </html>

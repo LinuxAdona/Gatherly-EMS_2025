@@ -1,5 +1,22 @@
 // Manager Dashboard JavaScript
 
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle hamburger icon
+        const icon = mobileMenuBtn.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
+    });
+}
+
 // Profile dropdown toggle
 const profileBtn = document.getElementById('profile-dropdown-btn');
 const profileDropdown = document.getElementById('profile-dropdown');

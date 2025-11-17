@@ -94,6 +94,8 @@ $conn->close();
                         <span class="text-lg font-bold text-gray-800 sm:text-xl">Gatherly</span>
                     </a>
                 </div>
+
+                <!-- Desktop Menu -->
                 <div class="items-center hidden gap-6 md:flex">
                     <a href="manager-dashboard.php"
                         class="font-semibold text-green-600 transition-colors hover:text-green-700">Dashboard</a>
@@ -116,6 +118,40 @@ $conn->close();
                                 class="block px-4 py-2 text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="text-gray-700 md:hidden focus:outline-none">
+                    <i class="text-2xl fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden pb-4 md:hidden">
+                <div class="flex flex-col space-y-2">
+                    <a href="manager-dashboard.php"
+                        class="px-4 py-2 font-semibold text-green-600 transition-colors rounded-lg hover:bg-green-50">Dashboard</a>
+                    <a href="my-venues.php"
+                        class="px-4 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">My Venues</a>
+                    <a href="bookings.php"
+                        class="px-4 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">Bookings</a>
+                    <a href="pricing.php"
+                        class="px-4 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">Pricing</a>
+                    <a href="analytics.php"
+                        class="px-4 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">Analytics</a>
+                    <hr class="my-2 border-gray-200">
+                    <a href="profile.php"
+                        class="px-4 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
+                        <i class="mr-2 fas fa-user"></i>Profile
+                    </a>
+                    <a href="settings.php"
+                        class="px-4 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
+                        <i class="mr-2 fas fa-cog"></i>Settings
+                    </a>
+                    <a href="../../../src/services/signout-handler.php"
+                        class="px-4 py-2 text-red-600 transition-colors rounded-lg hover:bg-red-50">
+                        <i class="mr-2 fas fa-sign-out-alt"></i>Sign Out
+                    </a>
                 </div>
             </div>
         </div>
@@ -425,8 +461,6 @@ $conn->close();
             </div>
         </div>
     </div>
-
-    <?php include '../../../src/components/footer.php'; ?>
 
     <script src="../../assets/js/manager.js"></script>
 </body>
