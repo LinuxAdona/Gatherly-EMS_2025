@@ -14,7 +14,7 @@ $error_message = '';
 
 // Check if user is logged in and is an organizer
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
-    header("Location: /home2/gatherly/public_html/public/pages/signin.php");
+    header("Location: /../../signin.php");
     exit();
 }
 
@@ -24,7 +24,7 @@ $debug_info[] = "Current directory: " . __DIR__;
 
 try {
     $debug_info[] = "Loading dbconnect.php...";
-    require_once '/home2/gatherly/public_html/src/services/dbconnect.php';
+    require_once '../../../src/services/dbconnect.php';
     $debug_info[] = "dbconnect.php loaded successfully";
 
     if (!isset($conn)) {

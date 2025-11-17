@@ -53,7 +53,7 @@ if (chatForm) {
             console.log('Conversation state:', conversationState);
             
             // Use absolute path from document root
-            const response = await fetch('/src/services/ai/ai-conversation.php', {
+            const response = await fetch('../../../src/services/ai/ai-conversation.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
