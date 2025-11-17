@@ -1,5 +1,5 @@
 <?php
-const DEPLOYMENT_ENV = 'development'; // Change to 'production' in production environment
+const DEPLOYMENT_ENV = 'production'; // Change to 'production' in production environment
 
 // Database configuration - Check multiple sources with fallbacks
 define('DB_HOST', 'localhost');
