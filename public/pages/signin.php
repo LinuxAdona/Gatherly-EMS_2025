@@ -76,9 +76,9 @@
                             placeholder="your@email.com">
                         <label for="password" class="mb-2 text-sm font-semibold text-gray-700">Password</label>
                         <input type="password" id="password" name="password" required
-                            class="w-full px-4 py-2.5 mb-5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                            class="w-full px-4 py-2.5 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                             placeholder="Enter your password">
-                        <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+                        <!-- <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
                             <div class="flex items-center">
                                 <input type="checkbox" id="remember" name="remember"
                                     class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
@@ -90,7 +90,7 @@
                                     class="text-xs font-semibold text-indigo-600 transition-colors sm:text-sm hover:text-indigo-700 hover:underline">Forgot
                                     password?</span>
                             </a>
-                        </div>
+                        </div> -->
                         <button type="submit"
                             class="cursor-pointer w-full px-4 py-3 font-semibold text-white transition-all bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">Sign
                             in</button>

@@ -1,26 +1,60 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1); // TEMPORARILY ENABLE to see errors
+ini_set('log_errors', 1);
+ini_set('error_log', '/opt/lampp/htdocs/Gatherly-EMS_2025/error.log');
+
+// Log that script started
+error_log("get-revenue-data.php: Script started");
+
 session_start();
+error_log("get-revenue-data.php: Session started");
 
 // Check if user is logged in and is an administrator
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'administrator') {
+    error_log("get-revenue-data.php: Unauthorized access attempt");
     http_response_code(403);
+    header('Content-Type: application/json');
     echo json_encode(['error' => 'Unauthorized']);
     exit();
 }
 
-require_once 'dbconnect.php';
+error_log("get-revenue-data.php: User authenticated as " . $_SESSION['role']);
+
+try {
+    require_once 'dbconnect.php';
+} catch (Exception $e) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    error_log("Database connection error in get-revenue-data.php: " . $e->getMessage());
+    echo json_encode(['error' => 'Database connection failed']);
+    exit();
+}
 
 header('Content-Type: application/json');
 
 $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
 $month = isset($_GET['month']) ? intval($_GET['month']) : null;
 
-// Get available years from events
-$years_query = "SELECT DISTINCT YEAR(event_date) as year FROM events WHERE status = 'completed' ORDER BY year DESC";
-$years_result = $conn->query($years_query);
-$available_years = [];
-while ($row = $years_result->fetch_assoc()) {
-    $available_years[] = $row['year'];
+try {
+    // Get available years from events
+    $years_query = "SELECT DISTINCT YEAR(event_date) as year FROM events WHERE status = 'completed' ORDER BY year DESC";
+    $years_result = $conn->query($years_query);
+
+    if (!$years_result) {
+        throw new Exception("Query failed: " . $conn->error);
+    }
+
+    $available_years = [];
+    while ($row = $years_result->fetch_assoc()) {
+        $available_years[] = intval($row['year']);
+    }
+} catch (Exception $e) {
+    error_log("Error fetching available years: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Error fetching data: ' . $e->getMessage()]);
+    exit();
 }
 
 // Initialize response
@@ -136,3 +170,4 @@ if ($month !== null) {
 $conn->close();
 
 echo json_encode($response);
+exit(); // Ensure no extra output after JSON

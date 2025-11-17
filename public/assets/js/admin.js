@@ -50,19 +50,44 @@ async function initializeRevenueChart() {
     try {
         // First, load available years
         const response = await fetch('../../../src/services/get-revenue-data.php');
-        const data = await response.json();
+        
+        // Log response details for debugging
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers.get('content-type'));
+        
+        // Get the response text REGARDLESS of status code
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}\nResponse: ${responseText}`);
+        }
+        
+        // Try to parse it as JSON
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            console.error('Response was:', responseText);
+            throw new Error('Invalid JSON response from server');
+        }
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
         
         if (data.available_years && data.available_years.length > 0) {
             populateYearSelect(data.available_years);
             currentYear = data.available_years[0]; // Most recent year
             await loadRevenueData();
         } else {
-            console.error('No revenue data available');
+            console.warn('No revenue data available');
             showNoDataMessage();
         }
     } catch (error) {
         console.error('Error initializing chart:', error);
-        showErrorMessage();
+        showErrorMessage(error.message);
     }
 }
 
@@ -90,20 +115,36 @@ async function loadRevenueData() {
             url.searchParams.append('month', currentMonth);
         }
         
+        console.log('Fetching revenue data from:', url.toString());
+        
         const response = await fetch(url);
-        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const responseText = await response.text();
+        console.log('Revenue data response:', responseText);
+        
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            console.error('Response was:', responseText);
+            throw new Error('Invalid JSON response from server');
+        }
         
         if (data.error) {
-            console.error('Error:', data.error);
-            showErrorMessage();
-            return;
+            console.error('Error from server:', data.error);
+            throw new Error(data.error);
         }
         
         updateSummaryStats(data);
         updateChart(data);
     } catch (error) {
         console.error('Error loading revenue data:', error);
-        showErrorMessage();
+        showErrorMessage(error.message);
     }
 }
 
@@ -296,9 +337,16 @@ function showNoDataMessage() {
     }
 }
 
-function showErrorMessage() {
+function showErrorMessage(errorMsg = 'Error loading revenue data') {
     const chartContainer = document.getElementById('revenueChart');
     if (chartContainer) {
-        chartContainer.parentElement.innerHTML = '<div class="flex items-center justify-center h-full text-red-500"><p>Error loading revenue data</p></div>';
+        const errorHtml = `
+            <div class="flex flex-col items-center justify-center h-full text-red-500 p-4">
+                <p class="font-bold mb-2">Error Loading Revenue Data</p>
+                <p class="text-sm text-gray-600">${errorMsg}</p>
+                <p class="text-xs text-gray-500 mt-2">Check browser console and error.log for details</p>
+            </div>
+        `;
+        chartContainer.parentElement.innerHTML = errorHtml;
     }
 }

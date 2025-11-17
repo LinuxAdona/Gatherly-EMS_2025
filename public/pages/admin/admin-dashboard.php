@@ -1,4 +1,10 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', '/opt/lampp/htdocs/Gatherly-EMS_2025/error.log');
+
 session_start();
 
 // Check if user is logged in and is an administrator
@@ -7,11 +13,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'administrator') {
     exit();
 }
 
-require_once '../../../src/services/dbconnect.php';
+try {
+    require_once '../../../src/services/dbconnect.php';
+} catch (Exception $e) {
+    die("Database connection error: " . $e->getMessage());
+}
 
 $first_name = $_SESSION['first_name'] ?? 'Admin';
 
-// Fetch statistics
+// Fetch statistics with error handling
 $stats = [
     'total_users' => 0,
     'total_venues' => 0,
@@ -19,17 +29,38 @@ $stats = [
     'total_revenue' => 0
 ];
 
-$result = $conn->query("SELECT COUNT(*) as count FROM users");
-$stats['total_users'] = $result->fetch_assoc()['count'];
+try {
+    $result = $conn->query("SELECT COUNT(*) as count FROM users");
+    if ($result) {
+        $stats['total_users'] = $result->fetch_assoc()['count'];
+    } else {
+        error_log("Query failed - users count: " . $conn->error);
+    }
 
-$result = $conn->query("SELECT COUNT(*) as count FROM venues");
-$stats['total_venues'] = $result->fetch_assoc()['count'];
+    $result = $conn->query("SELECT COUNT(*) as count FROM venues");
+    if ($result) {
+        $stats['total_venues'] = $result->fetch_assoc()['count'];
+    } else {
+        error_log("Query failed - venues count: " . $conn->error);
+    }
 
-$result = $conn->query("SELECT COUNT(*) as count FROM events");
-$stats['total_events'] = $result->fetch_assoc()['count'];
+    $result = $conn->query("SELECT COUNT(*) as count FROM events");
+    if ($result) {
+        $stats['total_events'] = $result->fetch_assoc()['count'];
+    } else {
+        error_log("Query failed - events count: " . $conn->error);
+    }
 
-$result = $conn->query("SELECT SUM(total_cost) as total FROM events WHERE status = 'completed'");
-$stats['total_revenue'] = $result->fetch_assoc()['total'] ?? 0;
+    $result = $conn->query("SELECT SUM(total_cost) as total FROM events WHERE status = 'completed'");
+    if ($result) {
+        $stats['total_revenue'] = $result->fetch_assoc()['total'] ?? 0;
+    } else {
+        error_log("Query failed - revenue sum: " . $conn->error);
+    }
+} catch (Exception $e) {
+    error_log("Error fetching statistics: " . $e->getMessage());
+    die("Error loading dashboard data. Check error.log for details.");
+}
 
 $conn->close();
 ?>
@@ -41,8 +72,6 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
-    <link rel="stylesheet"
-        href="../../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../../src/output.css'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link

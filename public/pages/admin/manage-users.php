@@ -193,46 +193,50 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
 
         <!-- Filters and Search -->
         <div class="p-6 mb-6 bg-white shadow-md rounded-xl">
-            <form method="GET" class="grid grid-cols-1 gap-4 md:grid-cols-4">
+            <form method="GET" class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                     <label class="block mb-2 text-sm font-semibold text-gray-700">Search</label>
                     <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"
                         placeholder="Name or email..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
-                <div>
-                    <label class="block mb-2 text-sm font-semibold text-gray-700">Role</label>
-                    <select name="role"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="">All Roles</option>
-                        <option value="organizer" <?php echo $role_filter === 'organizer' ? 'selected' : ''; ?>>
-                            Organizer</option>
-                        <option value="manager" <?php echo $role_filter === 'manager' ? 'selected' : ''; ?>>Manager
-                        </option>
-                        <option value="administrator" <?php echo $role_filter === 'administrator' ? 'selected' : ''; ?>>
-                            Administrator</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block mb-2 text-sm font-semibold text-gray-700">Status</label>
-                    <select name="status"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="">All Status</option>
-                        <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active
-                        </option>
-                        <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive
-                        </option>
-                    </select>
-                </div>
-                <div class="flex items-end gap-2">
-                    <button type="submit"
-                        class="flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
-                        <i class="mr-2 fas fa-search"></i>Filter
-                    </button>
-                    <a href="manage-users.php"
-                        class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
-                        <i class="fas fa-redo"></i>
-                    </a>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div>
+                        <label class="block mb-2 text-sm font-semibold text-gray-700">Role</label>
+                        <select name="role"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">All Roles</option>
+                            <option value="organizer" <?php echo $role_filter === 'organizer' ? 'selected' : ''; ?>>
+                                Organizer</option>
+                            <option value="manager" <?php echo $role_filter === 'manager' ? 'selected' : ''; ?>>Manager
+                            </option>
+                            <option value="administrator"
+                                <?php echo $role_filter === 'administrator' ? 'selected' : ''; ?>>
+                                Administrator</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-semibold text-gray-700">Status</label>
+                        <select name="status"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">All Status</option>
+                            <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active
+                            </option>
+                            <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>
+                                Inactive
+                            </option>
+                        </select>
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <button type="submit"
+                            class="cursor-pointer flex-1 px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                            <i class="mr-2 fas fa-search"></i>Filter
+                        </button>
+                        <a href="manage-users.php"
+                            class="px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                            <i class="fas fa-redo"></i>
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -314,34 +318,26 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                                         <div class="flex justify-center gap-2">
                                             <?php if ($user['user_id'] != $_SESSION['user_id']): ?>
                                                 <?php if ($user['status'] === 'active'): ?>
-                                                    <form method="POST" class="inline"
-                                                        onsubmit="return confirm('Deactivate this user?');">
-                                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                        <input type="hidden" name="action" value="deactivate">
-                                                        <button type="submit"
-                                                            class="px-3 py-1 text-xs text-white transition-colors bg-orange-500 rounded hover:bg-orange-600">
-                                                            <i class="fas fa-ban"></i>
-                                                        </button>
-                                                    </form>
-                                                <?php else: ?>
-                                                    <form method="POST" class="inline">
-                                                        <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                        <input type="hidden" name="action" value="activate">
-                                                        <button type="submit"
-                                                            class="px-3 py-1 text-xs text-white transition-colors bg-green-500 rounded hover:bg-green-600">
-                                                            <i class="fas fa-check"></i>
-                                                        </button>
-                                                    </form>
-                                                <?php endif; ?>
-                                                <form method="POST" class="inline"
-                                                    onsubmit="return confirm('Delete this user permanently?');">
-                                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                    <input type="hidden" name="action" value="delete">
-                                                    <button type="submit"
-                                                        class="px-3 py-1 text-xs text-white transition-colors bg-red-500 rounded hover:bg-red-600">
-                                                        <i class="fas fa-trash"></i>
+                                                    <button
+                                                        onclick="openDeactivateModal(<?php echo $user['user_id']; ?>, '<?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>')"
+                                                        class="cursor-pointer px-3 py-1 text-xs text-white transition-colors bg-orange-500 rounded hover:bg-orange-600"
+                                                        title="Deactivate User">
+                                                        <i class="fas fa-ban"></i>
                                                     </button>
-                                                </form>
+                                                <?php else: ?>
+                                                    <button
+                                                        onclick="openActivateModal(<?php echo $user['user_id']; ?>, '<?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>')"
+                                                        class="cursor-pointer px-3 py-1 text-xs text-white transition-colors bg-green-500 rounded hover:bg-green-600"
+                                                        title="Activate User">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                                <button
+                                                    onclick="openDeleteModal(<?php echo $user['user_id']; ?>, '<?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>')"
+                                                    class="cursor-pointer px-3 py-1 text-xs text-white transition-colors bg-red-500 rounded hover:bg-red-600"
+                                                    title="Delete User">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             <?php else: ?>
                                                 <span class="px-3 py-1 text-xs text-gray-500 bg-gray-200 rounded">You</span>
                                             <?php endif; ?>
@@ -363,6 +359,115 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
         </div>
     </div>
 
+    <!-- Activate User Modal -->
+    <div id="activateModal" class="fixed inset-0 z-50 hidden" onclick="if(event.target === this) closeActivateModal()">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-green-600 fas fa-check-circle"></i>
+                        Activate User
+                    </h3>
+                    <button onclick="closeActivateModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="text-xl fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="mb-6 text-gray-600">
+                    Are you sure you want to activate <span id="activateUserName"
+                        class="font-semibold text-gray-800"></span>?
+                    This will restore their access to the system.
+                </p>
+                <form method="POST" class="flex justify-end gap-3">
+                    <input type="hidden" name="user_id" id="activateUserId">
+                    <input type="hidden" name="action" value="activate">
+                    <button type="button" onclick="closeActivateModal()"
+                        class="px-4 py-2 text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+                        <i class="mr-2 fas fa-check"></i>Activate
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deactivate User Modal -->
+    <div id="deactivateModal" class="fixed inset-0 z-50 hidden"
+        onclick="if(event.target === this) closeDeactivateModal()">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-orange-600 fas fa-ban"></i>
+                        Deactivate User
+                    </h3>
+                    <button onclick="closeDeactivateModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="text-xl fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="mb-6 text-gray-600">
+                    Are you sure you want to deactivate <span id="deactivateUserName"
+                        class="font-semibold text-gray-800"></span>?
+                    They will lose access to the system but their data will be preserved.
+                </p>
+                <form method="POST" class="flex justify-end gap-3">
+                    <input type="hidden" name="user_id" id="deactivateUserId">
+                    <input type="hidden" name="action" value="deactivate">
+                    <button type="button" onclick="closeDeactivateModal()"
+                        class="px-4 py-2 text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 text-white transition-colors bg-orange-600 rounded-lg hover:bg-orange-700">
+                        <i class="mr-2 fas fa-ban"></i>Deactivate
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden" onclick="if(event.target === this) closeDeleteModal()">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="mr-2 text-red-600 fas fa-exclamation-triangle"></i>
+                        Delete User
+                    </h3>
+                    <button onclick="closeDeleteModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="text-xl fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4 mb-4 border-l-4 border-red-500 bg-red-50">
+                    <p class="font-semibold text-red-800">Warning: This action cannot be undone!</p>
+                </div>
+                <p class="mb-6 text-gray-600">
+                    Are you sure you want to permanently delete <span id="deleteUserName"
+                        class="font-semibold text-gray-800"></span>?
+                    All their data and associated records will be removed from the system.
+                </p>
+                <form method="POST" class="flex justify-end gap-3">
+                    <input type="hidden" name="user_id" id="deleteUserId">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="button" onclick="closeDeleteModal()"
+                        class="px-4 py-2 text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700">
+                        <i class="mr-2 fas fa-trash"></i>Delete Permanently
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <?php include '../../../src/components/Footer.php'; ?>
 
     <script>
@@ -374,6 +479,58 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
 
         document.addEventListener('click', function() {
             document.getElementById('profile-dropdown')?.classList.add('hidden');
+        });
+
+        // Modal functions
+        function openActivateModal(userId, userName) {
+            document.getElementById('activateUserId').value = userId;
+            document.getElementById('activateUserName').textContent = userName;
+            const modal = document.getElementById('activateModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeActivateModal() {
+            const modal = document.getElementById('activateModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function openDeactivateModal(userId, userName) {
+            document.getElementById('deactivateUserId').value = userId;
+            document.getElementById('deactivateUserName').textContent = userName;
+            const modal = document.getElementById('deactivateModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeactivateModal() {
+            const modal = document.getElementById('deactivateModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function openDeleteModal(userId, userName) {
+            document.getElementById('deleteUserId').value = userId;
+            document.getElementById('deleteUserName').textContent = userName;
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close modals on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeActivateModal();
+                closeDeactivateModal();
+                closeDeleteModal();
+            }
         });
     </script>
 </body>

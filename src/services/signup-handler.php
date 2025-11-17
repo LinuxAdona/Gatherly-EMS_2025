@@ -1,6 +1,22 @@
 <?php
+// Error handling - catch any errors and redirect with message
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-require 'dbconnect.php';
+// Set custom error handler to catch all errors
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    error_log("Signup error: $errstr in $errfile on line $errline");
+    header("Location: ../../public/pages/signup.php?error=" . urlencode("An error occurred. Please try again."));
+    exit();
+});
+
+try {
+    require 'dbconnect.php';
+} catch (Exception $e) {
+    error_log("Database connection error: " . $e->getMessage());
+    header("Location: ../../public/pages/signup.php?error=" . urlencode("Database connection failed. Please try again later."));
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = isset($_POST['first_name']) ? trim($_POST['first_name']) : '';
@@ -14,22 +30,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Basic validation
     if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($phone) || empty($role) || empty($password) || empty($password2)) {
-        die("All fields are required.");
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("All fields are required."));
+        exit();
     }
 
     // Validate phone number
     if (!preg_match('/^[0-9]{11}$/', $phone)) {
-        die("Please enter a valid 11-digit phone number.");
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("Please enter a valid 11-digit phone number."));
+        exit();
     }
 
     // Validate role
     $valid_roles = ['administrator', 'manager', 'organizer', 'supplier'];
     if (!in_array($role, $valid_roles)) {
-        die("Invalid role selected.");
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("Invalid role selected."));
+        exit();
     }
 
     if ($password !== $password2) {
-        die("Passwords do not match.");
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("Passwords do not match."));
+        exit();
     }
 
     // Check if email already exists
@@ -39,7 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        die("Email is already registered.");
+        $stmt->close();
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("Email is already registered."));
+        exit();
     }
     $stmt->close();
 
@@ -50,7 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        die("Username is already taken.");
+        $stmt->close();
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("Username is already taken."));
+        exit();
     }
     $stmt->close();
 
@@ -63,12 +87,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         // Registration successful
-        header("Location: ../../public/pages/signin.php");
+        $stmt->close();
+        $conn->close();
+        header("Location: ../../public/pages/signup.php?success=" . urlencode("Account created successfully! Please sign in to continue."));
         exit();
     } else {
-        die("Error during registration: " . $stmt->error);
+        $error_message = $stmt->error;
+        $stmt->close();
+        $conn->close();
+        header("Location: ../../public/pages/signup.php?error=" . urlencode("Error during registration: " . $error_message));
+        exit();
     }
-
-    $stmt->close();
-    $conn->close();
+} else {
+    // If not POST request, redirect back to signup
+    header("Location: ../../public/pages/signup.php?error=" . urlencode("Invalid request method."));
+    exit();
 }

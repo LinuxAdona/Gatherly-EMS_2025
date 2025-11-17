@@ -1,20 +1,26 @@
 <?php
-// Use absolute path to ensure it works on both local and server
-require '../../../config/database.php';
+// Use absolute path to ensure it works from anywhere
+$config_path = __DIR__ . '/../../config/database.php';
+if (!file_exists($config_path)) {
+    error_log("Config file not found at: " . $config_path);
+    throw new Exception("Database configuration file not found");
+}
+require_once $config_path;
 
 // Create MySQLi connection for compatibility with existing code
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-// Check connection
+// Check connection - throw exception instead of die() for better error handling
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    error_log("Database connection failed: " . $conn->connect_error);
+    throw new Exception("Database connection failed: " . $conn->connect_error);
 }
 
 // Set charset to utf8mb4 for full Unicode support
 $conn->set_charset("utf8mb4");
 
 // Optional: Keep the PDO class for backward compatibility if other files use it
-class Database
+class Database1
 {
     private $host = DB_HOST;
     private $user = DB_USER;

@@ -42,6 +42,10 @@
                 exit();
         }
     }
+
+    // Get success or error messages from URL parameters
+    $success = $_GET['success'] ?? '';
+    $error = $_GET['error'] ?? '';
     ?>
     <div class="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat']">
         <div class="flex flex-col min-h-screen lg:flex-row">
@@ -150,6 +154,105 @@
             </div>
         </div>
     </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 z-50 hidden" onclick="if(event.target === this) closeSuccessModal()">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+                <div class="flex flex-col items-center text-center">
+                    <div class="flex items-center justify-center w-16 h-16 mb-4 bg-green-100 rounded-full">
+                        <i class="text-3xl text-green-600 fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="mb-2 text-2xl font-bold text-gray-800">Success!</h3>
+                    <p id="successMessage" class="mb-6 text-gray-600">Your account has been created successfully.</p>
+                    <div class="flex gap-3">
+                        <button onclick="closeSuccessModal()"
+                            class="px-6 py-2 text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
+                            Close
+                        </button>
+                        <a href="signin.php"
+                            class="px-6 py-2 text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+                            <i class="mr-2 fas fa-sign-in-alt"></i>Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="fixed inset-0 z-50 hidden" onclick="if(event.target === this) closeErrorModal()">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+                <div class="flex flex-col items-center text-center">
+                    <div class="flex items-center justify-center w-16 h-16 mb-4 bg-red-100 rounded-full">
+                        <i class="text-3xl text-red-600 fas fa-exclamation-circle"></i>
+                    </div>
+                    <h3 class="mb-2 text-2xl font-bold text-gray-800">Error</h3>
+                    <p id="errorMessage" class="mb-6 text-gray-600">Something went wrong. Please try again.</p>
+                    <button onclick="closeErrorModal()"
+                        class="px-6 py-2 text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Success modal functions
+        function openSuccessModal(message) {
+            document.getElementById('successMessage').textContent = message;
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Error modal functions
+        function openErrorModal(message) {
+            document.getElementById('errorMessage').textContent = message;
+            const modal = document.getElementById('errorModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeErrorModal() {
+            const modal = document.getElementById('errorModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Close modals on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSuccessModal();
+                closeErrorModal();
+            }
+        });
+
+        // Check for messages on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            <?php if ($success): ?>
+                openSuccessModal(<?php echo json_encode($success); ?>);
+            <?php endif; ?>
+
+            <?php if ($error): ?>
+                openErrorModal(<?php echo json_encode($error); ?>);
+            <?php endif; ?>
+        });
+    </script>
 </body>
 
 </html>

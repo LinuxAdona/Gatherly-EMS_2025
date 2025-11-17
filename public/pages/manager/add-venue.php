@@ -46,10 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert selected amenities
     if (!empty($selected_amenities)) {
-        $stmtAmenity = $conn->prepare("INSERT INTO venue_amenities (venue_id, amenity_name) VALUES (?, ?)");
+        $stmtAmenity = $conn->prepare("INSERT INTO venue_amenities (venue_id, amenity_id) VALUES (?, ?)");
         foreach ($selected_amenities as $amenity_name) {
-            $stmtAmenity->bind_param("is", $venue_id, $amenity_name);
-            $stmtAmenity->execute();
+            $stmtAmenityId = $conn->prepare("SELECT amenity_id FROM amenities WHERE amenity_name = ?");
+            $stmtAmenityId->bind_param("s", $amenity_name);
+            $stmtAmenityId->execute();
+            $stmtAmenityId->bind_result($amenity_id);
+            if ($stmtAmenityId->fetch()) {
+                $stmtAmenity->bind_param("ii", $venue_id, $amenity_id);
+                $stmtAmenity->execute();
+            }
+            $stmtAmenityId->close();
         }
         $stmtAmenity->close();
     }
@@ -239,12 +246,12 @@ $default_amenities = [
                     <div
                         class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2 bg-gray-50 p-4 rounded-lg border border-gray-300">
                         <?php foreach ($default_amenities as $amenity): ?>
-                        <label class="flex items-center gap-2 text-sm text-gray-700">
-                            <input type="checkbox" name="venue_amenities[]"
-                                value="<?php echo htmlspecialchars($amenity); ?>"
-                                class="text-green-600 focus:ring-green-500">
-                            <?php echo htmlspecialchars($amenity); ?>
-                        </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-700">
+                                <input type="checkbox" name="venue_amenities[]"
+                                    value="<?php echo htmlspecialchars($amenity); ?>"
+                                    class="text-green-600 focus:ring-green-500">
+                                <?php echo htmlspecialchars($amenity); ?>
+                            </label>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -266,46 +273,46 @@ $default_amenities = [
     <?php include '../../../src/components/footer.php'; ?>
 
     <script>
-    // Dynamic pricing auto-compute
-    const baseInput = document.getElementById('base_price');
-    const percentInput = document.getElementById('price_percentage');
-    const peak = document.getElementById('peak_price');
-    const offpeak = document.getElementById('offpeak_price');
-    const weekday = document.getElementById('weekday_price');
-    const weekend = document.getElementById('weekend_price');
+        // Dynamic pricing auto-compute
+        const baseInput = document.getElementById('base_price');
+        const percentInput = document.getElementById('price_percentage');
+        const peak = document.getElementById('peak_price');
+        const offpeak = document.getElementById('offpeak_price');
+        const weekday = document.getElementById('weekday_price');
+        const weekend = document.getElementById('weekend_price');
 
-    function computePrices() {
-        const base = parseFloat(baseInput.value) || 0;
-        const percent = parseFloat(percentInput.value) || 0;
-        const peakPrice = base + (base * (percent / 100));
-        const offpeakPrice = base - (base * (percent / 100));
-        const weekdayPrice = base;
-        const weekendPrice = peakPrice;
+        function computePrices() {
+            const base = parseFloat(baseInput.value) || 0;
+            const percent = parseFloat(percentInput.value) || 0;
+            const peakPrice = base + (base * (percent / 100));
+            const offpeakPrice = base - (base * (percent / 100));
+            const weekdayPrice = base;
+            const weekendPrice = peakPrice;
 
-        peak.value = peakPrice.toFixed(2);
-        offpeak.value = offpeakPrice.toFixed(2);
-        weekday.value = weekdayPrice.toFixed(2);
-        weekend.value = weekendPrice.toFixed(2);
-    }
-
-    baseInput.addEventListener('input', computePrices);
-    percentInput.addEventListener('input', computePrices);
-
-    const imageInput = document.getElementById('imageInput');
-    const imageStatus = document.getElementById('imageStatus');
-    imageInput.addEventListener('change', () => {
-        if (imageInput.files && imageInput.files.length > 0) {
-            imageStatus.textContent = `Image selected: ${imageInput.files[0].name}`;
-            imageStatus.classList.remove('hidden');
-        } else {
-            imageStatus.textContent = '';
-            imageStatus.classList.add('hidden');
+            peak.value = peakPrice.toFixed(2);
+            offpeak.value = offpeakPrice.toFixed(2);
+            weekday.value = weekdayPrice.toFixed(2);
+            weekend.value = weekendPrice.toFixed(2);
         }
-    });
 
-    document.getElementById('profile-dropdown-btn').addEventListener('click', () => {
-        document.getElementById('profile-dropdown').classList.toggle('hidden');
-    });
+        baseInput.addEventListener('input', computePrices);
+        percentInput.addEventListener('input', computePrices);
+
+        const imageInput = document.getElementById('imageInput');
+        const imageStatus = document.getElementById('imageStatus');
+        imageInput.addEventListener('change', () => {
+            if (imageInput.files && imageInput.files.length > 0) {
+                imageStatus.textContent = `Image selected: ${imageInput.files[0].name}`;
+                imageStatus.classList.remove('hidden');
+            } else {
+                imageStatus.textContent = '';
+                imageStatus.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('profile-dropdown-btn').addEventListener('click', () => {
+            document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
     </script>
 
 </body>
