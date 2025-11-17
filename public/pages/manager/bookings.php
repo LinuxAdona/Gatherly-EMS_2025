@@ -2,8 +2,8 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'manager') {
-  header("Location: ../signin.php");
-  exit();
+    header("Location: ../signin.php");
+    exit();
 }
 
 require_once '../../../src/services/dbconnect.php';
@@ -11,83 +11,83 @@ $first_name = $_SESSION['first_name'] ?? 'Manager';
 
 // Handle delete
 if (isset($_POST['delete_submit'])) {
-  $del_id = intval($_POST['delete_id']);
-  $stmt = $conn->prepare("DELETE FROM events WHERE event_id = ?");
-  $stmt->bind_param("i", $del_id);
-  $stmt->execute();
-  $stmt->close();
-  header("Location: bookings.php");
-  exit();
+    $del_id = intval($_POST['delete_id']);
+    $stmt = $conn->prepare("DELETE FROM events WHERE event_id = ?");
+    $stmt->bind_param("i", $del_id);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: bookings.php");
+    exit();
 }
 
 // Handle edit
 if (isset($_POST['edit_submit'])) {
-  $eid = intval($_POST['edit_id']);
+    $eid = intval($_POST['edit_id']);
 
-  $stmt = $conn->prepare("SELECT event_name, event_type, theme, expected_guests, total_cost, event_date, status FROM events WHERE event_id=? LIMIT 1");
-  $stmt->bind_param("i", $eid);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $old = $result->fetch_assoc();
-  $stmt->close();
+    $stmt = $conn->prepare("SELECT event_name, event_type, theme, expected_guests, total_cost, event_date, status FROM events WHERE event_id=? LIMIT 1");
+    $stmt->bind_param("i", $eid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $old = $result->fetch_assoc();
+    $stmt->close();
 
-  if (!$old) {
-    header("Location: bookings.php");
-    exit();
-  }
-
-  // Use submitted values if not empty, otherwise keep old value
-  $ename = trim($_POST['event_name'] ?? '') ?: $old['event_name'];
-
-  $etype_raw = trim($_POST['event_type'] ?? '');
-  $etype = $etype_raw !== '' ? $conn->real_escape_string($etype_raw) : $old['event_type'];
-
-  $theme_raw = trim($_POST['theme'] ?? '');
-  $theme = $theme_raw !== '' ? $conn->real_escape_string($theme_raw) : $old['theme'];
-
-  $guests_raw = $_POST['expected_guests'] ?? '';
-  $guests = $guests_raw !== '' ? intval($guests_raw) : $old['expected_guests'];
-
-  $cost_raw = $_POST['total_cost'] ?? '';
-  $cost = $cost_raw !== '' ? floatval($cost_raw) : $old['total_cost'];
-
-  // Handle datetime
-  $edate_raw = trim($_POST['event_date'] ?? '');
-  $edate = $old['event_date'];
-
-  if ($edate_raw !== '') {
-    // Convert datetime-local string (YYYY-MM-DDTHH:MM) to YYYY-MM-DD HH:MM:SS format
-    $dt = DateTime::createFromFormat('Y-m-d\TH:i', $edate_raw);
-
-    if ($dt) {
-      $edate = $dt->format('Y-m-d H:i:s');
+    if (!$old) {
+        header("Location: bookings.php");
+        exit();
     }
-  }
 
-  $estatus = $_POST['status'] ?? $old['status'];
+    // Use submitted values if not empty, otherwise keep old value
+    $ename = trim($_POST['event_name'] ?? '') ?: $old['event_name'];
 
-  // Prepare update query 
-  $stmt = $conn->prepare("UPDATE events 
+    $etype_raw = trim($_POST['event_type'] ?? '');
+    $etype = $etype_raw !== '' ? $conn->real_escape_string($etype_raw) : $old['event_type'];
+
+    $theme_raw = trim($_POST['theme'] ?? '');
+    $theme = $theme_raw !== '' ? $conn->real_escape_string($theme_raw) : $old['theme'];
+
+    $guests_raw = $_POST['expected_guests'] ?? '';
+    $guests = $guests_raw !== '' ? intval($guests_raw) : $old['expected_guests'];
+
+    $cost_raw = $_POST['total_cost'] ?? '';
+    $cost = $cost_raw !== '' ? floatval($cost_raw) : $old['total_cost'];
+
+    // Handle datetime
+    $edate_raw = trim($_POST['event_date'] ?? '');
+    $edate = $old['event_date'];
+
+    if ($edate_raw !== '') {
+        // Convert datetime-local string (YYYY-MM-DDTHH:MM) to YYYY-MM-DD HH:MM:SS format
+        $dt = DateTime::createFromFormat('Y-m-d\TH:i', $edate_raw);
+
+        if ($dt) {
+            $edate = $dt->format('Y-m-d H:i:s');
+        }
+    }
+
+    $estatus = $_POST['status'] ?? $old['status'];
+
+    // Prepare update query 
+    $stmt = $conn->prepare("UPDATE events 
         SET event_name=?, event_type=?, theme=?, expected_guests=?, total_cost=?, event_date=?, status=? 
         WHERE event_id=?");
 
-  $stmt->bind_param(
-    "sssidssi",
-    $ename,
-    $etype,
-    $theme,
-    $guests,
-    $cost,
-    $edate,
-    $estatus,
-    $eid
-  );
+    $stmt->bind_param(
+        "sssidssi",
+        $ename,
+        $etype,
+        $theme,
+        $guests,
+        $cost,
+        $edate,
+        $estatus,
+        $eid
+    );
 
-  $stmt->execute();
-  $stmt->close();
+    $stmt->execute();
+    $stmt->close();
 
-  header("Location: bookings.php");
-  exit();
+    header("Location: bookings.php");
+    exit();
 }
 
 // Filter & sort
@@ -96,24 +96,24 @@ $sort_by = $_GET['sort_by'] ?? 'date_desc';
 $where_clause = $status_filter ? "WHERE e.status = '{$status_filter}'" : "";
 
 switch ($sort_by) {
-  case 'name_asc':
-    $order_clause = "ORDER BY e.event_name ASC";
-    break;
-  case 'name_desc':
-    $order_clause = "ORDER BY e.event_name DESC";
-    break;
-  case 'cost_asc':
-    $order_clause = "ORDER BY e.total_cost ASC";
-    break;
-  case 'cost_desc':
-    $order_clause = "ORDER BY e.total_cost DESC";
-    break;
-  case 'date_asc':
-    $order_clause = "ORDER BY e.event_date ASC";
-    break;
-  default:
-    $order_clause = "ORDER BY e.event_date DESC";
-    break;
+    case 'name_asc':
+        $order_clause = "ORDER BY e.event_name ASC";
+        break;
+    case 'name_desc':
+        $order_clause = "ORDER BY e.event_name DESC";
+        break;
+    case 'cost_asc':
+        $order_clause = "ORDER BY e.total_cost ASC";
+        break;
+    case 'cost_desc':
+        $order_clause = "ORDER BY e.total_cost DESC";
+        break;
+    case 'date_asc':
+        $order_clause = "ORDER BY e.event_date ASC";
+        break;
+    default:
+        $order_clause = "ORDER BY e.event_date DESC";
+        break;
 }
 
 // Fetch events
@@ -155,84 +155,84 @@ $result = $conn->query($sql);
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style>
-    .modal-overlay {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 50;
-        backdrop-filter: blur(3px);
-        background-color: rgba(0, 0, 0, 0.25);
-    }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            backdrop-filter: blur(3px);
+            background-color: rgba(0, 0, 0, 0.25);
+        }
 
-    .modal-overlay.show {
-        display: flex;
-    }
+        .modal-overlay.show {
+            display: flex;
+        }
 
-    .modal-content {
-        background: white;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 650px;
-        padding: 25px;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-        z-index: 60;
-    }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 650px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 60;
+        }
 
-    .card-container {
-        position: relative;
-        overflow: visible;
-        transition: transform 0.2s ease;
-    }
+        .card-container {
+            position: relative;
+            overflow: visible;
+            transition: transform 0.2s ease;
+        }
 
-    .card-container:hover {
-        transform: scale(1.02);
-    }
+        .card-container:hover {
+            transform: scale(1.02);
+        }
 
-    .card-actions {
-        display: flex;
-        justify-content: space-between;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-        flex-wrap: wrap;
-    }
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
 
-    .card-actions button {
-        flex: 1;
-        border: none;
-        cursor: pointer;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        font-size: 0.75rem;
-        color: white;
-        padding: 0.4rem 0.6rem;
-        transition: all 0.2s ease;
-    }
+        .card-actions button {
+            flex: 1;
+            border: none;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: white;
+            padding: 0.4rem 0.6rem;
+            transition: all 0.2s ease;
+        }
 
-    .view-btn {
-        background: rgb(22, 163, 74);
-    }
+        .view-btn {
+            background: rgb(22, 163, 74);
+        }
 
-    .edit-btn {
-        background: rgb(79, 70, 229);
-    }
+        .edit-btn {
+            background: rgb(79, 70, 229);
+        }
 
-    .delete-btn {
-        background: rgb(220, 38, 38);
-    }
+        .delete-btn {
+            background: rgb(220, 38, 38);
+        }
 
-    .view-btn:hover {
-        background: rgb(21, 128, 61);
-    }
+        .view-btn:hover {
+            background: rgb(21, 128, 61);
+        }
 
-    .edit-btn:hover {
-        background: rgb(67, 56, 202);
-    }
+        .edit-btn:hover {
+            background: rgb(67, 56, 202);
+        }
 
-    .delete-btn:hover {
-        background: rgb(185, 28, 28);
-    }
+        .delete-btn:hover {
+            background: rgb(185, 28, 28);
+        }
     </style>
 
 </head>
@@ -316,50 +316,50 @@ $result = $conn->query($sql);
         </div>
 
         <?php if ($result && $result->num_rows > 0): ?>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <?php while ($row = $result->fetch_assoc()):
-          $statusColor = match (strtolower($row['status'])) {
-            'pending' => 'bg-yellow-100 text-yellow-800',
-            'confirmed' => 'bg-green-100 text-green-800',
-            'completed' => 'bg-blue-100 text-blue-800',
-            'canceled' => 'bg-red-100 text-red-800',
-            default => 'bg-gray-100 text-gray-800',
-          };
-        ?>
-            <div class="card-container p-5 bg-white shadow-md rounded-2xl">
-                <div class="flex items-start justify-between mb-3">
-                    <h2 class="text-lg font-semibold text-gray-900 truncate"><?= htmlspecialchars($row['event_name']) ?>
-                    </h2>
-                    <span class="px-3 py-1 text-xs font-medium rounded-full <?= $statusColor; ?>">
-                        <?= ucfirst($row['status']); ?>
-                    </span>
-                </div>
-                <div class="space-y-1 text-sm text-gray-700">
-                    <p><span class="font-semibold">Client:</span> <?= htmlspecialchars($row['client_name']); ?></p>
-                    <p><span class="font-semibold">Venue:</span> <?= htmlspecialchars($row['venue_name']); ?></p>
-                    <p><span class="font-semibold">Date:</span> <?= date('M d, Y', strtotime($row['event_date'])); ?>
-                    </p>
-                    <p><span class="font-semibold">Total Cost:</span> ₱<?= number_format($row['total_cost'], 2); ?></p>
-                </div>
-                <div class="flex gap-2 mt-4">
-                    <button
-                        class="view-btn flex-1 px-3 py-1 text-xs font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700"
-                        data-booking='<?= htmlentities(json_encode($row)) ?>'>View</button>
-                    <button
-                        class="edit-btn flex-1 px-3 py-1 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
-                        data-booking='<?= htmlentities(json_encode($row)) ?>'>Edit</button>
-                    <button
-                        class="delete-btn flex-1 px-3 py-1 text-xs font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700"
-                        data-id="<?= $row['event_id'] ?>">Delete</button>
-                </div>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <?php while ($row = $result->fetch_assoc()):
+                    $statusColor = match (strtolower($row['status'])) {
+                        'pending' => 'bg-yellow-100 text-yellow-800',
+                        'confirmed' => 'bg-green-100 text-green-800',
+                        'completed' => 'bg-blue-100 text-blue-800',
+                        'canceled' => 'bg-red-100 text-red-800',
+                        default => 'bg-gray-100 text-gray-800',
+                    };
+                ?>
+                    <div class="card-container p-5 bg-white shadow-md rounded-2xl">
+                        <div class="flex items-start justify-between mb-3">
+                            <h2 class="text-lg font-semibold text-gray-900 truncate"><?= htmlspecialchars($row['event_name']) ?>
+                            </h2>
+                            <span class="px-3 py-1 text-xs font-medium rounded-full <?= $statusColor; ?>">
+                                <?= ucfirst($row['status']); ?>
+                            </span>
+                        </div>
+                        <div class="space-y-1 text-sm text-gray-700">
+                            <p><span class="font-semibold">Client:</span> <?= htmlspecialchars($row['client_name']); ?></p>
+                            <p><span class="font-semibold">Venue:</span> <?= htmlspecialchars($row['venue_name']); ?></p>
+                            <p><span class="font-semibold">Date:</span> <?= date('M d, Y', strtotime($row['event_date'])); ?>
+                            </p>
+                            <p><span class="font-semibold">Total Cost:</span> ₱<?= number_format($row['total_cost'], 2); ?></p>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button
+                                class="view-btn flex-1 px-3 py-1 text-xs font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700"
+                                data-booking='<?= htmlentities(json_encode($row)) ?>'>View</button>
+                            <button
+                                class="edit-btn flex-1 px-3 py-1 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+                                data-booking='<?= htmlentities(json_encode($row)) ?>'>Edit</button>
+                            <button
+                                class="delete-btn flex-1 px-3 py-1 text-xs font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700"
+                                data-id="<?= $row['event_id'] ?>">Delete</button>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
             </div>
-            <?php endwhile; ?>
-        </div>
         <?php else: ?>
-        <div class="py-20 text-center text-gray-500">
-            <i class="mb-3 text-5xl text-gray-400 fas fa-calendar-times"></i>
-            <p class="text-lg">No bookings found.</p>
-        </div>
+            <div class="py-20 text-center text-gray-500">
+                <i class="mb-3 text-5xl text-gray-400 fas fa-calendar-times"></i>
+                <p class="text-lg">No bookings found.</p>
+            </div>
         <?php endif; ?>
     </main>
 
@@ -428,22 +428,22 @@ $result = $conn->query($sql);
     </div>
 
     <script>
-    document.getElementById('profile-dropdown-btn').addEventListener('click', () => {
-        document.getElementById('profile-dropdown').classList.toggle('hidden');
-    });
+        document.getElementById('profile-dropdown-btn').addEventListener('click', () => {
+            document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
 
-    function openModal(id) {
-        document.getElementById(id).classList.add('show');
-    }
+        function openModal(id) {
+            document.getElementById(id).classList.add('show');
+        }
 
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('show');
-    }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+        }
 
-    document.querySelectorAll('.view-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const data = JSON.parse(btn.dataset.booking);
-            let html = `
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const data = JSON.parse(btn.dataset.booking);
+                let html = `
         <p><strong>Event Name:</strong> ${data.event_name}</p>
         <p><strong>Type:</strong> ${data.event_type}</p>
         <p><strong>Theme:</strong> ${data.theme}</p>
@@ -454,41 +454,41 @@ $result = $conn->query($sql);
         <p><strong>Coordinator:</strong> ${data.coordinator_name}</p>
         <p><strong>Venue:</strong> ${data.venue_name}</p>
       `;
-            document.getElementById('viewContent').innerHTML = html;
-            openModal('viewModal');
-        });
-    });
-
-    document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const d = JSON.parse(btn.dataset.booking);
-
-            let formattedDate = '';
-            if (d.event_date) {
-                let dateStr = d.event_date.replace(' ', 'T').substring(0, 16);
-                formattedDate = dateStr;
-            }
-
-            document.getElementById('edit_id').value = d.event_id;
-            document.getElementById('edit_event_name').value = d.event_name || '';
-            document.getElementById('edit_event_type').value = d.event_type || '';
-            document.getElementById('edit_theme').value = d.theme || '';
-            document.getElementById('edit_guests').value = d.expected_guests || '';
-            document.getElementById('edit_cost').value = d.total_cost || '';
-            document.getElementById('edit_date').value = formattedDate;
-            document.getElementById('edit_status').value = d.status || 'pending';
-
-            openModal('editModal');
-        });
-    });
-
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.getElementById('delete_id').value = btn.dataset.id;
-            openModal('deleteModal');
+                document.getElementById('viewContent').innerHTML = html;
+                openModal('viewModal');
+            });
         });
 
-    });
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const d = JSON.parse(btn.dataset.booking);
+
+                let formattedDate = '';
+                if (d.event_date) {
+                    let dateStr = d.event_date.replace(' ', 'T').substring(0, 16);
+                    formattedDate = dateStr;
+                }
+
+                document.getElementById('edit_id').value = d.event_id;
+                document.getElementById('edit_event_name').value = d.event_name || '';
+                document.getElementById('edit_event_type').value = d.event_type || '';
+                document.getElementById('edit_theme').value = d.theme || '';
+                document.getElementById('edit_guests').value = d.expected_guests || '';
+                document.getElementById('edit_cost').value = d.total_cost || '';
+                document.getElementById('edit_date').value = formattedDate;
+                document.getElementById('edit_status').value = d.status || 'pending';
+
+                openModal('editModal');
+            });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('delete_id').value = btn.dataset.id;
+                openModal('deleteModal');
+            });
+
+        });
     </script>
 
 </body>

@@ -64,7 +64,8 @@ CREATE TABLE `chat` (
   `message_text` text DEFAULT NULL,
   `timestamp` datetime DEFAULT current_timestamp(),
   `file_url` varchar(255) DEFAULT NULL,
-  `is_file` tinyint(1) DEFAULT NULL
+  `is_file` tinyint(1) DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -481,7 +482,11 @@ ALTER TABLE `chat`
   ADD PRIMARY KEY (`chat_id`),
   ADD KEY `event_id` (`event_id`),
   ADD KEY `sender_id` (`sender_id`),
-  ADD KEY `receiver_id` (`receiver_id`);
+  ADD KEY `receiver_id` (`receiver_id`),
+  ADD KEY `idx_sender_receiver` (`sender_id`,`receiver_id`),
+  ADD KEY `idx_receiver_sender` (`receiver_id`,`sender_id`),
+  ADD KEY `idx_timestamp` (`timestamp`),
+  ADD KEY `idx_is_read` (`is_read`);
 
 --
 -- Indexes for table `dynamic_pricing`
