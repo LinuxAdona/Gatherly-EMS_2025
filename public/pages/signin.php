@@ -53,7 +53,7 @@
     <div class="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 font-['Montserrat'] flex flex-col">
         <div class="flex flex-col items-center justify-center flex-1 w-full px-4 py-8 sm:py-12">
             <div class="flex flex-col items-center mb-6 text-xl font-bold sm:text-2xl sm:mb-8 ">
-                <a href="index.php" class="flex flex-col items-center group">
+                <a href="../../index.php" class="flex flex-col items-center group">
                     <img class="w-12 mb-4 transition-transform sm:w-16 sm:mb-8 drop-shadow-lg group-hover:scale-110"
                         src="../assets/images/logo.png" alt="Logo">
                     <span class="text-gray-800">Sign in to your account</span>

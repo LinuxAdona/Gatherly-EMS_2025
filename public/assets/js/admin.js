@@ -1,21 +1,3 @@
-// Profile dropdown toggle
-const profileBtn = document.getElementById('profile-dropdown-btn');
-const profileDropdown = document.getElementById('profile-dropdown');
-
-if (profileBtn && profileDropdown) {
-    profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        profileDropdown.classList.toggle('hidden');
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-            profileDropdown.classList.add('hidden');
-        }
-    });
-}
-
 // Revenue Chart Management
 let revenueChart = null;
 let currentYear = new Date().getFullYear();

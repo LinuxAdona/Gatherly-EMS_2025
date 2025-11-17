@@ -84,143 +84,76 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
-<body class="bg-gray-100 font-['Montserrat']">
-    <!-- Sidebar -->
-    <aside id="sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0 bg-white shadow-lg">
-        <div class="h-full px-3 py-4 overflow-y-auto flex flex-col">
-            <!-- Logo -->
-            <div class="flex items-center mb-8 px-3">
-                <img class="w-10 h-10 mr-3" src="../../assets/images/logo.png" alt="Gatherly Logo">
-                <span class="text-xl font-bold text-gray-800">Gatherly</span>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="flex-1 space-y-1">
-                <a href="admin-dashboard.php"
-                    class="flex items-center px-4 py-3 text-white bg-indigo-600 rounded-lg group">
-                    <i class="fas fa-home w-5 text-center mr-3"></i>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-                <a href="manage-users.php"
-                    class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors group">
-                    <i class="fas fa-users w-5 text-center mr-3"></i>
-                    <span class="font-medium">Users</span>
-                </a>
-                <a href="manage-venues.php"
-                    class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors group">
-                    <i class="fas fa-building w-5 text-center mr-3"></i>
-                    <span class="font-medium">Venues</span>
-                </a>
-                <a href="manage-events.php"
-                    class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors group">
-                    <i class="fas fa-calendar w-5 text-center mr-3"></i>
-                    <span class="font-medium">Events</span>
-                </a>
-                <a href="reports.php"
-                    class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors group">
-                    <i class="fas fa-chart-bar w-5 text-center mr-3"></i>
-                    <span class="font-medium">Reports</span>
-                </a>
-            </nav>
-
-            <!-- User Menu -->
-            <div class="pt-4 mt-4 border-t border-gray-200">
-                <div class="relative">
-                    <button id="profile-dropdown-btn"
-                        class="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                        <i class="fas fa-user-shield w-5 text-center mr-3 text-indigo-600"></i>
-                        <span class="flex-1 text-left font-medium"><?php echo htmlspecialchars($first_name); ?></span>
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </button>
-                    <div id="profile-dropdown"
-                        class="hidden absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-                        <a href="profile.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 transition-colors">
-                            <i class="fas fa-user mr-2"></i>Profile
-                        </a>
-                        <a href="settings.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 transition-colors">
-                            <i class="fas fa-cog mr-2"></i>Settings
-                        </a>
-                        <a href="../../../src/services/signout-handler.php"
-                            class="block px-4 py-2 text-red-600 hover:bg-red-50 transition-colors border-t border-gray-100">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Mobile menu button -->
-    <button id="sidebar-toggle"
-        class="lg:hidden fixed top-4 left-4 z-50 p-2 text-gray-600 bg-white rounded-lg shadow-lg hover:bg-gray-100">
-        <i class="fas fa-bars text-xl"></i>
-    </button>
-
-    <!-- Overlay for mobile -->
-    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"></div>
+<body class="<?php
+                $nav_layout = $_SESSION['nav_layout'] ?? 'sidebar';
+                echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-slate-50 via-white to-blue-50';
+                ?> font-['Montserrat']">
+    <?php include '../../../src/components/AdminSidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="lg:ml-64 min-h-screen">
-        <!-- Top Bar -->
-        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20">
-            <div class="px-4 sm:px-6 lg:px-8 py-4">
+    <div
+        class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
+        <?php if ($nav_layout === 'sidebar'): ?>
+            <!-- Top Bar for Sidebar Layout -->
+            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
                 <h1 class="text-2xl font-bold text-gray-800">Administrator Dashboard</h1>
                 <p class="text-sm text-gray-600">System overview and management tools</p>
             </div>
-        </div>
-
-        <!-- Content Area -->
-        <div class="px-4 sm:px-6 lg:px-8 py-8">
+            <div class="px-4 sm:px-6 lg:px-8">
+            <?php else: ?>
+                <!-- Header for Navbar Layout -->
+                <div class="mb-8">
+                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Administrator Dashboard</h1>
+                    <p class="text-gray-600">System overview and management tools</p>
+                </div>
+            <?php endif; ?>
             <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 mb-1">Total Users</p>
-                            <p class="text-2xl font-bold text-gray-900">
+                            <p class="text-xs font-medium text-gray-600 mb-1">Total Users</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
                                 <?php echo number_format($stats['total_users']); ?></p>
                         </div>
-                        <div class="p-3 bg-blue-100 rounded-lg">
-                            <i class="fas fa-users text-2xl text-blue-600"></i>
+                        <div class="p-2 md:p-3 bg-blue-100 rounded-lg">
+                            <i class="fas fa-users text-lg md:text-xl text-blue-600"></i>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 mb-1">Total Venues</p>
-                            <p class="text-2xl font-bold text-gray-900">
+                            <p class="text-xs font-medium text-gray-600 mb-1">Total Venues</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
                                 <?php echo number_format($stats['total_venues']); ?></p>
                         </div>
-                        <div class="p-3 bg-green-100 rounded-lg">
-                            <i class="fas fa-building text-2xl text-green-600"></i>
+                        <div class="p-2 md:p-3 bg-green-100 rounded-lg">
+                            <i class="fas fa-building text-lg md:text-xl text-green-600"></i>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 mb-1">Total Events</p>
-                            <p class="text-2xl font-bold text-gray-900">
+                            <p class="text-xs font-medium text-gray-600 mb-1">Total Events</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
                                 <?php echo number_format($stats['total_events']); ?></p>
                         </div>
-                        <div class="p-3 bg-purple-100 rounded-lg">
-                            <i class="fas fa-calendar text-2xl text-purple-600"></i>
+                        <div class="p-2 md:p-3 bg-purple-100 rounded-lg">
+                            <i class="fas fa-calendar text-lg md:text-xl text-purple-600"></i>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 mb-1">Total Revenue</p>
-                            <p class="text-2xl font-bold text-gray-900">
+                            <p class="text-xs font-medium text-gray-600 mb-1">Total Revenue</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
                                 ₱<?php echo number_format($stats['total_revenue'], 2); ?></p>
                         </div>
-                        <div class="p-3 bg-yellow-100 rounded-lg">
-                            <i class="fas fa-money-bill-wave text-2xl text-yellow-600"></i>
+                        <div class="p-2 md:p-3 bg-yellow-100 rounded-lg">
+                            <i class="fas fa-money-bill-wave text-lg md:text-xl text-yellow-600"></i>
                         </div>
                     </div>
                 </div>
@@ -366,43 +299,14 @@ $conn->close();
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            </div>
 
-    <script src="../../assets/js/admin.js"></script>
-    <script>
-        // Sidebar toggle for mobile
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
+            <?php if ($nav_layout === 'sidebar'): ?>
+    </div> <!-- Close sidebar inner wrapper -->
+<?php endif; ?>
+</div> <!-- Close main content -->
 
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarOverlay.classList.toggle('hidden');
-        });
-
-        sidebarOverlay.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
-        });
-
-        // Profile dropdown toggle
-        const profileBtn = document.getElementById('profile-dropdown-btn');
-        const profileDropdown = document.getElementById('profile-dropdown');
-
-        if (profileBtn && profileDropdown) {
-            profileBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-                    profileDropdown.classList.add('hidden');
-                }
-            });
-        }
-    </script>
+<script src="../../assets/js/admin.js"></script>
 </body>
 
 </html>
