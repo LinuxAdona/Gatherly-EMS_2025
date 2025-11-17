@@ -36,20 +36,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // Fetch users with filters
 $role_filter = $_GET['role'] ?? '';
 $status_filter = $_GET['status'] ?? '';
+$sort_filter = $_GET['sort'] ?? 'latest';
 $search = $_GET['search'] ?? '';
 
 $query = "SELECT * FROM users WHERE 1=1";
+if ($search) {
+    $search_term = $conn->real_escape_string($search);
+    $query .= " AND (first_name LIKE '%$search_term%' OR last_name LIKE '%$search_term%' OR email LIKE '%$search_term%')";
+}
 if ($role_filter) {
     $query .= " AND role = '" . $conn->real_escape_string($role_filter) . "'";
 }
 if ($status_filter) {
     $query .= " AND status = '" . $conn->real_escape_string($status_filter) . "'";
 }
-if ($search) {
-    $search_term = $conn->real_escape_string($search);
-    $query .= " AND (first_name LIKE '%$search_term%' OR last_name LIKE '%$search_term%' OR email LIKE '%$search_term%')";
+if ($sort_filter === 'oldest') {
+    $query .= " ORDER BY created_at ASC";
+} else {
+    $query .= " ORDER BY created_at DESC";
 }
-$query .= " ORDER BY created_at DESC";
 
 $users_result = $conn->query($query);
 
@@ -175,7 +180,7 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                             placeholder="Name or email..."
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <div>
                             <label class="block mb-2 text-sm font-semibold text-gray-700">Role</label>
                             <select name="role"
@@ -204,16 +209,22 @@ $stats['managers'] = $conn->query("SELECT COUNT(*) as count FROM users WHERE rol
                                 </option>
                             </select>
                         </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">Sort</label>
+                            <select name="sort"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="latest" <?php echo $sort_filter === 'latest' ? 'selected' : ''; ?>>Latest
+                                </option>
+                                <option value="oldest" <?php echo $sort_filter === 'oldest' ? 'selected' : ''; ?>>Oldest
+                                </option>
+                            </select>
+                        </div>
                         <div class="flex items-end gap-2">
                             <button type="submit"
                                 class="cursor-pointer flex-1 px-4 md:px-6 py-2 text-sm md:text-base text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                                 <i class="mr-1 md:mr-2 fas fa-search"></i><span
                                     class="hidden sm:inline">Filter</span><span class="sm:hidden">Go</span>
                             </button>
-                            <a href="manage-users.php"
-                                class="px-3 md:px-4 py-2 text-gray-600 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300">
-                                <i class="fas fa-redo"></i>
-                            </a>
                         </div>
                     </div>
                 </form>

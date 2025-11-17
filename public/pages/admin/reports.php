@@ -126,25 +126,44 @@ $years_result = $conn->query($years_query);
     <div
         class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
-            <!-- Top Bar for Sidebar Layout -->
-            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">
+        <!-- Top Bar for Sidebar Layout -->
+        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">
+                <!-- <i class="mr-2 text-indigo-600 fas fa-chart-bar"></i> -->
+                Reports & Analytics
+            </h1>
+            <p class="text-sm text-gray-600">View system analytics and generate reports</p>
+        </div>
+        <div class="px-4 sm:px-6 lg:px-8">
+            <?php else: ?>
+            <!-- Header for Navbar Layout -->
+            <div class="mb-8">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
                     <!-- <i class="mr-2 text-indigo-600 fas fa-chart-bar"></i> -->
                     Reports & Analytics
                 </h1>
-                <p class="text-sm text-gray-600">View system analytics and generate reports</p>
+                <p class="text-gray-600">Comprehensive business insights and performance metrics</p>
             </div>
-            <div class="px-4 sm:px-6 lg:px-8">
-            <?php else: ?>
-                <!-- Header for Navbar Layout -->
-                <div class="mb-8">
-                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
-                        <!-- <i class="mr-2 text-indigo-600 fas fa-chart-bar"></i> -->
-                        Reports & Analytics
-                    </h1>
-                    <p class="text-gray-600">Comprehensive business insights and performance metrics</p>
-                </div>
             <?php endif; ?>
+
+            <!-- Revenue Summary Cards -->
+            <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
+                <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
+                    <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
+                    <h3 class="text-3xl font-bold text-gray-800">
+                        ₱<?php echo number_format($revenue_stats['total_revenue'] ?? 0, 2); ?></h3>
+                </div>
+                <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
+                    <p class="mb-1 text-sm text-gray-600">Total Events</p>
+                    <h3 class="text-3xl font-bold text-gray-800">
+                        <?php echo number_format($revenue_stats['total_events'] ?? 0); ?></h3>
+                </div>
+                <div class="p-6 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
+                    <p class="mb-1 text-sm text-gray-600">Average Revenue</p>
+                    <h3 class="text-3xl font-bold text-gray-800">
+                        ₱<?php echo number_format($revenue_stats['avg_revenue'] ?? 0, 2); ?></h3>
+                </div>
+            </div>
 
             <!-- Filters -->
             <div class="p-4 md:p-6 mb-6 bg-white shadow-md rounded-xl">
@@ -171,10 +190,10 @@ $years_result = $conn->query($years_query);
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="">All Years</option>
                             <?php while ($yr = $years_result->fetch_assoc()): ?>
-                                <option value="<?php echo $yr['year']; ?>"
-                                    <?php echo $year == $yr['year'] ? 'selected' : ''; ?>>
-                                    <?php echo $yr['year']; ?>
-                                </option>
+                            <option value="<?php echo $yr['year']; ?>"
+                                <?php echo $year == $yr['year'] ? 'selected' : ''; ?>>
+                                <?php echo $yr['year']; ?>
+                            </option>
                             <?php endwhile; ?>
                         </select>
                     </div>
@@ -184,9 +203,9 @@ $years_result = $conn->query($years_query);
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="">All Months</option>
                             <?php for ($i = 1; $i <= 12; $i++): ?>
-                                <option value="<?php echo $i; ?>" <?php echo $month == $i ? 'selected' : ''; ?>>
-                                    <?php echo date('F', mktime(0, 0, 0, $i, 1)); ?>
-                                </option>
+                            <option value="<?php echo $i; ?>" <?php echo $month == $i ? 'selected' : ''; ?>>
+                                <?php echo date('F', mktime(0, 0, 0, $i, 1)); ?>
+                            </option>
                             <?php endfor; ?>
                         </select>
                     </div>
@@ -203,227 +222,208 @@ $years_result = $conn->query($years_query);
                 </form>
             </div>
 
-            <!-- Revenue Summary Cards -->
-            <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
-                <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
-                    <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
-                    <h3 class="text-3xl font-bold text-gray-800">
-                        ₱<?php echo number_format($revenue_stats['total_revenue'] ?? 0, 2); ?></h3>
-                </div>
-                <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                    <p class="mb-1 text-sm text-gray-600">Total Events</p>
-                    <h3 class="text-3xl font-bold text-gray-800">
-                        <?php echo number_format($revenue_stats['total_events'] ?? 0); ?></h3>
-                </div>
-                <div class="p-6 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
-                    <p class="mb-1 text-sm text-gray-600">Average Revenue</p>
-                    <h3 class="text-3xl font-bold text-gray-800">
-                        ₱<?php echo number_format($revenue_stats['avg_revenue'] ?? 0, 2); ?></h3>
+            <!-- Report Content based on type -->
+            <?php if ($report_type === 'revenue' || $report_type === 'bookings'): ?>
+            <!-- Event Type Distribution -->
+            <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-blue-600 fas fa-chart-pie"></i>
+                    Event Type Distribution
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Event Type</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Count</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Revenue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Avg Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php if ($event_types->num_rows > 0): ?>
+                            <?php while ($type = $event_types->fetch_assoc()): ?>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    <?php echo htmlspecialchars($type['event_type']); ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($type['count']); ?>
+                                </td>
+                                <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                    ₱<?php echo number_format($type['revenue'], 2); ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    ₱<?php echo number_format($type['revenue'] / $type['count'], 2); ?></td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">No data available</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Report Content based on type -->
-            <?php if ($report_type === 'revenue' || $report_type === 'bookings'): ?>
-                <!-- Event Type Distribution -->
-                <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
-                    <h2 class="mb-4 text-xl font-bold text-gray-800">
-                        <i class="mr-2 text-blue-600 fas fa-chart-pie"></i>
-                        Event Type Distribution
-                    </h2>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Event Type</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Count</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Revenue</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Avg Revenue</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php if ($event_types->num_rows > 0): ?>
-                                    <?php while ($type = $event_types->fetch_assoc()): ?>
-                                        <tr>
-                                            <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                                <?php echo htmlspecialchars($type['event_type']); ?></td>
-                                            <td class="px-6 py-4 text-sm text-gray-900"><?php echo number_format($type['count']); ?>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm font-semibold text-green-600">
-                                                ₱<?php echo number_format($type['revenue'], 2); ?></td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                ₱<?php echo number_format($type['revenue'] / $type['count'], 2); ?></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">No data available</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Monthly Trend -->
+            <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-purple-600 fas fa-chart-line"></i>
+                    Monthly Revenue Trend
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Month</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Events</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php if ($monthly_data->num_rows > 0): ?>
+                            <?php while ($month_data = $monthly_data->fetch_assoc()): ?>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    <?php echo date('F Y', strtotime($month_data['month'] . '-01')); ?>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <?php echo number_format($month_data['event_count']); ?></td>
+                                <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                    ₱<?php echo number_format($month_data['revenue'], 2); ?></td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-500">No data available</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
-
-                <!-- Monthly Trend -->
-                <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
-                    <h2 class="mb-4 text-xl font-bold text-gray-800">
-                        <i class="mr-2 text-purple-600 fas fa-chart-line"></i>
-                        Monthly Revenue Trend
-                    </h2>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Month</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Events</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Revenue</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php if ($monthly_data->num_rows > 0): ?>
-                                    <?php while ($month_data = $monthly_data->fetch_assoc()): ?>
-                                        <tr>
-                                            <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                                <?php echo date('F Y', strtotime($month_data['month'] . '-01')); ?>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                <?php echo number_format($month_data['event_count']); ?></td>
-                                            <td class="px-6 py-4 text-sm font-semibold text-green-600">
-                                                ₱<?php echo number_format($month_data['revenue'], 2); ?></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="3" class="px-6 py-4 text-center text-gray-500">No data available</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            </div>
             <?php endif; ?>
 
             <?php if ($report_type === 'venues'): ?>
-                <!-- Venue Performance -->
-                <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
-                    <h2 class="mb-4 text-xl font-bold text-gray-800">
-                        <i class="mr-2 text-green-600 fas fa-building"></i>
-                        Top Performing Venues
-                    </h2>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Venue</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Location</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Events</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Revenue</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Avg Guests</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php if ($venues->num_rows > 0): ?>
-                                    <?php while ($venue = $venues->fetch_assoc()): ?>
-                                        <tr>
-                                            <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                                <?php echo htmlspecialchars($venue['venue_name']); ?></td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                <?php echo htmlspecialchars($venue['location']); ?></td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                <?php echo number_format($venue['event_count']); ?></td>
-                                            <td class="px-6 py-4 text-sm font-semibold text-green-600">
-                                                ₱<?php echo number_format($venue['total_revenue'] ?? 0, 2); ?></td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                <?php echo number_format($venue['avg_guests'] ?? 0); ?></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">No data available</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Venue Performance -->
+            <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-green-600 fas fa-building"></i>
+                    Top Performing Venues
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Venue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Location</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Events</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Revenue</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Avg Guests</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php if ($venues->num_rows > 0): ?>
+                            <?php while ($venue = $venues->fetch_assoc()): ?>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    <?php echo htmlspecialchars($venue['venue_name']); ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <?php echo htmlspecialchars($venue['location']); ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <?php echo number_format($venue['event_count']); ?></td>
+                                <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                    ₱<?php echo number_format($venue['total_revenue'] ?? 0, 2); ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <?php echo number_format($venue['avg_guests'] ?? 0); ?></td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">No data available</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
             <?php endif; ?>
 
             <?php if ($report_type === 'users'): ?>
-                <!-- User Activity -->
-                <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
-                    <h2 class="mb-4 text-xl font-bold text-gray-800">
-                        <i class="mr-2 text-orange-600 fas fa-users"></i>
-                        Top Active Users
-                    </h2>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        User</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Role</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Events Organized</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                                        Total Value</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php if ($user_activity->num_rows > 0): ?>
-                                    <?php while ($user = $user_activity->fetch_assoc()): ?>
-                                        <tr>
-                                            <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                                <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-900"><?php echo ucfirst($user['role']); ?></td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                <?php echo number_format($user['events_organized']); ?></td>
-                                            <td class="px-6 py-4 text-sm font-semibold text-green-600">
-                                                ₱<?php echo number_format($user['total_value'] ?? 0, 2); ?></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">No data available</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- User Activity -->
+            <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-orange-600 fas fa-users"></i>
+                    Top Active Users
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    User</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Role</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Events Organized</th>
+                                <th
+                                    class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
+                                    Total Value</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php if ($user_activity->num_rows > 0): ?>
+                            <?php while ($user = $user_activity->fetch_assoc()): ?>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900"><?php echo ucfirst($user['role']); ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <?php echo number_format($user['events_organized']); ?></td>
+                                <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                    ₱<?php echo number_format($user['total_value'] ?? 0, 2); ?></td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">No data available</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
             <?php endif; ?>
 
             <!-- Export Options -->
-            <div class="p-6 bg-white shadow-md rounded-xl">
+            <div class="p-6 bg-white shadow-md rounded-xl mb-8">
                 <h2 class="mb-4 text-xl font-bold text-gray-800">
                     <i class="mr-2 text-indigo-600 fas fa-download"></i>
                     Export Options
@@ -440,14 +440,14 @@ $years_result = $conn->query($years_query);
                     </button>
                 </div>
             </div>
-            </div>
+        </div>
 
-            <?php if ($nav_layout === 'sidebar'): ?>
+        <?php if ($nav_layout === 'sidebar'): ?>
     </div> <!-- Close sidebar inner wrapper -->
-<?php endif; ?>
-</div> <!-- Close main content -->
+    <?php endif; ?>
+    </div> <!-- Close main content -->
 
-<script>
+    <script>
     // Sidebar toggle for mobile
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.getElementById('admin-sidebar');
@@ -457,7 +457,7 @@ $years_result = $conn->query($years_query);
             sidebar.classList.toggle('-translate-x-full');
         });
     }
-</script>
+    </script>
 </body>
 
 </html>
