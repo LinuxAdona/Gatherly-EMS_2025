@@ -18,21 +18,24 @@ if (mobileMenuBtn && mobileMenu) {
 }
 
 // Profile dropdown toggle
-const profileBtn = document.getElementById('profile-dropdown-btn');
-const profileDropdown = document.getElementById('profile-dropdown');
+if (!window.profileDropdownInitialized) {
+    const profileBtn = document.getElementById('profile-dropdown-btn');
+    const profileDropdown = document.getElementById('profile-dropdown');
 
-if (profileBtn && profileDropdown) {
-    profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        profileDropdown.classList.toggle('hidden');
-    });
+    if (profileBtn && profileDropdown) {
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('hidden');
+        });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-            profileDropdown.classList.add('hidden');
-        }
-    });
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+    }
+    window.profileDropdownInitialized = true;
 }
 
 // Dynamic Pricing Tool Modal Management

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 17, 2025 at 06:32 AM
+-- Generation Time: Nov 17, 2025 at 05:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,7 +64,8 @@ CREATE TABLE `chat` (
   `message_text` text DEFAULT NULL,
   `timestamp` datetime DEFAULT current_timestamp(),
   `file_url` varchar(255) DEFAULT NULL,
-  `is_file` tinyint(1) DEFAULT NULL
+  `is_file` tinyint(1) DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,76 +119,75 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`event_id`, `event_name`, `event_type`, `theme`, `expected_guests`, `total_cost`, `event_date`, `status`, `client_id`, `coordinator_id`, `venue_id`, `created_at`) VALUES
-(1, 'Mike & Anna Wedding', 'Wedding', 'Rustic Garden', 150, 85000.00, '2025-01-15 00:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(2, 'ABC Corp Year-End', 'Corporate', 'Modern Gala', 200, 95000.00, '2025-02-10 00:00:00', 'canceled', 3, 2, 2, '2025-11-03 22:29:33'),
-(3, 'Sophia 18th Birthday', 'Birthday', 'Royal Blue', 100, 60000.00, '2025-03-25 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(4, 'Charity Concert 2025', 'Concert', 'Hope & Light', 300, 120000.00, '0000-00-00 00:00:00', 'pending', 3, 2, 4, '2025-11-03 22:29:33'),
-(5, 'Team Building Summit', 'Corporate', 'Tropical Retreat', 80, 45000.00, '2025-05-12 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(6, 'Linux & Julie Wedding', 'Wedding', 'Rustic Garden', 200, 85000.00, '2025-01-21 00:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(7, 'QRT Corp Year-End', 'Corporate', 'Modern Gala', 150, 95000.00, '2025-03-19 00:00:00', 'confirmed', 3, 2, 2, '2025-11-03 22:29:33'),
-(8, 'Maricris 18th Birthday', 'Birthday', 'Royal Blue', 100, 60000.00, '2025-04-29 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(9, 'Sabrina Concert 2025', 'Concert', 'Hope & Light', 200, 120000.00, '0000-00-00 00:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(10, 'Team Collab Summit', 'Corporate', 'Tropical Retreat', 100, 45000.00, '2025-05-13 00:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(11, 'New Year Gala 2020', 'Corporate', 'Celebration', 250, 125000.00, '2020-01-15 18:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(12, 'Valentine Wedding', 'Wedding', 'Romance', 180, 95000.00, '2020-02-14 16:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(13, 'Spring Conference', 'Corporate', 'Business', 200, 85000.00, '2020-03-20 09:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(14, 'Easter Celebration', 'Birthday', 'Spring Garden', 120, 65000.00, '2020-04-10 14:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(15, 'Summer Kickoff', 'Concert', 'Beach Party', 300, 150000.00, '2020-07-05 19:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(16, 'Corporate Retreat', 'Corporate', 'Team Building', 100, 75000.00, '2020-09-12 10:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(17, 'Halloween Party', 'Birthday', 'Spooky', 150, 80000.00, '2020-10-31 20:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(18, 'Christmas Gala', 'Corporate', 'Winter Wonderland', 280, 135000.00, '2020-12-20 18:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(19, 'New Year Celebration 2021', 'Corporate', 'Fresh Start', 200, 110000.00, '2021-01-10 19:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(20, 'Love is in the Air', 'Wedding', 'Romantic', 160, 88000.00, '2021-02-20 15:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(21, 'Spring Fashion Show', 'Corporate', 'Elegant', 220, 98000.00, '2021-03-15 18:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(22, 'April Birthday Bash', 'Birthday', 'Colorful', 90, 55000.00, '2021-04-25 17:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(23, 'Mid-Year Summit', 'Corporate', 'Professional', 180, 92000.00, '2021-06-18 09:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(24, 'Summer Music Festival', 'Concert', 'Vibrant', 350, 180000.00, '2021-07-22 19:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(25, 'Back to Business', 'Corporate', 'Modern', 150, 82000.00, '2021-09-08 10:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(26, 'Autumn Wedding', 'Wedding', 'Fall Colors', 200, 105000.00, '2021-10-15 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(27, 'Year End Party 2021', 'Corporate', 'Celebration', 240, 128000.00, '2021-12-18 19:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(28, 'January Kickoff 2022', 'Corporate', 'Goals', 190, 95000.00, '2022-01-20 10:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(29, 'Sweetheart Wedding', 'Wedding', 'Love Story', 175, 92000.00, '2022-02-12 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(30, 'Tech Conference', 'Corporate', 'Innovation', 250, 115000.00, '2022-03-28 09:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(31, 'Spring Gala', 'Corporate', 'Elegance', 200, 102000.00, '2022-04-15 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(32, 'May Day Celebration', 'Birthday', 'Garden Party', 110, 68000.00, '2022-05-01 15:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(33, 'Summer Solstice Concert', 'Concert', 'Sunset', 320, 165000.00, '2022-06-21 19:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(34, 'July Wedding Extravaganza', 'Wedding', 'Grand', 220, 118000.00, '2022-07-16 17:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(35, 'Corporate Anniversary', 'Corporate', 'Milestone', 180, 95000.00, '2022-09-25 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(36, 'October Fest', 'Birthday', 'Bavarian', 140, 78000.00, '2022-10-20 19:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(37, 'Holiday Spectacular', 'Concert', 'Christmas', 300, 155000.00, '2022-12-15 19:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(38, 'New Beginnings 2023', 'Corporate', 'Fresh', 210, 108000.00, '2023-01-14 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(39, 'Valentine Gala', 'Birthday', 'Love', 130, 72000.00, '2023-02-14 19:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(40, 'March Madness', 'Corporate', 'Sports', 190, 98000.00, '2023-03-22 17:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(41, 'Spring Wedding Bliss', 'Wedding', 'Floral', 195, 105000.00, '2023-04-08 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(42, 'May Corporate Summit', 'Corporate', 'Leadership', 220, 112000.00, '2023-05-19 09:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(43, 'Summer Concert Series', 'Concert', 'Rock', 340, 175000.00, '2023-07-28 20:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(44, 'August Birthday Party', 'Birthday', 'Tropical', 100, 62000.00, '2023-08-12 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(45, 'Fall Business Expo', 'Corporate', 'Exhibition', 260, 132000.00, '2023-09-30 10:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(46, 'Halloween Masquerade', 'Birthday', 'Mysterious', 180, 92000.00, '2023-10-31 20:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(47, 'November Wedding', 'Wedding', 'Elegant', 170, 95000.00, '2023-11-18 15:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(48, 'Holiday Party 2023', 'Corporate', 'Festive', 250, 130000.00, '2023-12-22 19:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(49, 'January Business Launch', 'Corporate', 'Innovation', 200, 105000.00, '2024-01-25 10:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(50, 'February Romance', 'Wedding', 'Love', 185, 98000.00, '2024-02-16 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(51, 'Spring Conference 2024', 'Corporate', 'Growth', 230, 118000.00, '2024-03-12 09:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(52, 'April Showers Gala', 'Birthday', 'Garden', 120, 70000.00, '2024-04-20 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(53, 'May Day Wedding', 'Wedding', 'Spring', 190, 102000.00, '2024-05-11 15:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(54, 'Mid-Year Concert', 'Concert', 'Pop', 310, 162000.00, '2024-06-28 19:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(55, 'July Corporate Retreat', 'Corporate', 'Team', 150, 85000.00, '2024-07-15 10:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(56, 'August Birthday Bash', 'Birthday', 'Beach', 140, 78000.00, '2024-08-24 17:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(57, 'September Elegance', 'Wedding', 'Classic', 205, 112000.00, '2024-09-14 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(58, 'October Conference', 'Corporate', 'Professional', 240, 125000.00, '2024-10-18 09:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(59, 'November Thanksgiving', 'Birthday', 'Harvest', 160, 88000.00, '2024-11-28 18:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(60, 'December Holiday Gala', 'Corporate', 'Winter', 270, 140000.00, '2024-12-20 19:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(61, 'January Celebration 2025', 'Corporate', 'New Year', 215, 112000.00, '2025-01-18 18:00:00', 'canceled', 3, 2, 2, '2025-11-03 22:29:33'),
-(62, 'February Love Fest', 'Wedding', 'Romantic', 180, 96000.00, '2025-02-22 16:00:00', 'completed', 3, 2, 1, '2025-11-03 22:29:33'),
-(63, 'March Business Summit', 'Corporate', 'Strategy', 225, 115000.00, '2025-03-16 09:00:00', 'completed', 3, 2, 3, '2025-11-03 22:29:33'),
-(64, 'April Spring Wedding', 'Wedding', 'Floral Garden', 195, 105000.00, '2025-04-12 15:00:00', 'canceled', 3, 2, 1, '2025-11-03 22:29:33'),
-(65, 'May Tech Expo', 'Corporate', 'Technology', 250, 128000.00, '2025-05-20 10:00:00', 'canceled', 3, 2, 4, '2025-11-03 22:29:33'),
-(66, 'June Summer Bash', 'Birthday', 'Tropical', 130, 75000.00, '2025-06-15 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33'),
-(67, 'July Concert Night', 'Concert', 'Music', 320, 168000.00, '2025-07-25 20:00:00', 'completed', 3, 2, 4, '2025-11-03 22:29:33'),
-(68, 'August Corporate Gala', 'Corporate', 'Elegant', 200, 108000.00, '2025-08-30 19:00:00', 'canceled', 3, 2, 3, '2025-11-03 22:29:33'),
-(69, 'September Wedding Dream', 'Wedding', 'Romantic', 210, 115000.00, '2025-09-20 00:00:00', 'canceled', 3, 2, 1, '2025-11-03 22:29:33'),
-(70, 'October Birthday Party', 'Birthday', 'Autumn', 145, 82000.00, '2025-10-25 18:00:00', 'completed', 3, 2, 2, '2025-11-03 22:29:33');
+(1, 'Mike & Anna Wedding', 'Wedding', 'Rustic Garden', 150, 85000.00, '2025-01-15 00:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(2, 'ABC Corp Year-End', 'Corporate', 'Modern Gala', 200, 95000.00, '2025-02-10 00:00:00', 'canceled', NULL, 2, 2, '2025-11-03 22:29:33'),
+(3, 'Sophia 18th Birthday', 'Birthday', 'Royal Blue', 100, 60000.00, '2025-03-25 00:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(4, 'Charity Concert 2025', 'Concert', 'Hope & Light', 300, 120000.00, '0000-00-00 00:00:00', 'pending', NULL, 2, 4, '2025-11-03 22:29:33'),
+(5, 'Team Building Summit', 'Corporate', 'Tropical Retreat', 80, 45000.00, '2025-05-12 00:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(6, 'Linux & Julie Wedding', 'Wedding', 'Rustic Garden', 200, 85000.00, '2025-01-21 00:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(7, 'QRT Corp Year-End', 'Corporate', 'Modern Gala', 150, 95000.00, '2025-03-19 00:00:00', 'confirmed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(8, 'Maricris 18th Birthday', 'Birthday', 'Royal Blue', 100, 60000.00, '2025-04-29 00:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(10, 'Team Collab Summit', 'Corporate', 'Tropical Retreat', 100, 45000.00, '2025-05-13 00:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(11, 'New Year Gala 2020', 'Corporate', 'Celebration', 250, 125000.00, '2020-01-15 18:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(12, 'Valentine Wedding', 'Wedding', 'Romance', 180, 95000.00, '2020-02-14 16:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(13, 'Spring Conference', 'Corporate', 'Business', 200, 85000.00, '2020-03-20 09:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(14, 'Easter Celebration', 'Birthday', 'Spring Garden', 120, 65000.00, '2020-04-10 14:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(15, 'Summer Kickoff', 'Concert', 'Beach Party', 300, 150000.00, '2020-07-05 19:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(16, 'Corporate Retreat', 'Corporate', 'Team Building', 100, 75000.00, '2020-09-12 10:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(17, 'Halloween Party', 'Birthday', 'Spooky', 150, 80000.00, '2020-10-31 20:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(18, 'Christmas Gala', 'Corporate', 'Winter Wonderland', 280, 135000.00, '2020-12-20 18:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(19, 'New Year Celebration 2021', 'Corporate', 'Fresh Start', 200, 110000.00, '2021-01-10 19:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(20, 'Love is in the Air', 'Wedding', 'Romantic', 160, 88000.00, '2021-02-20 15:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(21, 'Spring Fashion Show', 'Corporate', 'Elegant', 220, 98000.00, '2021-03-15 18:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(22, 'April Birthday Bash', 'Birthday', 'Colorful', 90, 55000.00, '2021-04-25 17:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(23, 'Mid-Year Summit', 'Corporate', 'Professional', 180, 92000.00, '2021-06-18 09:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(24, 'Summer Music Festival', 'Concert', 'Vibrant', 350, 180000.00, '2021-07-22 19:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(25, 'Back to Business', 'Corporate', 'Modern', 150, 82000.00, '2021-09-08 10:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(26, 'Autumn Wedding', 'Wedding', 'Fall Colors', 200, 105000.00, '2021-10-15 16:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(27, 'Year End Party 2021', 'Corporate', 'Celebration', 240, 128000.00, '2021-12-18 19:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(28, 'January Kickoff 2022', 'Corporate', 'Goals', 190, 95000.00, '2022-01-20 10:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(29, 'Sweetheart Wedding', 'Wedding', 'Love Story', 175, 92000.00, '2022-02-12 16:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(30, 'Tech Conference', 'Corporate', 'Innovation', 250, 115000.00, '2022-03-28 09:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(31, 'Spring Gala', 'Corporate', 'Elegance', 200, 102000.00, '2022-04-15 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(32, 'May Day Celebration', 'Birthday', 'Garden Party', 110, 68000.00, '2022-05-01 15:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(33, 'Summer Solstice Concert', 'Concert', 'Sunset', 320, 165000.00, '2022-06-21 19:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(34, 'July Wedding Extravaganza', 'Wedding', 'Grand', 220, 118000.00, '2022-07-16 17:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(35, 'Corporate Anniversary', 'Corporate', 'Milestone', 180, 95000.00, '2022-09-25 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(36, 'October Fest', 'Birthday', 'Bavarian', 140, 78000.00, '2022-10-20 19:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(37, 'Holiday Spectacular', 'Concert', 'Christmas', 300, 155000.00, '2022-12-15 19:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(38, 'New Beginnings 2023', 'Corporate', 'Fresh', 210, 108000.00, '2023-01-14 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(39, 'Valentine Gala', 'Birthday', 'Love', 130, 72000.00, '2023-02-14 19:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(40, 'March Madness', 'Corporate', 'Sports', 190, 98000.00, '2023-03-22 17:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(41, 'Spring Wedding Bliss', 'Wedding', 'Floral', 195, 105000.00, '2023-04-08 16:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(42, 'May Corporate Summit', 'Corporate', 'Leadership', 220, 112000.00, '2023-05-19 09:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(43, 'Summer Concert Series', 'Concert', 'Rock', 340, 175000.00, '2023-07-28 20:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(44, 'August Birthday Party', 'Birthday', 'Tropical', 100, 62000.00, '2023-08-12 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(45, 'Fall Business Expo', 'Corporate', 'Exhibition', 260, 132000.00, '2023-09-30 10:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(46, 'Halloween Masquerade', 'Birthday', 'Mysterious', 180, 92000.00, '2023-10-31 20:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(47, 'November Wedding', 'Wedding', 'Elegant', 170, 95000.00, '2023-11-18 15:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(48, 'Holiday Party 2023', 'Corporate', 'Festive', 250, 130000.00, '2023-12-22 19:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(49, 'January Business Launch', 'Corporate', 'Innovation', 200, 105000.00, '2024-01-25 10:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(50, 'February Romance', 'Wedding', 'Love', 185, 98000.00, '2024-02-16 16:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(51, 'Spring Conference 2024', 'Corporate', 'Growth', 230, 118000.00, '2024-03-12 09:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(52, 'April Showers Gala', 'Birthday', 'Garden', 120, 70000.00, '2024-04-20 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(53, 'May Day Wedding', 'Wedding', 'Spring', 190, 102000.00, '2024-05-11 15:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(54, 'Mid-Year Concert', 'Concert', 'Pop', 310, 162000.00, '2024-06-28 19:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(55, 'July Corporate Retreat', 'Corporate', 'Team', 150, 85000.00, '2024-07-15 10:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(56, 'August Birthday Bash', 'Birthday', 'Beach', 140, 78000.00, '2024-08-24 17:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(57, 'September Elegance', 'Wedding', 'Classic', 205, 112000.00, '2024-09-14 16:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(58, 'October Conference', 'Corporate', 'Professional', 240, 125000.00, '2024-10-18 09:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(59, 'November Thanksgiving', 'Birthday', 'Harvest', 160, 88000.00, '2024-11-28 18:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(60, 'December Holiday Gala', 'Corporate', 'Winter', 270, 140000.00, '2024-12-20 19:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(61, 'January Celebration 2025', 'Corporate', 'New Year', 215, 112000.00, '2025-01-18 18:00:00', 'canceled', NULL, 2, 2, '2025-11-03 22:29:33'),
+(62, 'February Love Fest', 'Wedding', 'Romantic', 180, 96000.00, '2025-02-22 16:00:00', 'completed', NULL, 2, 1, '2025-11-03 22:29:33'),
+(63, 'March Business Summit', 'Corporate', 'Strategy', 225, 115000.00, '2025-03-16 09:00:00', 'completed', NULL, 2, 3, '2025-11-03 22:29:33'),
+(64, 'April Spring Wedding', 'Wedding', 'Floral Garden', 195, 105000.00, '2025-04-12 15:00:00', 'canceled', NULL, 2, 1, '2025-11-03 22:29:33'),
+(65, 'May Tech Expo', 'Corporate', 'Technology', 250, 128000.00, '2025-05-20 10:00:00', 'canceled', NULL, 2, 4, '2025-11-03 22:29:33'),
+(66, 'June Summer Bash', 'Birthday', 'Tropical', 130, 75000.00, '2025-06-15 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33'),
+(67, 'July Concert Night', 'Concert', 'Music', 320, 168000.00, '2025-07-25 20:00:00', 'completed', NULL, 2, 4, '2025-11-03 22:29:33'),
+(68, 'August Corporate Gala', 'Corporate', 'Elegant', 200, 108000.00, '2025-08-30 19:00:00', 'canceled', NULL, 2, 3, '2025-11-03 22:29:33'),
+(69, 'September Wedding Dream', 'Wedding', 'Romantic', 210, 115000.00, '2025-09-20 00:00:00', 'canceled', NULL, 2, 1, '2025-11-03 22:29:33'),
+(70, 'October Birthday Party', 'Birthday', 'Autumn', 145, 82000.00, '2025-10-25 18:00:00', 'completed', NULL, 2, 2, '2025-11-03 22:29:33');
 
 -- --------------------------------------------------------
 
@@ -336,10 +336,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `first_name`, `last_name`, `email`, `phone`, `role`, `status`, `created_at`) VALUES
-(1, 'admin123', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'System', 'Admin', 'admin@example.com', '09171234567', 'administrator', 'active', '2025-11-08 15:04:09'),
+(1, 'admin123', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'System', 'Admin', 'admin@gmail.com', '09171234567', 'administrator', 'active', '2025-11-08 15:04:09'),
 (2, 'manager_linux', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Linux', 'Adona', 'linux@gmail.com', '09181234567', 'manager', 'active', '2025-11-08 15:04:09'),
-(3, 'supplier_dore', '$2y$10$uh3m79DGqHoJ8z/HCo4iluGb18gWzZEj0MT.TaWU9e1l5lDiolBTi', 'Dore', 'Cables', 'dore@gmail.com', '09191234567', 'supplier', 'active', '2025-11-08 15:04:09'),
-(6, 'organizer_adrian', '$2y$10$DOYBedKeOf3.SsEHrxVdfu0X90eYn8uunI4/RU2FnH6XRA9ekw/Jy', 'Adrian', 'Cornado', 'adrian@gmail.com', '09201234567', 'organizer', 'active', '2025-11-08 15:04:09');
+(6, 'organizer_adrian', '$2y$10$DOYBedKeOf3.SsEHrxVdfu0X90eYn8uunI4/RU2FnH6XRA9ekw/Jy', 'Adrian', 'Cornado', 'adrian@gmail.com', '09201234567', 'organizer', 'active', '2025-11-08 15:04:09'),
+(8, 'dore', '$2y$10$iI55luzQgDAV.g4wBdpA/Oz0S5nbV4A7aPkmqtLJgxNXa.X/psm1O', 'Dorina', 'Cables', 'dore@gmail.com', '09211234567', 'manager', 'active', '2025-11-17 11:33:32'),
+(9, 'maricris', '$2y$10$1bUMzJLAaT9Bo8T4ZTqFd.Bd8toKSHXBM6CYcWUTJBBNthmsvUTrS', 'Maricris', 'Barcelon', 'maricris@gmail.com', '09221234567', 'organizer', 'active', '2025-11-17 11:37:32');
 
 -- --------------------------------------------------------
 
@@ -481,7 +482,11 @@ ALTER TABLE `chat`
   ADD PRIMARY KEY (`chat_id`),
   ADD KEY `event_id` (`event_id`),
   ADD KEY `sender_id` (`sender_id`),
-  ADD KEY `receiver_id` (`receiver_id`);
+  ADD KEY `receiver_id` (`receiver_id`),
+  ADD KEY `idx_sender_receiver` (`sender_id`,`receiver_id`),
+  ADD KEY `idx_receiver_sender` (`receiver_id`,`sender_id`),
+  ADD KEY `idx_timestamp` (`timestamp`),
+  ADD KEY `idx_is_read` (`is_read`);
 
 --
 -- Indexes for table `dynamic_pricing`
@@ -625,7 +630,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `venues`
