@@ -1,23 +1,5 @@
 // AI Planner Page JavaScript
 
-// Profile dropdown toggle
-const profileBtn = document.getElementById('profile-dropdown-btn');
-const profileDropdown = document.getElementById('profile-dropdown');
-
-if (profileBtn && profileDropdown) {
-    profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        profileDropdown.classList.toggle('hidden');
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-            profileDropdown.classList.add('hidden');
-        }
-    });
-}
-
 // Chat functionality
 const chatForm = document.getElementById('chatForm');
 const chatInput = document.getElementById('chatInput');
