@@ -125,37 +125,37 @@ $conn->close();
     <div
         class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
-            <!-- Top Bar for Sidebar Layout -->
-            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">
+        <!-- Top Bar for Sidebar Layout -->
+        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">
+                <!-- <i class="mr-2 text-indigo-600 fas fa-user-circle"></i> -->
+                My Profile
+            </h1>
+            <p class="text-sm text-gray-600">Manage your account settings and preferences</p>
+        </div>
+        <div class="px-4 sm:px-6 lg:px-8">
+            <?php else: ?>
+            <!-- Header for Navbar Layout -->
+            <div class="mb-8">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
                     <!-- <i class="mr-2 text-indigo-600 fas fa-user-circle"></i> -->
                     My Profile
                 </h1>
-                <p class="text-sm text-gray-600">Manage your account settings and preferences</p>
+                <p class="text-gray-600">Manage your personal information and account settings</p>
             </div>
-            <div class="px-4 sm:px-6 lg:px-8">
-            <?php else: ?>
-                <!-- Header for Navbar Layout -->
-                <div class="mb-8">
-                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">
-                        <!-- <i class="mr-2 text-indigo-600 fas fa-user-circle"></i> -->
-                        My Profile
-                    </h1>
-                    <p class="text-gray-600">Manage your personal information and account settings</p>
-                </div>
             <?php endif; ?>
 
             <!-- Messages -->
             <?php if ($success_message): ?>
-                <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
-                    <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
-                </div>
+            <div class="p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg">
+                <i class="mr-2 fas fa-check-circle"></i><?php echo htmlspecialchars($success_message); ?>
+            </div>
             <?php endif; ?>
 
             <?php if ($error_message): ?>
-                <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
-                    <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
-                </div>
+            <div class="p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg">
+                <i class="mr-2 fas fa-exclamation-circle"></i><?php echo htmlspecialchars($error_message); ?>
+            </div>
             <?php endif; ?>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-8">
@@ -189,12 +189,12 @@ $conn->close();
                                 </span>
                             </div>
                             <?php if ($user['phone']): ?>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-gray-600">Phone</span>
-                                    <span class="font-semibold text-gray-800">
-                                        <?php echo htmlspecialchars($user['phone']); ?>
-                                    </span>
-                                </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Phone</span>
+                                <span class="font-semibold text-gray-800">
+                                    <?php echo htmlspecialchars($user['phone']); ?>
+                                </span>
+                            </div>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -278,14 +278,14 @@ $conn->close();
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
 
-            <?php if ($nav_layout === 'sidebar'): ?>
+        <?php if ($nav_layout === 'sidebar'): ?>
     </div> <!-- Close sidebar inner wrapper -->
-<?php endif; ?>
-</div> <!-- Close main content -->
+    <?php endif; ?>
+    </div> <!-- Close main content -->
 
-<script>
+    <script>
     // Sidebar toggle for mobile
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.getElementById('admin-sidebar');
@@ -295,7 +295,7 @@ $conn->close();
             sidebar.classList.toggle('-translate-x-full');
         });
     }
-</script>
+    </script>
 </body>
 
 </html>

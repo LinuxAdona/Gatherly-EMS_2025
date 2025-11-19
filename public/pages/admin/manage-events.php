@@ -41,22 +41,44 @@ $status_filter = $_GET['status'] ?? '';
 $type_filter = $_GET['type'] ?? '';
 $search = $_GET['search'] ?? '';
 
+// Pagination configuration
+$items_per_page = 10;
+$page_num = (int)(isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1);
+
+// Build base query for counting and fetching
+$where_conditions = "WHERE 1=1";
+if ($status_filter) {
+    $where_conditions .= " AND e.status = '" . $conn->real_escape_string($status_filter) . "'";
+}
+if ($type_filter) {
+    $where_conditions .= " AND e.event_type = '" . $conn->real_escape_string($type_filter) . "'";
+}
+if ($search) {
+    $search_term = $conn->real_escape_string($search);
+    $where_conditions .= " AND (e.event_name LIKE '%$search_term%' OR e.theme LIKE '%$search_term%')";
+}
+
+// Count total records
+$count_query = "SELECT COUNT(*) as total 
+                FROM events e 
+                LEFT JOIN venues v ON e.venue_id = v.venue_id 
+                LEFT JOIN users u ON e.client_id = u.user_id 
+                $where_conditions";
+$count_result = $conn->query($count_query);
+$total_records = (int)$count_result->fetch_assoc()['total'];
+$total_pages = (int)ceil($total_records / $items_per_page);
+
+// Calculate offset
+$offset = (int)(($page_num - 1) * $items_per_page);
+
+// Fetch events with pagination
 $query = "SELECT e.*, v.venue_name, u.first_name, u.last_name 
           FROM events e 
           LEFT JOIN venues v ON e.venue_id = v.venue_id 
           LEFT JOIN users u ON e.client_id = u.user_id 
-          WHERE 1=1";
-if ($status_filter) {
-    $query .= " AND e.status = '" . $conn->real_escape_string($status_filter) . "'";
-}
-if ($type_filter) {
-    $query .= " AND e.event_type = '" . $conn->real_escape_string($type_filter) . "'";
-}
-if ($search) {
-    $search_term = $conn->real_escape_string($search);
-    $query .= " AND (e.event_name LIKE '%$search_term%' OR e.theme LIKE '%$search_term%')";
-}
-$query .= " ORDER BY e.event_date DESC";
+          $where_conditions
+          ORDER BY e.event_date DESC
+          LIMIT $items_per_page OFFSET $offset";
 
 $events_result = $conn->query($query);
 
@@ -229,7 +251,7 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
             </div>
 
             <!-- Events Table -->
-            <div class="overflow-hidden bg-white shadow-md rounded-xl">
+            <div class="overflow-hidden bg-white shadow-md rounded-xl mb-6">
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gray-50">
@@ -365,6 +387,117 @@ $stats['canceled'] = $conn->query("SELECT COUNT(*) as count FROM events WHERE st
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination Controls -->
+                <?php if ($total_pages > 1): ?>
+                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                            <!-- Page Info -->
+                            <div class="text-sm text-gray-700 flex flex-col sm:flex-row sm:items-center gap-1">
+                                <span>
+                                    Showing <span class="font-semibold"><?php echo $offset + 1; ?></span> to
+                                    <span
+                                        class="font-semibold"><?php echo min($offset + $items_per_page, $total_records); ?></span>
+                                    of <span class="font-semibold"><?php echo $total_records; ?></span> events
+                                </span>
+                                <span
+                                    class="text-xs sm:ml-3 px-2 py-1 rounded bg-indigo-50 text-indigo-700 font-medium border border-indigo-200">
+                                    Page <?php echo $page_num; ?> of <?php echo $total_pages; ?>
+                                </span>
+                            </div>
+
+                            <!-- Pagination Buttons -->
+                            <div class="flex flex-wrap gap-1">
+                                <?php
+                                // Ensure all variables are integers to prevent type errors
+                                $page_num = (int)$page_num;
+                                $total_pages = (int)$total_pages;
+                                $total_records = (int)$total_records;
+                                $offset = (int)$offset;
+
+                                // Build query string for pagination links
+                                $query_params = [];
+                                if ($status_filter) $query_params['status'] = $status_filter;
+                                if ($type_filter) $query_params['type'] = $type_filter;
+                                if ($search) $query_params['search'] = $search;
+
+                                // Previous button
+                                if ($page_num > 1):
+                                    $prev_params = array_merge($query_params, ['page' => $page_num - 1]);
+                                ?>
+                                    <a href="?<?php echo http_build_query($prev_params); ?>"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <span
+                                        class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                <?php endif; ?>
+
+                                <?php
+                                // Build page sequence to match specified patterns
+                                $pages = [];
+                                if ($total_pages <= 7) {
+                                    // Show all pages when small
+                                    for ($i = 1; $i <= $total_pages; $i++) {
+                                        $pages[] = $i;
+                                    }
+                                } else {
+                                    if ($page_num <= 2) {
+                                        // [1] 2 3 ... last OR 1 [2] 3 ... last
+                                        $pages = [1, 2, 3, '...', $total_pages];
+                                    } elseif ($page_num == 3) {
+                                        // 1 ... [3] 4 ... last
+                                        $pages = [1, '...', 3, 4, '...', $total_pages];
+                                    } elseif ($page_num >= 4 && $page_num <= $total_pages - 3) {
+                                        // 1 ... [c] c+1 ... last (middle window)
+                                        $pages = [1, '...', $page_num, $page_num + 1, '...', $total_pages];
+                                    } elseif ($page_num == $total_pages - 2) {
+                                        // 1 ... [c] c+1 last
+                                        $pages = [1, '...', $page_num, $page_num + 1, $total_pages];
+                                    } elseif ($page_num == $total_pages - 1) {
+                                        // 1 ... c-1 [c] last
+                                        $pages = [1, '...', $page_num - 1, $page_num, $total_pages];
+                                    } else { // page_num == $total_pages
+                                        // 1 ... last-2 last-1 [last]
+                                        $pages = [1, '...', $total_pages - 2, $total_pages - 1, $total_pages];
+                                    }
+                                }
+
+                                foreach ($pages as $p) {
+                                    if ($p === '...') {
+                                        echo '<span class="px-3 py-2 text-sm font-medium text-gray-700">...</span>';
+                                        continue;
+                                    }
+                                    $page_params = array_merge($query_params, ['page' => $p]);
+                                    if ((int)$p === (int)$page_num) {
+                                        echo '<span class="px-3 py-2 text-sm font-bold text-white bg-indigo-600 border border-indigo-600 rounded-lg ring-2 ring-indigo-400" aria-current="page">' . $p . '</span>';
+                                    } else {
+                                        echo '<a href="?' . http_build_query($page_params) . '" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">' . $p . '</a>';
+                                    }
+                                }
+                                ?>
+
+                                <!-- Next button -->
+                                <?php if ($page_num < $total_pages):
+                                    $next_params = array_merge($query_params, ['page' => $page_num + 1]);
+                                ?>
+                                    <a href="?<?php echo http_build_query($next_params); ?>"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <span
+                                        class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <?php if ($nav_layout === 'sidebar'): ?>
