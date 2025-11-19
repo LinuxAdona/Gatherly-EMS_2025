@@ -94,18 +94,18 @@ $conn->close();
     <div
         class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
-        <!-- Top Bar for Sidebar Layout -->
-        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">Administrator Dashboard</h1>
-            <p class="text-sm text-gray-600">System overview and management tools</p>
-        </div>
-        <div class="px-4 sm:px-6 lg:px-8">
-            <?php else: ?>
-            <!-- Header for Navbar Layout -->
-            <div class="mb-8">
-                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Administrator Dashboard</h1>
-                <p class="text-gray-600">System overview and management tools</p>
+            <!-- Top Bar for Sidebar Layout -->
+            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
+                <h1 class="text-2xl font-bold text-gray-800">Administrator Dashboard</h1>
+                <p class="text-sm text-gray-600">System overview and management tools</p>
             </div>
+            <div class="px-4 sm:px-6 lg:px-8">
+            <?php else: ?>
+                <!-- Header for Navbar Layout -->
+                <div class="mb-8">
+                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Administrator Dashboard</h1>
+                    <p class="text-gray-600">System overview and management tools</p>
+                </div>
             <?php endif; ?>
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
@@ -216,7 +216,7 @@ $conn->close();
             </div>
 
             <!-- Management Tools -->
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-8">
                 <div class="p-6 bg-white shadow-md rounded-xl">
                     <h2 class="mb-4 text-xl font-bold text-gray-800">
                         <i class="mr-2 text-indigo-600 fas fa-tools"></i>
@@ -299,14 +299,14 @@ $conn->close();
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
 
-        <?php if ($nav_layout === 'sidebar'): ?>
+            <?php if ($nav_layout === 'sidebar'): ?>
     </div> <!-- Close sidebar inner wrapper -->
-    <?php endif; ?>
-    </div> <!-- Close main content   -->
+<?php endif; ?>
+</div> <!-- Close main content   -->
 
-    <script src="../../assets/js/admin.js"></script>
+<script src="../../assets/js/admin.js"></script>
 </body>
 
 </html>
