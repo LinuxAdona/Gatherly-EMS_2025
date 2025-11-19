@@ -205,7 +205,8 @@ $conn->close();
                 <!-- Top Bar for Sidebar Layout -->
                 <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
                     <h1 class="text-2xl font-bold text-gray-800">Pricing Intelligence Hub</h1>
-                    <p class="text-sm text-gray-600">Data-driven pricing strategies based on your actual booking patterns</p>
+                    <p class="text-sm text-gray-600">Data-driven pricing strategies based on your actual booking patterns
+                    </p>
                 </div>
                 <div class="px-4 sm:px-6 lg:px-8">
                 <?php else: ?>
@@ -219,7 +220,8 @@ $conn->close();
                         <!-- Header -->
                         <div class="mb-8">
                             <h1 class="text-3xl font-bold text-gray-900 mb-2">Pricing Intelligence Hub</h1>
-                            <p class="text-gray-600">Data-driven pricing strategies based on your actual booking patterns</p>
+                            <p class="text-gray-600">Data-driven pricing strategies based on your actual booking patterns
+                            </p>
                         </div>
                     <?php endif; ?>
 
@@ -259,7 +261,8 @@ $conn->close();
                                 <div class="bg-orange-50 border border-orange-200 rounded-xl p-6">
                                     <div class="flex items-center justify-between mb-4">
                                         <h3 class="text-lg font-bold text-orange-800">Peak Season</h3>
-                                        <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
+                                        <span
+                                            class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
                                             <?php
                                             if (!empty($peak_months)) {
                                                 $peak_month_names = array_map(function ($m) use ($month_names) {
@@ -299,7 +302,8 @@ $conn->close();
                                 <div class="bg-green-50 border border-green-200 rounded-xl p-6">
                                     <div class="flex items-center justify-between mb-4">
                                         <h3 class="text-lg font-bold text-green-800">Regular Season</h3>
-                                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+                                        <span
+                                            class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
                                             <?php
                                             if (!empty($regular_months)) {
                                                 $regular_month_names = array_map(function ($m) use ($month_names) {
@@ -339,7 +343,8 @@ $conn->close();
                                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                                     <div class="flex items-center justify-between mb-4">
                                         <h3 class="text-lg font-bold text-blue-800">Low Season</h3>
-                                        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                                        <span
+                                            class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
                                             <?php
                                             if (!empty($low_months)) {
                                                 $low_month_names = array_map(function ($m) use ($month_names) {
@@ -383,7 +388,8 @@ $conn->close();
                                     <div>
                                         <p class="font-semibold text-purple-800">Pro Tip</p>
                                         <p class="text-purple-700 text-sm">
-                                            Monitor booking patterns and adjust your price percentage monthly for maximum revenue.
+                                            Monitor booking patterns and adjust your price percentage monthly for
+                                            maximum revenue.
                                             Current average price percentage across venues:
                                             <strong>
                                                 <?php
@@ -456,7 +462,8 @@ $conn->close();
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Current Demand Level</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Current Demand
+                                            Level</label>
                                         <select id="calc_demand"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                                             <option value="0.9">Low (-10%)</option>
@@ -499,10 +506,12 @@ $conn->close();
                                         ?>
                                             <div
                                                 class="text-center p-4 border rounded-lg <?php echo $is_peak ? 'bg-red-50 border-red-200' : 'bg-gray-50 border-gray-200'; ?>">
-                                                <p class="text-lg font-bold <?php echo $is_peak ? 'text-red-600' : 'text-gray-600'; ?>">
+                                                <p
+                                                    class="text-lg font-bold <?php echo $is_peak ? 'text-red-600' : 'text-gray-600'; ?>">
                                                     <?php echo $hour['hour']; ?>:00
                                                 </p>
-                                                <p class="text-sm text-gray-600"><?php echo $hour['booking_count']; ?> bookings</p>
+                                                <p class="text-sm text-gray-600"><?php echo $hour['booking_count']; ?> bookings
+                                                </p>
                                                 <p class="text-sm font-semibold text-green-600">
                                                     ₱<?php echo number_format($hour['avg_price'], 0); ?>
                                                 </p>
@@ -545,282 +554,87 @@ $conn->close();
                         </div>
                     </div>
 
-                    <!-- Feature 4: Package Bundling Opportunities -->
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 mb-8">
-                        <div class="p-6 border-b border-gray-200">
-                            <h2 class="text-2xl font-bold text-gray-900">
-                                <i class="fas fa-gift text-purple-500 mr-2"></i>
-                                Package Bundling Opportunities
-                            </h2>
-                            <p class="text-gray-600">Venues with multiple amenities ready for premium packaging</p>
-                        </div>
-                        <div class="p-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <?php if ($package_result && $package_result->num_rows > 0): ?>
-                                    <?php while ($venue = $package_result->fetch_assoc()): ?>
-                                        <div
-                                            class="border border-green-200 rounded-xl p-4 bg-green-50 hover:border-green-300 transition-colors">
-                                            <h3 class="font-semibold text-green-800 text-lg mb-3">
-                                                <?php echo htmlspecialchars($venue['venue_name']); ?></h3>
-                                            <div class="space-y-2 text-sm mb-4">
-                                                <div class="flex justify-between">
-                                                    <span class="text-gray-600">Base Price:</span>
-                                                    <span
-                                                        class="font-semibold">₱<?php echo number_format($venue['base_price'], 0); ?></span>
-                                                </div>
-                                                <div class="flex justify-between">
-                                                    <span class="text-gray-600">Amenities:</span>
-                                                    <span class="font-semibold"><?php echo $venue['amenity_count']; ?> included</span>
-                                                </div>
-                                                <div class="flex justify-between">
-                                                    <span class="text-gray-600">Actual Avg:</span>
-                                                    <span class="font-semibold text-green-600">
-                                                        ₱<?php echo number_format($venue['actual_avg_price'], 0); ?>
-                                                    </span>
-                                                </div>
-                                                <?php if (!empty($venue['amenities_list'])): ?>
-                                                    <div class="mt-2">
-                                                        <p class="text-xs text-gray-600">Includes:
-                                                            <?php echo htmlspecialchars(substr($venue['amenities_list'], 0, 50)) . '...'; ?></p>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                            <button
-                                                onclick="openPackageModal(<?php echo $venue['venue_id']; ?>, '<?php echo htmlspecialchars($venue['venue_name']); ?>', <?php echo $venue['base_price']; ?>, <?php echo $venue['actual_avg_price']; ?>)"
-                                                class="w-full bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold">
-                                                Create Premium Package
-                                            </button>
-                                        </div>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <div class="col-span-3 text-center py-8">
-                                        <i class="fas fa-gift text-gray-400 text-4xl mb-3"></i>
-                                        <p class="text-gray-600">No package bundling opportunities found</p>
-                                        <p class="text-sm text-gray-500">Add more amenities to venues to create premium packages</p>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+                    <script>
+                        // Profile Dropdown
+                        // Profile dropdown handled by ManagerSidebar.php
 
-                    <!-- Feature 5: Price Elasticity Analysis -->
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
-                        <div class="p-6 border-b border-gray-200">
-                            <h2 class="text-2xl font-bold text-gray-900">
-                                <i class="fas fa-balance-scale text-blue-500 mr-2"></i>
-                                Price Elasticity Analysis
-                            </h2>
-                            <p class="text-gray-600">Understand how price affects demand and booking behavior</p>
-                        </div>
-                        <div class="p-6">
-                            <div class="space-y-4">
-                                <?php if ($elasticity_result && $elasticity_result->num_rows > 0): ?>
-                                    <?php while ($range = $elasticity_result->fetch_assoc()): ?>
-                                        <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-colors">
-                                            <div class="flex items-center justify-between mb-3">
-                                                <span
-                                                    class="font-semibold text-gray-800 text-lg"><?php echo $range['price_range']; ?></span>
-                                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
-                                                    <?php echo $range['bookings']; ?> bookings
-                                                </span>
-                                            </div>
-                                            <div class="grid grid-cols-2 gap-4 text-sm">
-                                                <div>
-                                                    <span class="text-gray-600">Avg. Guests:</span>
-                                                    <span class="font-semibold"><?php echo round($range['avg_guests']); ?></span>
-                                                </div>
-                                                <div>
-                                                    <span class="text-gray-600">Lead Time:</span>
-                                                    <span class="font-semibold"><?php echo round($range['avg_lead_time']); ?> days</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <div class="text-center py-8">
-                                        <i class="fas fa-chart-line text-gray-400 text-4xl mb-3"></i>
-                                        <p class="text-gray-600">No elasticity data available</p>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
+                        // Price Optimization Calculator
+                        document.getElementById('calculatePrice').addEventListener('click', function() {
+                            const venueSelect = document.getElementById('calc_venue');
+                            const selectedOption = venueSelect.selectedOptions[0];
+                            const basePrice = parseFloat(selectedOption.dataset.basePrice) || 0;
+                            const currentPercentage = parseFloat(selectedOption.dataset.percentage) || 15;
 
-                            <!-- Finding -->
-                            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                                <div class="flex items-start">
-                                    <i class="fas fa-chart-line text-blue-500 text-lg mt-1 mr-3"></i>
-                                    <div>
-                                        <p class="font-semibold text-blue-800">Finding</p>
-                                        <p class="text-blue-700 text-sm">
-                                            <?php
-                                            $top_range = '';
-                                            $top_bookings = 0;
-                                            if ($elasticity_result) {
-                                                $elasticity_result->data_seek(0);
-                                                while ($range = $elasticity_result->fetch_assoc()) {
-                                                    if ($range['bookings'] > $top_bookings) {
-                                                        $top_bookings = $range['bookings'];
-                                                        $top_range = $range['price_range'];
-                                                    }
-                                                }
-                                            }
-                                            if ($top_range) {
-                                                echo $top_range . ' prices attract the most bookings with reasonable lead times.';
-                                            } else {
-                                                echo 'Mid-range prices typically attract the most bookings with reasonable lead times.';
-                                            }
-                                            ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            const seasonMultiplier = parseFloat(document.getElementById('calc_season').value);
+                            const dayMultiplier = parseFloat(document.getElementById('calc_day').value);
+                            const demandMultiplier = parseFloat(document.getElementById('calc_demand').value);
 
-                <!-- Create Package Modal -->
-                <div id="packageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-                    <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-xl font-bold text-gray-900">Create Premium Package</h3>
-                            <button onclick="closePackageModal()" class="text-gray-500 hover:text-gray-700">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                            const optimalPrice = basePrice * seasonMultiplier * dayMultiplier * demandMultiplier;
+                            const priceDifference = ((optimalPrice - basePrice) / basePrice * 100).toFixed(1);
 
-                        <form method="POST" class="space-y-4">
-                            <input type="hidden" name="venue_id" id="package_venue_id">
+                            // Update results
+                            document.getElementById('optimalPrice').textContent =
+                                `₱${optimalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Venue</label>
-                                <p class="text-lg font-semibold text-gray-900" id="package_venue_name"></p>
-                            </div>
+                            let explanation = '';
+                            if (priceDifference > 0) {
+                                explanation = `+${priceDifference}% from base price due to favorable conditions`;
+                            } else if (priceDifference < 0) {
+                                explanation = `${priceDifference}% from base price to remain competitive`;
+                            } else {
+                                explanation = 'Same as base price - standard conditions';
+                            }
+                            document.getElementById('priceExplanation').textContent = explanation;
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Package Name</label>
-                                <input type="text" name="package_name" id="package_name"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                                    placeholder="e.g., Premium Wedding Package" required>
-                            </div>
+                            // Show results
+                            document.getElementById('calcResults').classList.remove('hidden');
+                        });
 
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Base Price</label>
-                                    <p class="text-lg font-semibold text-green-600" id="package_base_price"></p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Actual Avg Price</label>
-                                    <p class="text-lg font-semibold text-blue-600" id="package_avg_price"></p>
-                                </div>
-                            </div>
+                        // Auto-calculate when selections change
+                        ['calc_season', 'calc_day', 'calc_demand'].forEach(id => {
+                            document.getElementById(id).addEventListener('change', function() {
+                                if (document.getElementById('calcResults').classList.contains('hidden') ===
+                                    false) {
+                                    document.getElementById('calculatePrice').click();
+                                }
+                            });
+                        });
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Package Price (₱)</label>
-                                <input type="number" name="package_price" id="package_price" step="0.01" min="0"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
-                                <p class="text-xs text-gray-500 mt-1">Suggested: 20-30% above base price</p>
-                            </div>
+                        // Package Modal Functions
+                        function openPackageModal(venueId, venueName, basePrice, avgPrice) {
+                            document.getElementById('package_venue_id').value = venueId;
+                            document.getElementById('package_venue_name').textContent = venueName;
+                            document.getElementById('package_base_price').textContent = '₱' + basePrice.toLocaleString();
+                            document.getElementById('package_avg_price').textContent = '₱' + avgPrice.toLocaleString();
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Package Description</label>
-                                <textarea name="package_description" id="package_description" rows="3"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                                    placeholder="Describe what's included in this premium package..." required></textarea>
-                            </div>
+                            // Suggest package price (25% above base)
+                            const suggestedPrice = basePrice * 1.25;
+                            document.getElementById('package_price').value = suggestedPrice.toFixed(0);
 
-                            <div class="flex space-x-3 pt-4">
-                                <button type="button" onclick="closePackageModal()"
-                                    class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                                    Cancel
-                                </button>
-                                <button type="submit" name="create_premium_package"
-                                    class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                                    Create Package
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                            // Auto-generate package name
+                            document.getElementById('package_name').value = venueName + ' Premium Package';
 
-                <script>
-                    // Profile Dropdown
-                    // Profile dropdown handled by ManagerSidebar.php
-
-                    // Price Optimization Calculator
-                    document.getElementById('calculatePrice').addEventListener('click', function() {
-                        const venueSelect = document.getElementById('calc_venue');
-                        const selectedOption = venueSelect.selectedOptions[0];
-                        const basePrice = parseFloat(selectedOption.dataset.basePrice) || 0;
-                        const currentPercentage = parseFloat(selectedOption.dataset.percentage) || 15;
-
-                        const seasonMultiplier = parseFloat(document.getElementById('calc_season').value);
-                        const dayMultiplier = parseFloat(document.getElementById('calc_day').value);
-                        const demandMultiplier = parseFloat(document.getElementById('calc_demand').value);
-
-                        const optimalPrice = basePrice * seasonMultiplier * dayMultiplier * demandMultiplier;
-                        const priceDifference = ((optimalPrice - basePrice) / basePrice * 100).toFixed(1);
-
-                        // Update results
-                        document.getElementById('optimalPrice').textContent =
-                            `₱${optimalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-
-                        let explanation = '';
-                        if (priceDifference > 0) {
-                            explanation = `+${priceDifference}% from base price due to favorable conditions`;
-                        } else if (priceDifference < 0) {
-                            explanation = `${priceDifference}% from base price to remain competitive`;
-                        } else {
-                            explanation = 'Same as base price - standard conditions';
+                            document.getElementById('packageModal').classList.remove('hidden');
+                            document.getElementById('packageModal').classList.add('flex');
                         }
-                        document.getElementById('priceExplanation').textContent = explanation;
 
-                        // Show results
-                        document.getElementById('calcResults').classList.remove('hidden');
-                    });
+                        function closePackageModal() {
+                            document.getElementById('packageModal').classList.add('hidden');
+                            document.getElementById('packageModal').classList.remove('flex');
+                        }
 
-                    // Auto-calculate when selections change
-                    ['calc_season', 'calc_day', 'calc_demand'].forEach(id => {
-                        document.getElementById(id).addEventListener('change', function() {
-                            if (document.getElementById('calcResults').classList.contains('hidden') === false) {
-                                document.getElementById('calculatePrice').click();
+                        // Close modal when clicking outside
+                        document.addEventListener('click', function(event) {
+                            if (event.target.id === 'packageModal') {
+                                closePackageModal();
                             }
                         });
-                    });
+                    </script>
 
-                    // Package Modal Functions
-                    function openPackageModal(venueId, venueName, basePrice, avgPrice) {
-                        document.getElementById('package_venue_id').value = venueId;
-                        document.getElementById('package_venue_name').textContent = venueName;
-                        document.getElementById('package_base_price').textContent = '₱' + basePrice.toLocaleString();
-                        document.getElementById('package_avg_price').textContent = '₱' + avgPrice.toLocaleString();
-
-                        // Suggest package price (25% above base)
-                        const suggestedPrice = basePrice * 1.25;
-                        document.getElementById('package_price').value = suggestedPrice.toFixed(0);
-
-                        // Auto-generate package name
-                        document.getElementById('package_name').value = venueName + ' Premium Package';
-
-                        document.getElementById('packageModal').classList.remove('hidden');
-                        document.getElementById('packageModal').classList.add('flex');
-                    }
-
-                    function closePackageModal() {
-                        document.getElementById('packageModal').classList.add('hidden');
-                        document.getElementById('packageModal').classList.remove('flex');
-                    }
-
-                    // Close modal when clicking outside
-                    document.addEventListener('click', function(event) {
-                        if (event.target.id === 'packageModal') {
-                            closePackageModal();
-                        }
-                    });
-                </script>
-
-                <?php if ($nav_layout === 'sidebar'): ?>
+                    <?php if ($nav_layout === 'sidebar'): ?>
                 </div>
             <?php endif; ?>
-            </div>
+                </div>
 
 </body>
 

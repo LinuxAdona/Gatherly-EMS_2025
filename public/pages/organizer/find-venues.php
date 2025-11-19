@@ -165,7 +165,7 @@ $conn->close();
             </div>
 
             <!-- Venue Listings -->
-            <div id="venuesContainer" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+            <div id="venuesContainer" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
                 <?php if ($venues_result && $venues_result->num_rows > 0): ?>
                     <?php while ($venue = $venues_result->fetch_assoc()): ?>
                         <?php
