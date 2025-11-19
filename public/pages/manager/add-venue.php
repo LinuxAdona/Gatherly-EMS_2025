@@ -126,16 +126,16 @@ $default_amenities = [
                     <?php endif; ?>
                     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-md border border-gray-200 p-8">
                         <div class="flex items-center gap-2 mb-6">
-                            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600">
+                            <div
+                                class="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600">
                                 <i class="fas fa-plus"></i>
                             </div>
                             <div>
                                 <h1 class="text-xl font-bold text-gray-800">Add New Venue</h1>
-                                <p class="text-sm text-gray-500">Fill in the details to add a new venue to your listings</p>
+                                <p class="text-sm text-gray-500">Fill in the details to add a new venue to your listings
+                                </p>
                             </div>
                         </div>
-
-                        ```
                         <form method="POST" enctype="multipart/form-data" class="space-y-6">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 <div>
@@ -158,17 +158,18 @@ $default_amenities = [
                                 </div>
                                 <div>
                                     <label class="block text-sm font-semibold text-gray-700">Base Price (₱)</label>
-                                    <input type="number" id="base_price" name="base_price" placeholder="e.g., 50000" step="0.01"
-                                        required
+                                    <input type="number" id="base_price" name="base_price" placeholder="e.g., 50000"
+                                        step="0.01" required
                                         class="w-full mt-2 rounded-lg border border-gray-300 px-4 py-2.5 shadow-sm focus:ring-green-500 focus:border-green-500">
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700">Price Percentage (%)</label>
-                                    <input type="number" id="price_percentage" name="price_percentage" placeholder="e.g., 15"
-                                        step="0.01" min="0"
+                                    <label class="block text-sm font-semibold text-gray-700">Price Percentage
+                                        (%)</label>
+                                    <input type="number" id="price_percentage" name="price_percentage"
+                                        placeholder="e.g., 15" step="0.01" min="0"
                                         class="w-full mt-2 rounded-lg border border-gray-300 px-4 py-2.5 shadow-sm focus:ring-green-500 focus:border-green-500">
                                 </div>
                                 <div>
