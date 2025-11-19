@@ -28,11 +28,13 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-indigo-50 via-white to-pink-50'; ?> font-['Montserrat'] min-h-screen">
+<body
+    class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-indigo-50 via-white to-pink-50'; ?> font-['Montserrat'] min-h-screen">
     <?php include '../../../src/components/OrganizerSidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
+    <div
+        class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
             <!-- Top Bar for Sidebar Layout -->
             <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
@@ -138,13 +140,14 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                 </div>
 
                 <!-- Info Cards -->
-                <div class="grid grid-cols-1 gap-4 mt-6 md:grid-cols-3">
+                <div class="grid grid-cols-1 gap-4 mt-6 md:grid-cols-3 mb-6">
                     <div class="p-4 bg-white border border-indigo-200 shadow-sm rounded-xl">
                         <div class="flex items-center gap-3 mb-2">
                             <i class="text-2xl text-indigo-600 fas fa-lightbulb"></i>
                             <h4 class="font-bold text-gray-800">How it works</h4>
                         </div>
-                        <p class="text-sm text-gray-600">Answer a few simple questions about your event, and I'll provide
+                        <p class="text-sm text-gray-600">Answer a few simple questions about your event, and I'll
+                            provide
                             personalized recommendations.</p>
                     </div>
 
@@ -153,7 +156,8 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                             <i class="text-2xl text-pink-600 fas fa-shield-alt"></i>
                             <h4 class="font-bold text-gray-800">Smart & Secure</h4>
                         </div>
-                        <p class="text-sm text-gray-600">Powered by machine learning algorithms to ensure the best matches
+                        <p class="text-sm text-gray-600">Powered by machine learning algorithms to ensure the best
+                            matches
                             for your event needs.</p>
                     </div>
 
@@ -162,7 +166,8 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                             <i class="text-2xl text-indigo-600 fas fa-clock"></i>
                             <h4 class="font-bold text-gray-800">Save Time</h4>
                         </div>
-                        <p class="text-sm text-gray-600">Get instant recommendations instead of spending hours searching and
+                        <p class="text-sm text-gray-600">Get instant recommendations instead of spending hours searching
+                            and
                             comparing options.</p>
                     </div>
                 </div>
