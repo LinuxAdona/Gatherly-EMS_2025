@@ -670,11 +670,14 @@ $user_id = $_SESSION['user_id'];
     </style>
 </head>
 
-<body class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-indigo-50 via-white to-purple-50'; ?> font-['Montserrat'] min-h-screen" data-user-id="<?php echo $user_id; ?>">
+<body
+    class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-indigo-50 via-white to-purple-50'; ?> font-['Montserrat'] min-h-screen"
+    data-user-id="<?php echo $user_id; ?>">
     <?php include '../../../src/components/OrganizerSidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
+    <div
+        class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
             <!-- Top Bar for Sidebar Layout -->
             <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
@@ -697,12 +700,6 @@ $user_id = $_SESSION['user_id'];
                             class="p-2 text-gray-600 transition-colors rounded-lg md:hidden hover:bg-gray-100">
                             <i class="text-xl fas fa-bars"></i>
                         </button>
-                        <div>
-                            <h1 class="text-3xl font-bold text-gray-800">
-                                <i class="mr-2 text-indigo-600 fas fa-comments"></i>Messages
-                            </h1>
-                            <p class="mt-1 text-gray-600">Connect with venue managers and other organizers</p>
-                        </div>
                     </div>
                     <div class="flex gap-3">
                         <div class="relative">
@@ -717,7 +714,8 @@ $user_id = $_SESSION['user_id'];
                                         class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
                                 </div>
                                 <div id="searchResults" class="search-results">
-                                    <div class="p-4 text-sm text-center text-gray-500">Type to search conversations</div>
+                                    <div class="p-4 text-sm text-center text-gray-500">Type to search conversations
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -753,7 +751,8 @@ $user_id = $_SESSION['user_id'];
                 <div id="sidebarOverlay" class="fixed inset-0 z-40 hidden bg-black bg-opacity-50 md:hidden"></div>
 
                 <!-- Chat Area -->
-                <div id="chatArea" class="flex-1 overflow-hidden bg-white border border-gray-200 shadow-lg rounded-xl chat-container">
+                <div id="chatArea"
+                    class="flex-1 overflow-hidden bg-white border border-gray-200 shadow-lg rounded-xl chat-container">
 
                     <!-- Chat Header -->
                     <div id="chatHeader"
@@ -767,7 +766,8 @@ $user_id = $_SESSION['user_id'];
                             </div>
                             <div>
                                 <h4 class="text-base font-bold text-gray-900">Select a conversation</h4>
-                                <span class="text-sm text-gray-500">Choose a chat from the left to start messaging</span>
+                                <span class="text-sm text-gray-500">Choose a chat from the left to start
+                                    messaging</span>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -831,7 +831,8 @@ $user_id = $_SESSION['user_id'];
                                     class="flex-1 flex items-center gap-2 px-4 py-2.5 bg-gray-100 rounded-lg border border-gray-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-200">
                                     <input type="text" id="messageInput" placeholder="Type your message..."
                                         class="flex-1 text-sm text-gray-900 placeholder-gray-500 bg-transparent border-none outline-none" />
-                                    <button id="emojiButton" class="p-1 text-gray-500 transition-colors hover:text-indigo-600">
+                                    <button id="emojiButton"
+                                        class="p-1 text-gray-500 transition-colors hover:text-indigo-600">
                                         <i class="text-lg far fa-smile"></i>
                                     </button>
                                 </div>
@@ -846,13 +847,12 @@ $user_id = $_SESSION['user_id'];
             </div>
             </div>
 
-            <?php include '../../../src/components/Footer.php'; ?>
-
             <!-- New Message Modal -->
             <div id="newMessageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50">
                 <div class="flex items-center justify-center min-h-screen p-4">
                     <div class="relative w-full max-w-md bg-white rounded-lg shadow-xl">
-                        <div class="flex items-center justify-between p-5 border-b border-gray-200 bg-linear-to-r from-indigo-50 to-purple-50">
+                        <div
+                            class="flex items-center justify-between p-5 border-b border-gray-200 bg-linear-to-r from-indigo-50 to-purple-50">
                             <h3 class="text-lg font-bold text-gray-900">New Message</h3>
                             <button id="closeModalBtn" class="text-gray-600 transition-colors hover:text-gray-900">
                                 <i class="fas fa-times"></i>
@@ -875,7 +875,14 @@ $user_id = $_SESSION['user_id'];
                 let isPollingEnabled = true;
                 let selectedFile = null;
 
-                const commonEmojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠️', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'];
+                const commonEmojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍',
+                    '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏',
+                    '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡',
+                    '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐',
+                    '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮',
+                    '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠️', '👽', '👾',
+                    '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'
+                ];
 
                 document.addEventListener('DOMContentLoaded', function() {
                     loadConversations();
@@ -896,7 +903,8 @@ $user_id = $_SESSION['user_id'];
                     });
 
                     // File attachment handling
-                    document.getElementById('attachFile').addEventListener('click', () => document.getElementById('fileInput').click());
+                    document.getElementById('attachFile').addEventListener('click', () => document.getElementById('fileInput')
+                        .click());
                     document.getElementById('fileInput').addEventListener('change', handleFileSelect);
                     document.getElementById('removeFile').addEventListener('click', removeSelectedFile);
 
@@ -1003,16 +1011,19 @@ $user_id = $_SESSION['user_id'];
                     const resultsContainer = document.getElementById('searchResults');
 
                     if (searchTerm.length === 0) {
-                        resultsContainer.innerHTML = '<div class="p-4 text-sm text-center text-gray-500">Type to search conversations</div>';
+                        resultsContainer.innerHTML =
+                            '<div class="p-4 text-sm text-center text-gray-500">Type to search conversations</div>';
                         return;
                     }
 
                     if (searchTerm.length < 2) {
-                        resultsContainer.innerHTML = '<div class="p-4 text-sm text-center text-gray-500">Type at least 2 characters to search</div>';
+                        resultsContainer.innerHTML =
+                            '<div class="p-4 text-sm text-center text-gray-500">Type at least 2 characters to search</div>';
                         return;
                     }
 
-                    resultsContainer.innerHTML = '<div class="p-4 text-sm text-center text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i>Searching...</div>';
+                    resultsContainer.innerHTML =
+                        '<div class="p-4 text-sm text-center text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i>Searching...</div>';
 
                     fetch(`?action=search_conversations&search_term=${encodeURIComponent(searchTerm)}`)
                         .then(r => r.json())
@@ -1023,7 +1034,8 @@ $user_id = $_SESSION['user_id'];
                         })
                         .catch(e => {
                             console.error('Error:', e);
-                            resultsContainer.innerHTML = '<div class="p-4 text-sm text-center text-red-500">Search failed. Please try again.</div>';
+                            resultsContainer.innerHTML =
+                                '<div class="p-4 text-sm text-center text-red-500">Search failed. Please try again.</div>';
                         });
                 }
 
@@ -1031,7 +1043,8 @@ $user_id = $_SESSION['user_id'];
                     const resultsContainer = document.getElementById('searchResults');
 
                     if (!conversations.length) {
-                        resultsContainer.innerHTML = '<div class="p-4 text-sm text-center text-gray-500">No conversations found</div>';
+                        resultsContainer.innerHTML =
+                            '<div class="p-4 text-sm text-center text-gray-500">No conversations found</div>';
                         return;
                     }
 
@@ -1162,7 +1175,9 @@ $user_id = $_SESSION['user_id'];
                         const role = c.role.charAt(0).toUpperCase() + c.role.slice(1);
                         const msg = c.last_message || 'No messages yet';
                         const time = formatTimeAgo(c.last_message_time);
-                        const badge = c.unread_count > 0 ? `<span class="badge bg-indigo-600 text-white text-xs rounded-full px-2 py-0.5 font-semibold">${c.unread_count}</span>` : '';
+                        const badge = c.unread_count > 0 ?
+                            `<span class="badge bg-indigo-600 text-white text-xs rounded-full px-2 py-0.5 font-semibold">${c.unread_count}</span>` :
+                            '';
                         const active = currentReceiverId == c.other_user_id ? 'active' : '';
 
                         return `<div class="flex items-center justify-between p-4 transition border-b border-gray-100 cursor-pointer conversation ${active} hover:bg-indigo-50" onclick="selectConversation(${c.other_user_id}, '${escapeHtml(name)}', '${role}', '${initials}')">
@@ -1227,7 +1242,8 @@ $user_id = $_SESSION['user_id'];
         </div>
     `;
 
-                    document.getElementById('chatMessages').innerHTML = '<div class="flex items-center justify-center h-full text-gray-500">Loading messages...</div>';
+                    document.getElementById('chatMessages').innerHTML =
+                        '<div class="flex items-center justify-center h-full text-gray-500">Loading messages...</div>';
 
                     loadInitialMessages(userId);
 
@@ -1263,13 +1279,15 @@ $user_id = $_SESSION['user_id'];
                                     displayMessages(data.messages);
                                 } else {
                                     // No messages found - show empty state
-                                    document.getElementById('chatMessages').innerHTML = '<div class="flex items-center justify-center h-full text-gray-500">No messages yet. Start the conversation!</div>';
+                                    document.getElementById('chatMessages').innerHTML =
+                                        '<div class="flex items-center justify-center h-full text-gray-500">No messages yet. Start the conversation!</div>';
                                 }
                             }
                         })
                         .catch(e => {
                             console.error('Error:', e);
-                            document.getElementById('chatMessages').innerHTML = '<div class="flex items-center justify-center h-full text-gray-500">Error loading messages</div>';
+                            document.getElementById('chatMessages').innerHTML =
+                                '<div class="flex items-center justify-center h-full text-gray-500">Error loading messages</div>';
                         });
                 }
 
@@ -1295,7 +1313,8 @@ $user_id = $_SESSION['user_id'];
                     const currentUserId = parseInt(document.body.dataset.userId);
 
                     if (!messages.length) {
-                        chatMessages.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500">No messages yet. Start the conversation!</div>';
+                        chatMessages.innerHTML =
+                            '<div class="flex items-center justify-center h-full text-gray-500">No messages yet. Start the conversation!</div>';
                         return;
                     }
 
