@@ -2,19 +2,44 @@
 
 /**
  * Venue Recommendation System
- * PHP implementation of ML-based venue recommendations
+ * Multi-Algorithm Implementation with Switchable Strategies
  * 
- * Converted from: ml/venue_recommender.py
- * Uses rule-based MCDM (Multi-Criteria Decision Making) instead of sklearn
+ * Supported Algorithms:
+ * - MCDM: Multi-Criteria Decision Making (Weighted Average)
+ * - KNN: K-Nearest Neighbors
+ * - DECISION_TREE: Rule-based Decision Tree
  */
 
 class VenueRecommender
 {
     private $db;
 
+    /**
+     * ============================================
+     * CHANGE THIS TO SWITCH ALGORITHM
+     * Options: 'MCDM', 'KNN', 'DECISION_TREE'
+     * ============================================
+     */
+    private $algorithm = 'DECISION_TREE';
+
+    // KNN Configuration
+    private $k = 5; // Number of nearest neighbors
+
     public function __construct($dbConnection)
     {
         $this->db = $dbConnection;
+    }
+
+    /**
+     * Set the recommendation algorithm
+     * @param string $algo Options: 'MCDM', 'KNN', 'DECISION_TREE'
+     */
+    public function setAlgorithm($algo)
+    {
+        $validAlgos = ['MCDM', 'KNN', 'DECISION_TREE'];
+        if (in_array($algo, $validAlgos)) {
+            $this->algorithm = $algo;
+        }
     }
 
     /**
@@ -119,9 +144,11 @@ class VenueRecommender
     }
 
     /**
-     * Calculate ML-based score using MCDM (Multi-Criteria Decision Making)
+     * ============================================
+     * ALGORITHM 1: MCDM (Multi-Criteria Decision Making)
+     * ============================================
      */
-    public function calculateMLScore($venue, $requirements)
+    private function calculateMCDMScore($venue, $requirements)
     {
         $scores = [];
         $weights = [];
@@ -131,7 +158,6 @@ class VenueRecommender
             $capacity = $venue['capacity'];
             $guests = $requirements['guests'];
 
-            // Optimal capacity is between guests and 1.5x guests
             if ($capacity >= $guests && $capacity <= $guests * 1.5) {
                 $capacityScore = 1.0;
             } elseif ($capacity >= $guests * 0.8 && $capacity < $guests) {
@@ -153,7 +179,6 @@ class VenueRecommender
             $price = floatval($venue['base_price']);
             $budget = $requirements['budget'];
 
-            // Optimal price is at or below budget
             if ($price <= $budget) {
                 $budgetScore = 1.0;
             } elseif ($price <= $budget * 1.2) {
@@ -169,17 +194,16 @@ class VenueRecommender
         }
 
         // Location Score (Weight: 15%)
-        $locationScore = 0.8; // Default good location
+        $locationScore = 0.8;
         $scores[] = $locationScore;
         $weights[] = 0.15;
 
         // Amenities Score (Weight: 20%)
         if (!empty($requirements['amenities'])) {
-            $amenitiesScore = 0.75; // Partial match
+            $amenitiesScore = 0.75;
         } else {
-            $amenitiesScore = 0.5; // No specific requirements
+            $amenitiesScore = 0.5;
         }
-
         $scores[] = $amenitiesScore;
         $weights[] = 0.20;
 
@@ -195,11 +219,321 @@ class VenueRecommender
             $finalScore += $scores[$i] * $normalizedWeights[$i];
         }
 
-        return $finalScore * 100; // Convert to percentage
+        return $finalScore * 100;
     }
 
     /**
-     * Get venue recommendations using ML scoring
+     * ============================================
+     * ALGORITHM 2: K-Nearest Neighbors (KNN)
+     * ============================================
+     */
+    private function calculateKNNScore($venue, $requirements)
+    {
+        // Get historical successful bookings
+        $historicalData = $this->getHistoricalBookings();
+
+        if (empty($historicalData)) {
+            // Fallback to MCDM if no historical data
+            return $this->calculateMCDMScore($venue, $requirements);
+        }
+
+        // Calculate distances to all historical bookings for this venue
+        $distances = [];
+        foreach ($historicalData as $booking) {
+            if ($booking['venue_id'] == $venue['venue_id']) {
+                $distance = $this->euclideanDistance($requirements, [
+                    'guests' => $booking['guest_count'],
+                    'budget' => $booking['base_price'],
+                    'event_type' => $booking['event_type']
+                ]);
+
+                $distances[] = [
+                    'distance' => $distance,
+                    'success' => ($booking['status'] == 'completed') ? 1 : 0.5
+                ];
+            }
+        }
+
+        if (empty($distances)) {
+            // No bookings for this venue, use current requirements match
+            $distance = $this->euclideanDistance($requirements, [
+                'guests' => $venue['capacity'],
+                'budget' => $venue['base_price'],
+                'event_type' => 'general'
+            ]);
+            return max(0, 100 - ($distance * 10));
+        }
+
+        // Sort by distance
+        usort($distances, fn($a, $b) => $a['distance'] <=> $b['distance']);
+
+        // Get K nearest neighbors
+        $kNearest = array_slice($distances, 0, min($this->k, count($distances)));
+
+        // Calculate score based on nearest neighbors
+        $totalWeight = 0;
+        $weightedScore = 0;
+
+        foreach ($kNearest as $neighbor) {
+            $weight = 1 / (1 + $neighbor['distance']); // Inverse distance weighting
+            $weightedScore += $neighbor['success'] * $weight;
+            $totalWeight += $weight;
+        }
+
+        $score = $totalWeight > 0 ? ($weightedScore / $totalWeight) * 100 : 50;
+
+        // Adjust based on current capacity and budget match
+        $capacityMatch = $this->getCapacityMatchScore($venue['capacity'], $requirements['guests'] ?? 0);
+        $budgetMatch = $this->getBudgetMatchScore($venue['base_price'], $requirements['budget'] ?? 0);
+
+        // Combine KNN score with current match (70% KNN, 30% current match)
+        $finalScore = ($score * 0.7) + (($capacityMatch + $budgetMatch) / 2 * 0.3);
+
+        return $finalScore;
+    }
+
+    /**
+     * Calculate Euclidean distance between two requirement sets
+     */
+    private function euclideanDistance($req1, $req2)
+    {
+        // Normalize and calculate distance
+        $guestDiff = 0;
+        if (isset($req1['guests']) && $req1['guests'] > 0) {
+            $guests1 = $req1['guests'];
+            $guests2 = $req2['guests'] ?? $guests1;
+            $guestDiff = abs($guests1 - $guests2) / 1000; // Normalize by 1000
+        }
+
+        $budgetDiff = 0;
+        if (isset($req1['budget']) && $req1['budget'] > 0) {
+            $budget1 = $req1['budget'];
+            $budget2 = $req2['budget'] ?? $budget1;
+            $budgetDiff = abs($budget1 - $budget2) / 100000; // Normalize by 100k
+        }
+
+        // Event type match (0 if same, 1 if different)
+        $eventDiff = 0;
+        if (isset($req1['event_type']) && isset($req2['event_type'])) {
+            $eventDiff = ($req1['event_type'] === $req2['event_type']) ? 0 : 1;
+        }
+
+        return sqrt(pow($guestDiff, 2) + pow($budgetDiff, 2) + pow($eventDiff, 2));
+    }
+
+    /**
+     * Get historical booking data
+     */
+    private function getHistoricalBookings()
+    {
+        $query = "SELECT v.venue_id, v.base_price, e.event_type, e.expected_guests as guest_count, e.status
+                  FROM events e
+                  JOIN venues v ON e.venue_id = v.venue_id
+                  WHERE e.status IN ('confirmed', 'completed')
+                  LIMIT 100";
+
+        try {
+            $stmt = $this->db->query($query);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    /**
+     * ============================================
+     * ALGORITHM 3: Decision Tree
+     * ============================================
+     */
+    private function calculateDecisionTreeScore($venue, $requirements)
+    {
+        $score = 100;
+
+        // Decision Node 1: Capacity Check
+        if (isset($requirements['guests']) && $requirements['guests'] > 0) {
+            $capacity = $venue['capacity'];
+            $guests = $requirements['guests'];
+
+            if ($capacity < $guests * 0.7) {
+                // Too small - major penalty
+                return 15;
+            } elseif ($capacity < $guests * 0.9) {
+                // Slightly small
+                $score -= 35;
+            } elseif ($capacity > $guests * 3) {
+                // Way too large
+                $score -= 40;
+            } elseif ($capacity > $guests * 2) {
+                // Too large
+                $score -= 25;
+            } elseif ($capacity >= $guests && $capacity <= $guests * 1.5) {
+                // Perfect fit
+                $score += 10;
+            }
+        }
+
+        // Decision Node 2: Budget Check
+        if (isset($requirements['budget']) && $requirements['budget'] > 0) {
+            $price = floatval($venue['base_price']);
+            $budget = $requirements['budget'];
+
+            if ($price > $budget * 2) {
+                // Way over budget - reject
+                return 10;
+            } elseif ($price > $budget * 1.5) {
+                // Very expensive
+                $score -= 45;
+            } elseif ($price > $budget * 1.2) {
+                // Over budget
+                $score -= 30;
+            } elseif ($price > $budget) {
+                // Slightly over budget
+                $score -= 15;
+            } elseif ($price <= $budget * 0.7) {
+                // Great value
+                $score += 15;
+            } elseif ($price <= $budget) {
+                // Within budget
+                $score += 5;
+            }
+        }
+
+        // Decision Node 3: Event Type Compatibility
+        if (isset($requirements['event_type'])) {
+            $compatible = $this->checkEventTypeCompatibility(
+                $venue['venue_id'],
+                $requirements['event_type']
+            );
+
+            if ($compatible === false) {
+                $score -= 20;
+            } elseif ($compatible === true) {
+                $score += 10;
+            }
+        }
+
+        // Decision Node 4: Amenities Check
+        if (!empty($requirements['amenities'])) {
+            $amenitiesMatch = $this->checkAmenitiesMatch(
+                $venue['venue_id'],
+                $requirements['amenities']
+            );
+
+            if ($amenitiesMatch < 0.3) {
+                $score -= 15;
+            } elseif ($amenitiesMatch > 0.7) {
+                $score += 10;
+            }
+        }
+
+        // Decision Node 5: Location Factor
+        if ($venue['location']) {
+            // Premium locations get bonus
+            $premiumLocations = ['makati', 'bgc', 'ortigas', 'alabang'];
+            $locationLower = strtolower($venue['location']);
+
+            foreach ($premiumLocations as $premium) {
+                if (strpos($locationLower, $premium) !== false) {
+                    $score += 5;
+                    break;
+                }
+            }
+        }
+
+        return max(0, min(100, $score));
+    }
+
+    /**
+     * Check event type compatibility
+     */
+    private function checkEventTypeCompatibility($venueId, $eventType)
+    {
+        $query = "SELECT COUNT(*) as count 
+                  FROM events 
+                  WHERE venue_id = ? 
+                  AND event_type = ? 
+                  AND status IN ('confirmed', 'completed')";
+
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$venueId, $eventType]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['count'] > 0) {
+                return true; // Has hosted this type before
+            }
+            return null; // Unknown
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Check amenities match
+     */
+    private function checkAmenitiesMatch($venueId, $requiredAmenities)
+    {
+        // Simplified amenities check
+        // In a real system, you'd query an amenities table
+        return 0.6; // Default partial match
+    }
+
+    /**
+     * Helper: Get capacity match score
+     */
+    private function getCapacityMatchScore($capacity, $guests)
+    {
+        if ($guests == 0) return 50;
+
+        if ($capacity >= $guests && $capacity <= $guests * 1.5) {
+            return 100;
+        } elseif ($capacity >= $guests * 0.8 && $capacity < $guests) {
+            return 85;
+        } elseif ($capacity > $guests * 1.5 && $capacity <= $guests * 2) {
+            return 70;
+        } else {
+            return max(30, 100 - (abs($capacity - $guests) / $guests * 50));
+        }
+    }
+
+    /**
+     * Helper: Get budget match score
+     */
+    private function getBudgetMatchScore($price, $budget)
+    {
+        if ($budget == 0) return 50;
+
+        if ($price <= $budget) {
+            return 100;
+        } elseif ($price <= $budget * 1.2) {
+            return 80;
+        } elseif ($price <= $budget * 1.5) {
+            return 60;
+        } else {
+            return max(20, 100 - (($price - $budget) / $budget * 50));
+        }
+    }
+
+    /**
+     * Main scoring method - routes to appropriate algorithm
+     */
+    public function calculateMLScore($venue, $requirements)
+    {
+        switch ($this->algorithm) {
+            case 'KNN':
+                return $this->calculateKNNScore($venue, $requirements);
+
+            case 'DECISION_TREE':
+                return $this->calculateDecisionTreeScore($venue, $requirements);
+
+            case 'MCDM':
+            default:
+                return $this->calculateMCDMScore($venue, $requirements);
+        }
+    }
+
+    /**
+     * Get venue recommendations using selected algorithm
      */
     public function getRecommendations($message)
     {
@@ -214,11 +548,12 @@ class VenueRecommender
                 'success' => true,
                 'response' => 'No venues are currently available. Please check back later.',
                 'venues' => [],
-                'parsed_data' => $requirements
+                'parsed_data' => $requirements,
+                'algorithm_used' => $this->algorithm
             ];
         }
 
-        // Calculate ML scores for each venue
+        // Calculate scores for each venue using selected algorithm
         $venueScores = [];
         foreach ($venues as $venue) {
             $score = $this->calculateMLScore($venue, $requirements);
@@ -246,7 +581,8 @@ class VenueRecommender
             'success' => true,
             'response' => $response,
             'venues' => $topVenues,
-            'parsed_data' => $requirements
+            'parsed_data' => $requirements,
+            'algorithm_used' => $this->algorithm
         ];
     }
 
@@ -275,9 +611,16 @@ class VenueRecommender
             $response = "I'd love to help you find the perfect venue! ";
         }
 
-        // Provide recommendations
+        // Provide recommendations with algorithm info
         if (!empty($venues)) {
-            $response .= "Using machine learning analysis, here are my top " . count($venues) . " venue recommendations:";
+            $algoName = match ($this->algorithm) {
+                'KNN' => 'K-Nearest Neighbors',
+                'DECISION_TREE' => 'Decision Tree',
+                'MCDM' => 'Multi-Criteria Decision Making',
+                default => 'AI'
+            };
+
+            $response .= "Using {$algoName} algorithm, here are my top " . count($venues) . " venue recommendations:";
         } else {
             $response .= "I couldn't find any venues matching your criteria. Could you provide more details?\n\n";
             $response .= "• Number of expected guests\n";
