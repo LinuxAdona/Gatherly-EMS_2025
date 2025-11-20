@@ -66,40 +66,30 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-indigo-50 via-white to-purple-50'; ?> font-['Montserrat'] min-h-screen">
+<body
+    class="<?php echo $nav_layout === 'sidebar' ? 'bg-gray-100' : 'bg-linear-to-br from-indigo-50 via-white to-purple-50'; ?> font-['Montserrat'] min-h-screen">
     <?php include '../../../src/components/OrganizerSidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
+    <div
+        class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
-            <!-- Top Bar for Sidebar Layout -->
-            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">Create Event</h1>
-                <p class="text-sm text-gray-600">Plan your event with venue and service selection</p>
-            </div>
-            <div class="px-4 sm:px-6 lg:px-8">
+        <!-- Top Bar for Sidebar Layout -->
+        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Create Event</h1>
+            <p class="text-sm text-gray-600">Plan your event with venue and service selection</p>
+        </div>
+        <div class="px-4 sm:px-6 lg:px-8">
             <?php else: ?>
-                <!-- Header for Navbar Layout -->
-                <div class="mb-8">
-                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Create Event</h1>
-                    <p class="text-gray-600">Plan your event with venue and service selection</p>
-                </div>
+            <!-- Header for Navbar Layout -->
+            <div class="mb-8">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Create Event</h1>
+                <p class="text-gray-600">Plan your event with venue and service selection</p>
+            </div>
             <?php endif; ?>
 
             <!-- Scrollable Main Content Area -->
             <div class="mx-auto overflow-y-auto" style="max-height: calc(100vh - 100px);">
-                <!-- Header -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-4 mb-4">
-                        <a href="organizer-dashboard.php" class="text-gray-600 transition-colors hover:text-indigo-600">
-                            <i class="text-2xl fas fa-arrow-left"></i>
-                        </a>
-                        <div>
-                            <h1 class="text-4xl font-bold text-gray-800">Create New Event</h1>
-                            <p class="text-gray-600">Plan and organize your perfect event</p>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Success/Error Messages -->
                 <div id="alertContainer" class="mb-6"></div>
@@ -129,8 +119,8 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                                     <!-- Event Type & Theme -->
                                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Event Type <span
-                                                    class="text-red-500">*</span></label>
+                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Event Type
+                                                <span class="text-red-500">*</span></label>
                                             <select id="event_type" name="event_type" required
                                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                                 <option value="">Select Type</option>
@@ -152,14 +142,16 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                                     <!-- Expected Guests & Date -->
                                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Expected Guests <span
-                                                    class="text-red-500">*</span></label>
-                                            <input type="number" id="expected_guests" name="expected_guests" required min="1"
+                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Expected
+                                                Guests <span class="text-red-500">*</span></label>
+                                            <input type="number" id="expected_guests" name="expected_guests" required
+                                                min="1"
                                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                                 placeholder="e.g., 150">
                                         </div>
                                         <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Event Date & Time
+                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Event Date &
+                                                Time
                                                 <span class="text-red-500">*</span></label>
                                             <input type="datetime-local" id="event_date" name="event_date" required
                                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -177,29 +169,30 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
 
                                 <!-- Selected Venue Card -->
                                 <?php if ($selected_venue): ?>
-                                    <div id="selected-venue-card"
-                                        class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
-                                        <div class="flex items-start justify-between mb-3">
-                                            <h3 class="text-lg font-bold text-gray-800">
-                                                <?php echo htmlspecialchars($selected_venue['venue_name']); ?>
-                                            </h3>
-                                            <input type="radio" name="venue_id" value="<?php echo $selected_venue['venue_id']; ?>"
-                                                class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" checked>
-                                        </div>
-                                        <p class="mb-2 text-sm text-gray-600">
-                                            <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
-                                            <?php echo htmlspecialchars($selected_venue['location']); ?>
-                                        </p>
-                                        <p class="mb-2 text-sm text-gray-600">
-                                            <i class="mr-1 text-indigo-600 fas fa-users"></i>
-                                            Capacity: <?php echo $selected_venue['capacity']; ?> guests
-                                        </p>
-                                        <p class="text-lg font-bold text-green-600">
-                                            ₱<?php echo number_format($selected_venue['base_price'], 2); ?>
-                                        </p>
+                                <div id="selected-venue-card"
+                                    class="p-4 mb-4 border-2 border-indigo-500 rounded-xl bg-indigo-50">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <h3 class="text-lg font-bold text-gray-800">
+                                            <?php echo htmlspecialchars($selected_venue['venue_name']); ?>
+                                        </h3>
+                                        <input type="radio" name="venue_id"
+                                            value="<?php echo $selected_venue['venue_id']; ?>"
+                                            class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" checked>
                                     </div>
+                                    <p class="mb-2 text-sm text-gray-600">
+                                        <i class="mr-1 text-indigo-600 fas fa-map-marker-alt"></i>
+                                        <?php echo htmlspecialchars($selected_venue['location']); ?>
+                                    </p>
+                                    <p class="mb-2 text-sm text-gray-600">
+                                        <i class="mr-1 text-indigo-600 fas fa-users"></i>
+                                        Capacity: <?php echo $selected_venue['capacity']; ?> guests
+                                    </p>
+                                    <p class="text-lg font-bold text-green-600">
+                                        ₱<?php echo number_format($selected_venue['base_price'], 2); ?>
+                                    </p>
+                                </div>
                                 <?php else: ?>
-                                    <div id="selected-venue-card" class="hidden"></div> <?php endif; ?>
+                                <div id="selected-venue-card" class="hidden"></div> <?php endif; ?>
 
                                 <!-- Choose Other Venue Button -->
                                 <div class="mt-4">
@@ -220,9 +213,9 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
 
                                 <div class="space-y-6">
                                     <?php foreach ($services_by_category as $category => $services): ?>
-                                        <div class="p-4 border-2 border-gray-200 rounded-xl">
-                                            <h3 class="mb-4 text-lg font-bold text-gray-800">
-                                                <?php
+                                    <div class="p-4 border-2 border-gray-200 rounded-xl">
+                                        <h3 class="mb-4 text-lg font-bold text-gray-800">
+                                            <?php
                                                 $icons = [
                                                     'Catering' => '🍽️',
                                                     'Lights and Sounds' => '🎵',
@@ -234,35 +227,39 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
                                                 ];
                                                 echo $icons[$category] ?? '📋';
                                                 ?>
-                                                <?php echo htmlspecialchars($category); ?>
-                                            </h3>
-                                            <div class="space-y-3">
-                                                <?php foreach ($services as $service): ?>
-                                                    <label
-                                                        class="flex items-start gap-3 p-3 transition-all border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 hover:border-indigo-300">
-                                                        <input type="checkbox" name="services[]"
-                                                            value="<?php echo $service['service_id']; ?>"
-                                                            class="w-5 h-5 mt-1 text-indigo-600 service-checkbox focus:ring-indigo-500"
-                                                            data-price="<?php echo $service['price']; ?>">
-                                                        <div class="flex-1">
-                                                            <div class="flex items-start justify-between">
-                                                                <div>
-                                                                    <p class="font-semibold text-gray-800">
-                                                                        <?php echo htmlspecialchars($service['service_name']); ?></p>
-                                                                    <p class="text-sm text-gray-600">
-                                                                        <?php echo htmlspecialchars($service['supplier_name']); ?> -
-                                                                        <?php echo htmlspecialchars($service['location']); ?></p>
-                                                                    <p class="mt-1 text-xs text-gray-500">
-                                                                        <?php echo htmlspecialchars($service['description']); ?></p>
-                                                                </div>
-                                                                <p class="ml-4 text-lg font-bold text-green-600">
-                                                                    ₱<?php echo number_format($service['price'], 2); ?></p>
-                                                            </div>
+                                            <?php echo htmlspecialchars($category); ?>
+                                        </h3>
+                                        <div class="space-y-3">
+                                            <?php foreach ($services as $service): ?>
+                                            <label
+                                                class="flex items-start gap-3 p-3 transition-all border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 hover:border-indigo-300">
+                                                <input type="checkbox" name="services[]"
+                                                    value="<?php echo $service['service_id']; ?>"
+                                                    class="w-5 h-5 mt-1 text-indigo-600 service-checkbox focus:ring-indigo-500"
+                                                    data-price="<?php echo $service['price']; ?>">
+                                                <div class="flex-1">
+                                                    <div class="flex items-start justify-between">
+                                                        <div>
+                                                            <p class="font-semibold text-gray-800">
+                                                                <?php echo htmlspecialchars($service['service_name']); ?>
+                                                            </p>
+                                                            <p class="text-sm text-gray-600">
+                                                                <?php echo htmlspecialchars($service['supplier_name']); ?>
+                                                                -
+                                                                <?php echo htmlspecialchars($service['location']); ?>
+                                                            </p>
+                                                            <p class="mt-1 text-xs text-gray-500">
+                                                                <?php echo htmlspecialchars($service['description']); ?>
+                                                            </p>
                                                         </div>
-                                                    </label>
-                                                <?php endforeach; ?>
-                                            </div>
+                                                        <p class="ml-4 text-lg font-bold text-green-600">
+                                                            ₱<?php echo number_format($service['price'], 2); ?></p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <?php endforeach; ?>
                                         </div>
+                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -323,47 +320,47 @@ if ($preselected_id && isset($venues_all[$preselected_id])) {
             </div>
 
             <script>
-                function updateCostSummary() {
-                    const selectedVenue = document.querySelector('input[name="venue_id"]:checked');
-                    const venueCost = selectedVenue ? parseFloat(document.getElementById('total_cost').value) : 0;
+            function updateCostSummary() {
+                const selectedVenue = document.querySelector('input[name="venue_id"]:checked');
+                const venueCost = selectedVenue ? parseFloat(document.getElementById('total_cost').value) : 0;
 
-                    let servicesCost = 0;
-                    document.querySelectorAll('input.service-checkbox:checked').forEach(checkbox => {
-                        servicesCost += parseFloat(checkbox.dataset.price) || 0;
-                    });
+                let servicesCost = 0;
+                document.querySelectorAll('input.service-checkbox:checked').forEach(checkbox => {
+                    servicesCost += parseFloat(checkbox.dataset.price) || 0;
+                });
 
-                    const total = venueCost + servicesCost;
+                const total = venueCost + servicesCost;
 
-                    document.getElementById('venue-cost').textContent = '₱' + venueCost.toFixed(2);
-                    document.getElementById('services-cost').textContent = '₱' + servicesCost.toFixed(2);
-                    document.getElementById('total-cost').textContent = '₱' + total.toFixed(2);
-                    document.getElementById('total_cost').value = total.toFixed(2);
-                }
+                document.getElementById('venue-cost').textContent = '₱' + venueCost.toFixed(2);
+                document.getElementById('services-cost').textContent = '₱' + servicesCost.toFixed(2);
+                document.getElementById('total-cost').textContent = '₱' + total.toFixed(2);
+                document.getElementById('total_cost').value = total.toFixed(2);
+            }
 
-                // Toggle radio selection
-                let lastCheckedRadio = null;
-                document.addEventListener('click', function(e) {
-                    if (e.target.matches('input[name="venue_id"]')) {
-                        if (e.target === lastCheckedRadio) {
-                            e.target.checked = false;
-                            document.getElementById('selected-venue-card').classList.add('hidden');
-                            lastCheckedRadio = null;
-                        } else {
-                            lastCheckedRadio = e.target;
-                            document.getElementById('selected-venue-card').classList.remove('hidden');
-                        }
-                        updateCostSummary();
+            // Toggle radio selection
+            let lastCheckedRadio = null;
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('input[name="venue_id"]')) {
+                    if (e.target === lastCheckedRadio) {
+                        e.target.checked = false;
+                        document.getElementById('selected-venue-card').classList.add('hidden');
+                        lastCheckedRadio = null;
+                    } else {
+                        lastCheckedRadio = e.target;
+                        document.getElementById('selected-venue-card').classList.remove('hidden');
                     }
-                });
+                    updateCostSummary();
+                }
+            });
 
-                // Services
-                document.querySelectorAll('input.service-checkbox').forEach(checkbox => {
-                    checkbox.addEventListener('change', updateCostSummary);
-                });
+            // Services
+            document.querySelectorAll('input.service-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateCostSummary);
+            });
             </script>
 
             <?php if ($nav_layout === 'sidebar'): ?>
-            </div>
+        </div>
         <?php endif; ?>
     </div>
 </body>

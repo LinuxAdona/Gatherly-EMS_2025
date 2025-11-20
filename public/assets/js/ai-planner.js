@@ -90,7 +90,7 @@ if (chatForm) {
         } catch (error) {
             console.error('Chat error:', error);
             removeTypingIndicator();
-            addBotMessage('Sorry, I\'m having trouble connecting. Please try again later. AI-Planner');
+            addBotMessage('Sorry, I\'m having trouble connecting. Please try again later.');
         }
     });
 }
@@ -132,16 +132,107 @@ function addUserMessage(message) {
 }
 
 // Add bot message to chat
-function addBotMessage(message, venues = null, suppliers = null) {
+function addBotMessage(message, venues = null, suppliers = null, algorithms = null) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'flex items-start gap-3 mb-4';
     
     let contentHTML = '';
     
-    // Venue recommendations
+    // Algorithm comparison mode
+    if (algorithms && Object.keys(algorithms).length > 0) {
+        contentHTML += '<div class="mt-4 space-y-6">';
+        
+        for (const [algoKey, algoData] of Object.entries(algorithms)) {
+            const algoColors = {
+                'MCDM': { bg: 'bg-blue-50', border: 'border-blue-300', text: 'text-blue-900', badge: 'bg-blue-100 text-blue-700' },
+                'KNN': { bg: 'bg-purple-50', border: 'border-purple-300', text: 'text-purple-900', badge: 'bg-purple-100 text-purple-700' },
+                'DECISION_TREE': { bg: 'bg-green-50', border: 'border-green-300', text: 'text-green-900', badge: 'bg-green-100 text-green-700' }
+            };
+            
+            const colors = algoColors[algoKey] || { bg: 'bg-gray-50', border: 'border-gray-300', text: 'text-gray-900', badge: 'bg-gray-100 text-gray-700' };
+            
+            contentHTML += `
+                <div class="p-4 border-2 ${colors.border} rounded-xl ${colors.bg}">
+                    <h4 class="font-bold ${colors.text} mb-3 text-lg flex items-center gap-2">
+                        <i class="fas fa-brain"></i> ${escapeHtml(algoData.name)}
+                    </h4>
+                    <div class="space-y-3">
+            `;
+            
+            algoData.venues.forEach((venue, index) => {
+                contentHTML += `
+                    <div class="p-4 border-2 ${colors.border} rounded-xl bg-white hover:shadow-md transition-all">
+                        <div class="flex items-start justify-between mb-2">
+                            <h5 class="font-bold ${colors.text} text-lg flex items-center gap-2">
+                                <span class="flex items-center justify-center w-6 h-6 text-sm text-white ${colors.badge.includes('blue') ? 'bg-blue-600' : colors.badge.includes('purple') ? 'bg-purple-600' : 'bg-green-600'} rounded-full">
+                                    ${index + 1}
+                                </span>
+                                ${escapeHtml(venue.name)}
+                            </h5>
+                            <span class="px-3 py-1 text-sm font-bold ${colors.badge} rounded-full">
+                                <i class="mr-1 fas fa-star"></i> ${venue.score}% Match
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-2">
+                            <i class="mr-2 fas fa-users text-indigo-600"></i> Capacity: <strong>${venue.capacity}</strong> guests
+                        </p>
+                        <p class="text-sm text-gray-700 mb-2">
+                            <i class="mr-2 fas fa-peso-sign text-indigo-600"></i> Base Price: <strong>₱${formatNumber(venue.price)}</strong>
+                        </p>
+                        <p class="text-sm text-gray-700 mb-2">
+                            <i class="mr-2 fas fa-map-marker-alt text-indigo-600"></i> ${escapeHtml(venue.location)}
+                        </p>
+                        <p class="text-sm text-gray-600 mb-3 leading-relaxed">${escapeHtml(venue.description)}</p>
+                        <a href="venue-details.php?id=${venue.id}" class="inline-block px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+                            View Details <i class="ml-1 fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+            });
+            
+            contentHTML += `
+                    </div>
+                </div>
+            `;
+        }
+        
+        contentHTML += '</div>';
+    }
+    
+    // Regular venue recommendations (ensemble algorithm mode)
     if (venues && venues.length > 0) {
-        contentHTML += '<div class="mt-4"><h4 class="font-bold text-indigo-900 mb-3 text-lg">🏛️ Venue Recommendations:</h4><div class="space-y-3">';
+        contentHTML += '<div class="mt-4"><h4 class="font-bold text-indigo-900 mb-3 text-lg">🏛️ Top Venue Recommendations (Ensemble AI):</h4><div class="space-y-3">';
         venues.forEach(venue => {
+            // Algorithm breakdown badges
+            let algoBreakdown = '';
+            if (venue.algorithm_breakdown) {
+                algoBreakdown = `
+                    <div class="mt-3 p-3 bg-white rounded-lg border border-indigo-200">
+                        <p class="text-xs font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-brain text-indigo-600 mr-1"></i> Algorithm Breakdown:
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-600">MCDM:</span>
+                                <span class="font-bold text-blue-700">${venue.algorithm_breakdown.mcdm}%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-600">KNN:</span>
+                                <span class="font-bold text-purple-700">${venue.algorithm_breakdown.knn}%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-600">Decision Tree:</span>
+                                <span class="font-bold text-green-700">${venue.algorithm_breakdown.decision_tree}%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-600 font-semibold">Ensemble:</span>
+                                <span class="font-bold text-indigo-700">${venue.algorithm_breakdown.ensemble}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
             contentHTML += `
                 <div class="p-4 border-2 border-indigo-300 rounded-xl bg-indigo-50 hover:bg-indigo-100 transition-all shadow-sm">
                     <div class="flex items-start justify-between mb-2">
@@ -161,7 +252,8 @@ function addBotMessage(message, venues = null, suppliers = null) {
                     </p>
                     <p class="text-sm text-gray-600 mb-3 leading-relaxed">${escapeHtml(venue.description)}</p>
                     ${venue.amenities ? `<p class="text-xs text-indigo-700 mb-2"><i class="mr-1 fas fa-check-circle"></i> ${escapeHtml(venue.amenities)}</p>` : ''}
-                    <a href="venue-details.php?id=${venue.id}" class="inline-block px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+                    ${algoBreakdown}
+                    <a href="venue-details.php?id=${venue.id}" class="inline-block px-4 py-2 mt-3 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
                         View Details <i class="ml-1 fas fa-arrow-right"></i>
                     </a>
                 </div>

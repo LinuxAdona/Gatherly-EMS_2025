@@ -51,25 +51,15 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
             <?php endif; ?>
             <!-- Header Section -->
             <div class="mb-8 text-center">
-                <div class="flex items-center justify-center gap-4 mb-4">
-                    <div class="flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full shadow-lg">
-                        <i class="text-3xl text-white fas fa-robot"></i>
-                    </div>
-                    <div class="text-left">
-                        <h1 class="text-4xl font-bold text-gray-800">AI Event Planner</h1>
-                        <p class="text-gray-600">Your intelligent assistant for perfect event planning</p>
-                    </div>
-                </div>
-
                 <div class="flex flex-wrap justify-center gap-3 mt-4">
                     <span class="px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-200 rounded-full">
-                        <i class="mr-1 fas fa-brain"></i> Smart Venue Matching
+                        <i class="mr-1 fas fa-brain"></i> Ensemble AI (3 Algorithms)
                     </span>
                     <span class="px-4 py-2 text-sm font-semibold rounded-full text-cyan-700 bg-cyan-200">
-                        <i class="mr-1 fas fa-users"></i> Supplier Recommendations
+                        <i class="mr-1 fas fa-chart-line"></i> Smart Venue Scoring
                     </span>
                     <span class="px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-200 rounded-full">
-                        <i class="mr-1 fas fa-chart-line"></i> Budget Optimization
+                        <i class="mr-1 fas fa-users"></i> Top 3 Best Matches
                     </span>
                     <span class="px-4 py-2 text-sm font-semibold text-blue-700 bg-blue-200 rounded-full">
                         <i class="mr-1 fas fa-comments"></i> Conversational Interface
@@ -143,32 +133,29 @@ $first_name = $_SESSION['first_name'] ?? 'Organizer';
                 <div class="grid grid-cols-1 gap-4 mt-6 md:grid-cols-3 mb-6">
                     <div class="p-4 bg-white border border-indigo-200 shadow-sm rounded-xl">
                         <div class="flex items-center gap-3 mb-2">
-                            <i class="text-2xl text-indigo-600 fas fa-lightbulb"></i>
-                            <h4 class="font-bold text-gray-800">How it works</h4>
+                            <i class="text-2xl text-indigo-600 fas fa-brain"></i>
+                            <h4 class="font-bold text-gray-800">Ensemble AI</h4>
                         </div>
-                        <p class="text-sm text-gray-600">Answer a few simple questions about your event, and I'll
-                            provide
-                            personalized recommendations.</p>
+                        <p class="text-sm text-gray-600">Combines 3 powerful algorithms (MCDM, KNN, Decision Tree) for
+                            the most accurate recommendations.</p>
                     </div>
 
                     <div class="p-4 bg-white border border-pink-200 shadow-sm rounded-xl">
                         <div class="flex items-center gap-3 mb-2">
-                            <i class="text-2xl text-pink-600 fas fa-shield-alt"></i>
-                            <h4 class="font-bold text-gray-800">Smart & Secure</h4>
+                            <i class="text-2xl text-pink-600 fas fa-trophy"></i>
+                            <h4 class="font-bold text-gray-800">Top 3 Results</h4>
                         </div>
-                        <p class="text-sm text-gray-600">Powered by machine learning algorithms to ensure the best
-                            matches
-                            for your event needs.</p>
+                        <p class="text-sm text-gray-600">Get the best 3 venues ranked by our ensemble scoring system
+                            with detailed algorithm breakdown.</p>
                     </div>
 
                     <div class="p-4 bg-white border border-indigo-200 shadow-sm rounded-xl">
                         <div class="flex items-center gap-3 mb-2">
-                            <i class="text-2xl text-indigo-600 fas fa-clock"></i>
-                            <h4 class="font-bold text-gray-800">Save Time</h4>
+                            <i class="text-2xl text-indigo-600 fas fa-chart-bar"></i>
+                            <h4 class="font-bold text-gray-800">Transparent Scoring</h4>
                         </div>
-                        <p class="text-sm text-gray-600">Get instant recommendations instead of spending hours searching
-                            and
-                            comparing options.</p>
+                        <p class="text-sm text-gray-600">See how each algorithm scored the venue to understand why it's
+                            a good match for your event.</p>
                     </div>
                 </div>
             </div>

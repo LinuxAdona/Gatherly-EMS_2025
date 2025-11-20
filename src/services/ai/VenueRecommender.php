@@ -2,25 +2,26 @@
 
 /**
  * Venue Recommendation System
- * Multi-Algorithm Implementation with Switchable Strategies
+ * Ensemble Multi-Algorithm Implementation
  * 
- * Supported Algorithms:
+ * Uses all 3 algorithms combined for robust recommendations:
  * - MCDM: Multi-Criteria Decision Making (Weighted Average)
  * - KNN: K-Nearest Neighbors
  * - DECISION_TREE: Rule-based Decision Tree
+ * 
+ * Final score = Weighted combination of all algorithm scores
  */
 
 class VenueRecommender
 {
     private $db;
 
-    /**
-     * ============================================
-     * CHANGE THIS TO SWITCH ALGORITHM
-     * Options: 'MCDM', 'KNN', 'DECISION_TREE'
-     * ============================================
-     */
-    private $algorithm = 'DECISION_TREE';
+    // Algorithm weights for ensemble scoring
+    private $algorithmWeights = [
+        'MCDM' => 0.35,          // 35% - Balanced criteria evaluation
+        'KNN' => 0.35,           // 35% - Historical pattern matching
+        'DECISION_TREE' => 0.30  // 30% - Rule-based filtering
+    ];
 
     // KNN Configuration
     private $k = 5; // Number of nearest neighbors
@@ -28,18 +29,6 @@ class VenueRecommender
     public function __construct($dbConnection)
     {
         $this->db = $dbConnection;
-    }
-
-    /**
-     * Set the recommendation algorithm
-     * @param string $algo Options: 'MCDM', 'KNN', 'DECISION_TREE'
-     */
-    public function setAlgorithm($algo)
-    {
-        $validAlgos = ['MCDM', 'KNN', 'DECISION_TREE'];
-        if (in_array($algo, $validAlgos)) {
-            $this->algorithm = $algo;
-        }
     }
 
     /**
@@ -515,25 +504,39 @@ class VenueRecommender
     }
 
     /**
-     * Main scoring method - routes to appropriate algorithm
+     * Main scoring method - Ensemble approach using ALL algorithms
+     * Combines scores from MCDM, KNN, and Decision Tree
      */
     public function calculateMLScore($venue, $requirements)
     {
-        switch ($this->algorithm) {
-            case 'KNN':
-                return $this->calculateKNNScore($venue, $requirements);
+        // Get scores from all algorithms
+        $mcdmScore = $this->calculateMCDMScore($venue, $requirements);
+        $knnScore = $this->calculateKNNScore($venue, $requirements);
+        $decisionTreeScore = $this->calculateDecisionTreeScore($venue, $requirements);
 
-            case 'DECISION_TREE':
-                return $this->calculateDecisionTreeScore($venue, $requirements);
+        // Calculate weighted ensemble score
+        $ensembleScore =
+            ($mcdmScore * $this->algorithmWeights['MCDM']) +
+            ($knnScore * $this->algorithmWeights['KNN']) +
+            ($decisionTreeScore * $this->algorithmWeights['DECISION_TREE']);
 
-            case 'MCDM':
-            default:
-                return $this->calculateMCDMScore($venue, $requirements);
-        }
+        return $ensembleScore;
     }
 
     /**
-     * Get venue recommendations using selected algorithm
+     * Calculate scores from ALL algorithms with details
+     */
+    public function calculateAllAlgorithmScores($venue, $requirements)
+    {
+        return [
+            'mcdm' => $this->calculateMCDMScore($venue, $requirements),
+            'knn' => $this->calculateKNNScore($venue, $requirements),
+            'decision_tree' => $this->calculateDecisionTreeScore($venue, $requirements)
+        ];
+    }
+
+    /**
+     * Get venue recommendations using ensemble algorithm approach
      */
     public function getRecommendations($message)
     {
@@ -549,14 +552,16 @@ class VenueRecommender
                 'response' => 'No venues are currently available. Please check back later.',
                 'venues' => [],
                 'parsed_data' => $requirements,
-                'algorithm_used' => $this->algorithm
+                'algorithm_used' => 'Ensemble (MCDM + KNN + Decision Tree)'
             ];
         }
 
-        // Calculate scores for each venue using selected algorithm
+        // Calculate ensemble scores for each venue (combining all 3 algorithms)
         $venueScores = [];
         foreach ($venues as $venue) {
-            $score = $this->calculateMLScore($venue, $requirements);
+            $ensembleScore = $this->calculateMLScore($venue, $requirements);
+            $algorithmScores = $this->calculateAllAlgorithmScores($venue, $requirements);
+
             $venueScores[] = [
                 'id' => $venue['venue_id'],
                 'name' => $venue['venue_name'],
@@ -564,15 +569,21 @@ class VenueRecommender
                 'price' => floatval($venue['base_price']),
                 'location' => $venue['location'],
                 'description' => $venue['description'],
-                'score' => round($score, 2)
+                'score' => round($ensembleScore, 2),
+                'algorithm_breakdown' => [
+                    'mcdm' => round($algorithmScores['mcdm'], 2),
+                    'knn' => round($algorithmScores['knn'], 2),
+                    'decision_tree' => round($algorithmScores['decision_tree'], 2),
+                    'ensemble' => round($ensembleScore, 2)
+                ]
             ];
         }
 
-        // Sort by score (descending) and get top 5
+        // Sort by ensemble score (descending) and get top 3
         usort($venueScores, function ($a, $b) {
             return $b['score'] - $a['score'];
         });
-        $topVenues = array_slice($venueScores, 0, 5);
+        $topVenues = array_slice($venueScores, 0, 3);
 
         // Generate response
         $response = $this->generateResponse($requirements, $topVenues);
@@ -582,8 +593,127 @@ class VenueRecommender
             'response' => $response,
             'venues' => $topVenues,
             'parsed_data' => $requirements,
-            'algorithm_used' => $this->algorithm
+            'algorithm_used' => 'Ensemble (MCDM + KNN + Decision Tree)'
         ];
+    }
+
+    /**
+     * Get venue recommendations from ALL algorithms for comparison
+     */
+    public function getAllAlgorithmRecommendations($message)
+    {
+        // Parse requirements
+        $requirements = $this->parseRequirements($message);
+
+        // Get venues
+        $venues = $this->getVenueFeatures();
+
+        if (empty($venues)) {
+            return [
+                'success' => true,
+                'response' => 'No venues are currently available. Please check back later.',
+                'algorithms' => [],
+                'parsed_data' => $requirements
+            ];
+        }
+
+        $algorithms = ['MCDM', 'KNN', 'DECISION_TREE'];
+        $algorithmResults = [];
+
+        foreach ($algorithms as $algo) {
+            $venueScores = [];
+
+            foreach ($venues as $venue) {
+                // Calculate score using specific algorithm
+                switch ($algo) {
+                    case 'KNN':
+                        $score = $this->calculateKNNScore($venue, $requirements);
+                        break;
+                    case 'DECISION_TREE':
+                        $score = $this->calculateDecisionTreeScore($venue, $requirements);
+                        break;
+                    case 'MCDM':
+                    default:
+                        $score = $this->calculateMCDMScore($venue, $requirements);
+                        break;
+                }
+
+                $venueScores[] = [
+                    'id' => $venue['venue_id'],
+                    'name' => $venue['venue_name'],
+                    'capacity' => $venue['capacity'],
+                    'price' => floatval($venue['base_price']),
+                    'location' => $venue['location'],
+                    'description' => $venue['description'],
+                    'score' => round($score, 2)
+                ];
+            }
+
+            // Sort by score (descending) and get top 3
+            usort($venueScores, function ($a, $b) {
+                return $b['score'] - $a['score'];
+            });
+            $topVenues = array_slice($venueScores, 0, 3);
+
+            $algorithmResults[$algo] = [
+                'name' => $this->getAlgorithmName($algo),
+                'venues' => $topVenues
+            ];
+        }
+
+        // Generate comprehensive response
+        $response = $this->generateComparisonResponse($requirements, $algorithmResults);
+
+        return [
+            'success' => true,
+            'response' => $response,
+            'algorithms' => $algorithmResults,
+            'parsed_data' => $requirements,
+            'comparison_mode' => true
+        ];
+    }
+
+    /**
+     * Get algorithm display name
+     */
+    private function getAlgorithmName($algo)
+    {
+        $names = [
+            'MCDM' => 'Multi-Criteria Decision Making',
+            'KNN' => 'K-Nearest Neighbors',
+            'DECISION_TREE' => 'Decision Tree'
+        ];
+        return $names[$algo] ?? $algo;
+    }
+
+    /**
+     * Generate comparison response for all algorithms
+     */
+    private function generateComparisonResponse($requirements, $algorithmResults)
+    {
+        $response = "";
+
+        // Acknowledge what was understood
+        $understood = [];
+        if ($requirements['event_type']) {
+            $understood[] = "a {$requirements['event_type']} event";
+        }
+        if ($requirements['guests']) {
+            $understood[] = "{$requirements['guests']} guests";
+        }
+        if ($requirements['budget']) {
+            $understood[] = "budget of ₱" . number_format($requirements['budget']);
+        }
+
+        if (!empty($understood)) {
+            $response = "Great! I understand you're planning " . implode(" for ", $understood) . ". ";
+        } else {
+            $response = "I'll help you find the perfect venue! ";
+        }
+
+        $response .= "\n\nI've analyzed all venues using 3 different AI algorithms. Here are the top 3 recommendations from each:\n\n";
+
+        return $response;
     }
 
     /**
@@ -611,16 +741,9 @@ class VenueRecommender
             $response = "I'd love to help you find the perfect venue! ";
         }
 
-        // Provide recommendations with algorithm info
+        // Provide recommendations with ensemble algorithm info
         if (!empty($venues)) {
-            $algoName = match ($this->algorithm) {
-                'KNN' => 'K-Nearest Neighbors',
-                'DECISION_TREE' => 'Decision Tree',
-                'MCDM' => 'Multi-Criteria Decision Making',
-                default => 'AI'
-            };
-
-            $response .= "Using {$algoName} algorithm, here are my top " . count($venues) . " venue recommendations:";
+            $response .= "Using our advanced Ensemble AI (combining MCDM, KNN, and Decision Tree algorithms), here are your top " . count($venues) . " venue recommendations:";
         } else {
             $response .= "I couldn't find any venues matching your criteria. Could you provide more details?\n\n";
             $response .= "• Number of expected guests\n";

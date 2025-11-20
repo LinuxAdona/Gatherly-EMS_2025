@@ -89,24 +89,28 @@ $conn->close();
     <?php include '../../../src/components/ManagerSidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
+    <div
+        class="<?php echo $nav_layout === 'sidebar' ? 'lg:ml-64' : 'container mx-auto'; ?> <?php echo $nav_layout === 'sidebar' ? '' : 'px-4 sm:px-6 lg:px-8'; ?> min-h-screen">
         <?php if ($nav_layout === 'sidebar'): ?>
-            <!-- Top Bar for Sidebar Layout -->
-            <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">Welcome back, <?php echo htmlspecialchars($first_name); ?>! 🏢</h1>
-                <p class="text-sm text-gray-600">Manage your venues and optimize your business</p>
-            </div>
-            <div class="px-4 sm:px-6 lg:px-8">
+        <!-- Top Bar for Sidebar Layout -->
+        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Welcome back, <?php echo htmlspecialchars($first_name); ?>! 🏢
+            </h1>
+            <p class="text-sm text-gray-600">Manage your venues and optimize your business</p>
+        </div>
+        <div class="px-4 sm:px-6 lg:px-8">
             <?php else: ?>
-                <!-- Header for Navbar Layout -->
-                <div class="mb-8">
-                    <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Welcome back, <?php echo htmlspecialchars($first_name); ?>! 🏢</h1>
-                    <p class="text-gray-600">Manage your venues and optimize your business</p>
-                </div>
+            <!-- Header for Navbar Layout -->
+            <div class="mb-8">
+                <h1 class="mb-2 text-3xl font-bold text-gray-800 sm:text-4xl">Welcome back,
+                    <?php echo htmlspecialchars($first_name); ?>! 🏢</h1>
+                <p class="text-gray-600">Manage your venues and optimize your business</p>
+            </div>
             <?php endif; ?>
 
             <!-- Dynamic Pricing Tool Highlight Banner -->
-            <div class="p-6 mb-8 border-2 border-green-300 shadow-lg bg-linear-to-r from-green-100 to-teal-100 rounded-xl">
+            <div
+                class="p-6 mb-8 border-2 border-green-300 shadow-lg bg-linear-to-r from-green-100 to-teal-100 rounded-xl">
                 <div class="flex flex-col items-start justify-between lg:flex-row lg:items-center">
                     <div class="mb-4 lg:mb-0">
                         <div class="flex items-center gap-3 mb-2">
@@ -137,58 +141,65 @@ $conn->close();
                 </div>
             </div>
 
-            <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-                <div class="p-6 bg-white border-l-4 border-green-500 shadow-md rounded-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="mb-1 text-sm text-gray-600">My Venues</p>
-                            <h3 class="text-3xl font-bold text-gray-800">
-                                <?php echo number_format($stats['total_venues']); ?></h3>
+                            <p class="text-xs font-medium text-gray-600 mb-1">My Venues</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
+                                <?php echo number_format($stats['total_venues']); ?></p>
                         </div>
-                        <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+                        <div class="p-2 md:p-3 bg-green-100 rounded-lg">
                             <i class="text-2xl text-green-600 fas fa-building"></i>
                         </div>
                     </div>
                 </div>
-
-                <div class="p-6 bg-white border-l-4 border-blue-500 shadow-md rounded-xl">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex items center justify-between">
                         <div>
-                            <p class="mb-1 text-sm text-gray-600">Total Bookings</p>
-                            <h3 class="text-3xl font-bold text-gray-800">
-                                <?php echo number_format($stats['total_bookings']); ?></h3>
+                            <p class="text-xs font-medium text-gray-600 mb-1">Total Bookings</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
+                                <?php echo number_format($stats['total_bookings']); ?></p>
                         </div>
-                        <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
+                        <div class="p-2 md:p-3 bg-blue-100 rounded-lg">
                             <i class="text-2xl text-blue-600 fas fa-calendar-check"></i>
                         </div>
                     </div>
                 </div>
-
-                <div class="p-6 bg-white border-l-4 border-yellow-500 shadow-md rounded-xl">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex items center justify-between">
                         <div>
-                            <p class="mb-1 text-sm text-gray-600">Pending</p>
-                            <h3 class="text-3xl font-bold text-gray-800">
-                                <?php echo number_format($stats['pending_bookings']); ?></h3>
+                            <p class="text-xs font-medium text-gray-600 mb-1">Pending</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
+                                <?php echo number_format($stats['pending_bookings']); ?></p>
                         </div>
-                        <div class="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-lg">
+                        <div class="p-2 md:p-3 bg-yellow-100 rounded-lg">
                             <i class="text-2xl text-yellow-600 fas fa-clock"></i>
                         </div>
                     </div>
                 </div>
-
-                <div class="p-6 bg-white border-l-4 border-purple-500 shadow-md rounded-xl">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex items center justify-between">
                         <div>
-                            <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
-                            <h3 class="text-3xl font-bold text-gray-800">
-                                ₱<?php echo number_format($stats['total_revenue'], 2); ?></h3>
+                            <p class="text-xs font-medium text-gray-600 mb-1">Total Revenue</p>
+                            <p class="text-lg md:text-xl font-bold text-gray-900">
+                                ₱<?php echo number_format($stats['total_revenue'], 2); ?></p>
                         </div>
-                        <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg">
+                        <div class="p-2 md:p-3 bg-purple-100 rounded-lg">
                             <i class="text-2xl text-purple-600 fas fa-peso-sign"></i>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Venue Performance Chart -->
+            <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
+                <h2 class="mb-4 text-xl font-bold text-gray-800">
+                    <i class="mr-2 text-green-600 fas fa-chart-bar"></i>
+                    Venue Performance
+                </h2>
+                <div class="relative" style="height: 300px;">
+                    <canvas id="venuePerformanceChart"></canvas>
                 </div>
             </div>
 
@@ -207,7 +218,8 @@ $conn->close();
                                 <i class="text-xl text-green-600 fas fa-plus-circle"></i>
                                 <span class="font-semibold text-gray-700">Add New Venue</span>
                             </div>
-                            <i class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
+                            <i
+                                class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
                         </a>
                         <a href="my-venues.php"
                             class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-blue-200 hover:bg-blue-50 group">
@@ -215,7 +227,8 @@ $conn->close();
                                 <i class="text-xl text-blue-600 fas fa-building"></i>
                                 <span class="font-semibold text-gray-700">Manage Venues</span>
                             </div>
-                            <i class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
+                            <i
+                                class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
                         </a>
                         <a href="bookings.php"
                             class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-yellow-200 hover:bg-yellow-50 group">
@@ -223,7 +236,8 @@ $conn->close();
                                 <i class="text-xl text-yellow-600 fas fa-calendar-alt"></i>
                                 <span class="font-semibold text-gray-700">View Bookings</span>
                             </div>
-                            <i class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
+                            <i
+                                class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
                         </a>
                         <a href="pricing.php"
                             class="flex items-center justify-between p-4 transition-all border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50 group">
@@ -231,7 +245,8 @@ $conn->close();
                                 <i class="text-xl text-purple-600 fas fa-tags"></i>
                                 <span class="font-semibold text-gray-700">Set Pricing Rules</span>
                             </div>
-                            <i class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
+                            <i
+                                class="text-gray-400 transition-transform group-hover:translate-x-1 fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -244,169 +259,159 @@ $conn->close();
                     </h2>
                     <div class="space-y-3">
                         <?php if ($recent_bookings && $recent_bookings->num_rows > 0): ?>
-                            <?php while ($booking = $recent_bookings->fetch_assoc()): ?>
-                                <div
-                                    class="p-4 transition-all border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50">
-                                    <div class="flex items-start justify-between">
-                                        <div class="flex-1">
-                                            <h3 class="mb-1 font-semibold text-gray-800">
-                                                <?php echo htmlspecialchars($booking['event_name']); ?></h3>
-                                            <p class="text-sm text-gray-600">
-                                                <i class="mr-1 fas fa-user"></i>
-                                                <?php echo htmlspecialchars($booking['first_name'] . ' ' . $booking['last_name']); ?>
-                                            </p>
-                                            <p class="text-sm text-gray-600">
-                                                <i class="mr-1 fas fa-map-marker-alt"></i>
-                                                <?php echo htmlspecialchars($booking['venue_name'] ?? 'No venue assigned'); ?>
-                                            </p>
-                                            <p class="text-sm text-gray-600">
-                                                <i class="mr-1 fas fa-calendar"></i>
-                                                <?php echo date('M d, Y', strtotime($booking['event_date'])); ?>
-                                            </p>
-                                            <p class="text-sm font-semibold text-green-600">
-                                                <i class="mr-1 fas fa-peso-sign"></i>
-                                                ₱<?php echo number_format($booking['total_cost'], 2); ?>
-                                            </p>
-                                        </div>
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full
+                        <?php while ($booking = $recent_bookings->fetch_assoc()): ?>
+                        <div
+                            class="p-4 transition-all border border-gray-200 rounded-lg hover:border-green-200 hover:bg-green-50">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <h3 class="mb-1 font-semibold text-gray-800">
+                                        <?php echo htmlspecialchars($booking['event_name']); ?></h3>
+                                    <p class="text-sm text-gray-600">
+                                        <i class="mr-1 fas fa-user"></i>
+                                        <?php echo htmlspecialchars($booking['first_name'] . ' ' . $booking['last_name']); ?>
+                                    </p>
+                                    <p class="text-sm text-gray-600">
+                                        <i class="mr-1 fas fa-map-marker-alt"></i>
+                                        <?php echo htmlspecialchars($booking['venue_name'] ?? 'No venue assigned'); ?>
+                                    </p>
+                                    <p class="text-sm text-gray-600">
+                                        <i class="mr-1 fas fa-calendar"></i>
+                                        <?php echo date('M d, Y', strtotime($booking['event_date'])); ?>
+                                    </p>
+                                    <p class="text-sm font-semibold text-green-600">
+                                        <i class="mr-1 fas fa-peso-sign"></i>
+                                        ₱<?php echo number_format($booking['total_cost'], 2); ?>
+                                    </p>
+                                </div>
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full
                                         <?php
                                         echo $booking['status'] == 'confirmed' ? 'bg-green-100 text-green-700' : ($booking['status'] == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($booking['status'] == 'completed' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'));
                                         ?>">
-                                            <?php echo ucfirst($booking['status']); ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
-                                <i class="mb-3 text-4xl fas fa-calendar-times"></i>
-                                <p class="mb-2 font-semibold">No bookings yet</p>
-                                <p class="text-sm">Bookings will appear here once clients start reserving your venues</p>
+                                    <?php echo ucfirst($booking['status']); ?>
+                                </span>
                             </div>
+                        </div>
+                        <?php endwhile; ?>
+                        <?php else: ?>
+                        <div class="flex flex-col items-center justify-center py-8 text-center text-gray-500">
+                            <i class="mb-3 text-4xl fas fa-calendar-times"></i>
+                            <p class="mb-2 font-semibold">No bookings yet</p>
+                            <p class="text-sm">Bookings will appear here once clients start reserving your venues</p>
+                        </div>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Venue Performance Chart -->
-            <div class="p-6 mb-8 bg-white shadow-md rounded-xl">
-                <h2 class="mb-4 text-xl font-bold text-gray-800">
-                    <i class="mr-2 text-green-600 fas fa-chart-bar"></i>
-                    Venue Performance
-                </h2>
-                <div class="relative" style="height: 300px;">
-                    <canvas id="venuePerformanceChart"></canvas>
+        <!-- Dynamic Pricing Tool Modal -->
+        <div id="pricingModal" class="fixed inset-0 z-50 items-center justify-center hidden bg-black bg-opacity-50">
+            <div class="w-full max-w-4xl m-4 overflow-hidden bg-white shadow-2xl rounded-2xl">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-4 text-white bg-linear-to-r from-green-600 to-teal-600">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 bg-white rounded-full">
+                            <i class="text-xl text-green-600 fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold">Dynamic Pricing Tool</h3>
+                            <p class="text-sm opacity-90">AI-powered pricing optimization</p>
+                        </div>
+                    </div>
+                    <button id="closePricingTool" class="text-white transition-colors hover:text-gray-200">
+                        <i class="text-2xl fas fa-times"></i>
+                    </button>
                 </div>
-            </div>
-            </div>
 
-            <!-- Dynamic Pricing Tool Modal -->
-            <div id="pricingModal" class="fixed inset-0 z-50 items-center justify-center hidden bg-black bg-opacity-50">
-                <div class="w-full max-w-4xl m-4 overflow-hidden bg-white shadow-2xl rounded-2xl">
-                    <!-- Modal Header -->
-                    <div class="flex items-center justify-between p-4 text-white bg-linear-to-r from-green-600 to-teal-600">
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center justify-center w-10 h-10 bg-white rounded-full">
-                                <i class="text-xl text-green-600 fas fa-chart-line"></i>
+                <!-- Modal Body -->
+                <div class="p-6 overflow-y-auto bg-gray-50" style="max-height: 500px;">
+                    <div class="mb-6">
+                        <h4 class="mb-4 text-lg font-bold text-gray-800">Pricing Recommendations</h4>
+
+                        <!-- Pricing Factors -->
+                        <div class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-3">
+                            <div class="p-4 bg-white border-l-4 border-green-500 rounded-lg">
+                                <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Peak Season</p>
+                                <p class="text-2xl font-bold text-green-600">+20%</p>
+                                <p class="text-sm text-gray-600">Recommended increase</p>
                             </div>
-                            <div>
-                                <h3 class="text-lg font-bold">Dynamic Pricing Tool</h3>
-                                <p class="text-sm opacity-90">AI-powered pricing optimization</p>
+                            <div class="p-4 bg-white border-l-4 border-blue-500 rounded-lg">
+                                <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Weekend Rate</p>
+                                <p class="text-2xl font-bold text-blue-600">+15%</p>
+                                <p class="text-sm text-gray-600">Standard adjustment</p>
+                            </div>
+                            <div class="p-4 bg-white border-l-4 border-purple-500 rounded-lg">
+                                <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Demand Score</p>
+                                <p class="text-2xl font-bold text-purple-600">High</p>
+                                <p class="text-sm text-gray-600">Current demand level</p>
                             </div>
                         </div>
-                        <button id="closePricingTool" class="text-white transition-colors hover:text-gray-200">
-                            <i class="text-2xl fas fa-times"></i>
-                        </button>
-                    </div>
 
-                    <!-- Modal Body -->
-                    <div class="p-6 overflow-y-auto bg-gray-50" style="max-height: 500px;">
-                        <div class="mb-6">
-                            <h4 class="mb-4 text-lg font-bold text-gray-800">Pricing Recommendations</h4>
-
-                            <!-- Pricing Factors -->
-                            <div class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-3">
-                                <div class="p-4 bg-white border-l-4 border-green-500 rounded-lg">
-                                    <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Peak Season</p>
-                                    <p class="text-2xl font-bold text-green-600">+20%</p>
-                                    <p class="text-sm text-gray-600">Recommended increase</p>
-                                </div>
-                                <div class="p-4 bg-white border-l-4 border-blue-500 rounded-lg">
-                                    <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Weekend Rate</p>
-                                    <p class="text-2xl font-bold text-blue-600">+15%</p>
-                                    <p class="text-sm text-gray-600">Standard adjustment</p>
-                                </div>
-                                <div class="p-4 bg-white border-l-4 border-purple-500 rounded-lg">
-                                    <p class="mb-1 text-xs font-semibold text-gray-600 uppercase">Demand Score</p>
-                                    <p class="text-2xl font-bold text-purple-600">High</p>
-                                    <p class="text-sm text-gray-600">Current demand level</p>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Calculator -->
-                            <div class="p-6 bg-white rounded-lg shadow-sm">
-                                <h5 class="mb-4 font-bold text-gray-800">Calculate Optimal Price</h5>
-                                <form id="pricingForm" class="space-y-4">
-                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                        <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Base Price (₱)</label>
-                                            <input type="number" id="basePrice"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                placeholder="50000" value="50000">
-                                        </div>
-                                        <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Season</label>
-                                            <select id="season"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                                                <option value="1.0">Off-Peak (0%)</option>
-                                                <option value="1.1">Regular (+10%)</option>
-                                                <option value="1.2" selected>Peak (+20%)</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Day Type</label>
-                                            <select id="dayType"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                                                <option value="1.0">Weekday (0%)</option>
-                                                <option value="1.15" selected>Weekend (+15%)</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block mb-2 text-sm font-semibold text-gray-700">Demand</label>
-                                            <select id="demand"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                                                <option value="0.9">Low (-10%)</option>
-                                                <option value="1.0">Normal (0%)</option>
-                                                <option value="1.1" selected>High (+10%)</option>
-                                            </select>
-                                        </div>
+                        <!-- Pricing Calculator -->
+                        <div class="p-6 bg-white rounded-lg shadow-sm">
+                            <h5 class="mb-4 font-bold text-gray-800">Calculate Optimal Price</h5>
+                            <form id="pricingForm" class="space-y-4">
+                                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label class="block mb-2 text-sm font-semibold text-gray-700">Base Price
+                                            (₱)</label>
+                                        <input type="number" id="basePrice"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            placeholder="50000" value="50000">
                                     </div>
-                                    <button type="button" id="calculatePrice"
-                                        class="w-full px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
-                                        Calculate Optimal Price
-                                    </button>
-                                </form>
-
-                                <!-- Result -->
-                                <div id="pricingResult"
-                                    class="hidden p-4 mt-4 border-l-4 border-green-500 rounded-lg bg-green-50">
-                                    <p class="mb-1 text-sm font-semibold text-gray-600">Recommended Price</p>
-                                    <p class="text-3xl font-bold text-green-600" id="optimalPrice">₱60,000.00</p>
-                                    <p class="mt-2 text-sm text-gray-600">This price optimizes for maximum revenue while
-                                        remaining competitive</p>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-semibold text-gray-700">Season</label>
+                                        <select id="season"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                            <option value="1.0">Off-Peak (0%)</option>
+                                            <option value="1.1">Regular (+10%)</option>
+                                            <option value="1.2" selected>Peak (+20%)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-semibold text-gray-700">Day Type</label>
+                                        <select id="dayType"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                            <option value="1.0">Weekday (0%)</option>
+                                            <option value="1.15" selected>Weekend (+15%)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-semibold text-gray-700">Demand</label>
+                                        <select id="demand"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                            <option value="0.9">Low (-10%)</option>
+                                            <option value="1.0">Normal (0%)</option>
+                                            <option value="1.1" selected>High (+10%)</option>
+                                        </select>
+                                    </div>
                                 </div>
+                                <button type="button" id="calculatePrice"
+                                    class="w-full px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+                                    Calculate Optimal Price
+                                </button>
+                            </form>
+
+                            <!-- Result -->
+                            <div id="pricingResult"
+                                class="hidden p-4 mt-4 border-l-4 border-green-500 rounded-lg bg-green-50">
+                                <p class="mb-1 text-sm font-semibold text-gray-600">Recommended Price</p>
+                                <p class="text-3xl font-bold text-green-600" id="optimalPrice">₱60,000.00</p>
+                                <p class="mt-2 text-sm text-gray-600">This price optimizes for maximum revenue while
+                                    remaining competitive</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <?php if ($nav_layout === 'sidebar'): ?>
+        <?php if ($nav_layout === 'sidebar'): ?>
     </div>
-<?php endif; ?>
-</div>
+    <?php endif; ?>
+    </div>
 
-<script src="../../assets/js/manager.js"></script>
+    <script src="../../assets/js/manager.js"></script>
 </body>
 
 </html>

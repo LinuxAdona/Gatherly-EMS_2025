@@ -353,29 +353,20 @@ class ConversationalPlanner
      */
     public function getVenueRecommendations($requirements)
     {
-        $query = "SELECT 
-                    v.venue_id,
-                    v.venue_name,
-                    v.capacity,
-                    v.base_price,
-                    v.location,
-                    v.description,
-                    GROUP_CONCAT(a.amenity_name SEPARATOR ', ') as amenities
-                FROM venues v
-                LEFT JOIN venue_amenities va ON v.venue_id = va.venue_id
-                LEFT JOIN amenities a ON va.amenity_id = a.amenity_id
-                WHERE v.availability_status = 'available'
-                GROUP BY v.venue_id";
+        // Use VenueRecommender class for ensemble scoring
+        require_once __DIR__ . '/VenueRecommender.php';
+        $venueRecommender = new VenueRecommender($this->db);
 
-        $stmt = $this->db->query($query);
-        $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Get venues from VenueRecommender
+        $venues = $venueRecommender->getVenueFeatures();
 
-        // Score each venue
+        // Score each venue using ensemble algorithm
         $scoredVenues = [];
         foreach ($venues as $venue) {
-            $score = $this->calculateVenueScore($venue, $requirements);
+            $ensembleScore = $venueRecommender->calculateMLScore($venue, $requirements);
+            $algorithmScores = $venueRecommender->calculateAllAlgorithmScores($venue, $requirements);
 
-            if ($score > 30) {
+            if ($ensembleScore > 30) {
                 $scoredVenues[] = [
                     'id' => $venue['venue_id'],
                     'name' => $venue['venue_name'],
@@ -385,18 +376,24 @@ class ConversationalPlanner
                         : 10000.0,
                     'location' => $venue['location'],
                     'description' => $venue['description'],
-                    'amenities' => $venue['amenities'] ?? '',
-                    'score' => round($score, 1)
+                    'amenities' => '',
+                    'score' => round($ensembleScore, 1),
+                    'algorithm_breakdown' => [
+                        'mcdm' => round($algorithmScores['mcdm'], 2),
+                        'knn' => round($algorithmScores['knn'], 2),
+                        'decision_tree' => round($algorithmScores['decision_tree'], 2),
+                        'ensemble' => round($ensembleScore, 2)
+                    ]
                 ];
             }
         }
 
-        // Sort by score
+        // Sort by ensemble score
         usort($scoredVenues, function ($a, $b) {
             return $b['score'] - $a['score'];
         });
 
-        return array_slice($scoredVenues, 0, 5);
+        return array_slice($scoredVenues, 0, 3);
     }
 
     /**

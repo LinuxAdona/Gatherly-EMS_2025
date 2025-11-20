@@ -35,7 +35,7 @@ try {
     // Create recommender instance
     $recommender = new VenueRecommender($pdo);
 
-    // Get recommendations
+    // Get recommendations using ensemble algorithm
     $result = $recommender->getRecommendations($message);
 
     // Return response
