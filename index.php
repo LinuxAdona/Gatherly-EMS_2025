@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/config/init.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gatherly | An Event Management Platform</title>
-    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
-    <link rel="stylesheet" href="../../src/output.css?v=2">
+    <link rel="icon" type="image/x-icon" href="public/assets/images/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/compile@4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link

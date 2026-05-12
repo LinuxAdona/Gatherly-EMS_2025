@@ -28,4 +28,4 @@ if ($userId) {
 }
 
 echo "\n=== Actions ===\n";
-echo "<a href='/Gatherly/public/api/e2ee/force-logout.php'>Force Logout</a>\n";
+echo "<a href='/public/api/e2ee/force-logout.php'>Force Logout</a>\n";

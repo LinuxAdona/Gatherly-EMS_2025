@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in to Gatherly | Gatherly</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
-    <link rel="stylesheet" href="../../src/output.css?v=<?php echo filemtime(__DIR__ . '/../../src/output.css'); ?>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/compile@4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -16,9 +16,9 @@
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="/Gatherly/public/assets/js/crypto.js"></script>
-    <link rel="stylesheet" href="/Gatherly/public/assets/css/pin-modal.css">
-    <script src="/Gatherly/public/assets/js/pin-modal.js"></script>
+    <script src="/public/assets/js/crypto.js"></script>
+    <link rel="stylesheet" href="/public/assets/css/pin-modal.css">
+    <script src="/public/assets/js/pin-modal.js"></script>
     <style>
         .recovery-word {
             width: 100%;
@@ -268,7 +268,7 @@
             }
 
             try {
-                const response = await fetch('/Gatherly/public/api/e2ee/forgot-password.php', {
+                const response = await fetch('/public/api/e2ee/forgot-password.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'action=check_email&email=' + encodeURIComponent(email)
@@ -300,7 +300,7 @@
             }
 
             try {
-                const response = await fetch('/Gatherly/public/api/e2ee/forgot-password.php', {
+                const response = await fetch('/public/api/e2ee/forgot-password.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'action=verify_recovery&user_id=' + forgotUserId + '&recovery_phrase=' + encodeURIComponent(phrase)
@@ -337,7 +337,7 @@
             }
 
             try {
-                const response = await fetch('/Gatherly/public/api/e2ee/forgot-password.php', {
+                const response = await fetch('/public/api/e2ee/forgot-password.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'action=reset_password&user_id=' + forgotUserId + '&new_password=' + encodeURIComponent(newPass) + '&confirm_password=' + encodeURIComponent(confirmPass)

@@ -58,7 +58,7 @@
     // Check if user has PIN set up via API
     async function checkPinStatus() {
         try {
-            const response = await fetch('/Gatherly/public/api/e2ee/key-status.php');
+            const response = await fetch('/public/api/e2ee/key-status.php');
             const data = await response.json();
             return data.hasPin || false;
         } catch (error) {

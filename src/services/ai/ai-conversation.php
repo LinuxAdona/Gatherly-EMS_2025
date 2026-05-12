@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../config/init.php';
 
 /**
  * AI Conversation API - OpenAI Integration

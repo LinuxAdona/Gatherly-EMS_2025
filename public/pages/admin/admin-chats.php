@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../../config/init.php';
+
 session_start();
 
 // Load E2EE helper
@@ -1232,7 +1234,7 @@ $user_id = $_SESSION['user_id'];
             
             // Check recipient's key status
             try {
-                const response = await fetch(`/Gatherly/public/api/e2ee/get-public-key.php?userId=${recipientId}`);
+                const response = await fetch(`/public/api/e2ee/get-public-key.php?userId=${recipientId}`);
                 const data = await response.json();
                 
                 if (data.success) {

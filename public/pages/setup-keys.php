@@ -568,7 +568,7 @@ if (file_exists($cssPath)): ?>
                     authTag: generatedKeys.recoveryAuthTag
                 });
 
-                const response = await fetch('/Gatherly/public/api/e2ee/generate-keys.php', {
+                const response = await fetch('/public/api/e2ee/generate-keys.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

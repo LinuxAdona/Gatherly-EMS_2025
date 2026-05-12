@@ -4,5 +4,5 @@
  */
 session_start();
 session_destroy();
-header('Location: /Gatherly/public/pages/signin.php');
+header('Location: /public/pages/signin.php');
 exit;

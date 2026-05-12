@@ -13,22 +13,22 @@ if (session_status() === PHP_SESSION_NONE) {
 // Function to output E2EE scripts and data attributes
 function renderE2EEScripts() {
     // E2EE JavaScript files - use absolute paths from web root
-    echo '<script src="/Gatherly/public/assets/js/crypto.js"></script>' . "\n";
-    echo '<script src="/Gatherly/public/assets/js/key-manager.js"></script>' . "\n";
+    echo '<script src="/public/assets/js/crypto.js"></script>' . "\n";
+    echo '<script src="/public/assets/js/key-manager.js"></script>' . "\n";
     
     // ALWAYS load login-decrypt.js to handle key decryption on page load
     // The script will check if keys are already decrypted and skip if not needed
-    echo '<script src="/Gatherly/public/assets/js/login-decrypt.js"></script>' . "\n";
+    echo '<script src="/public/assets/js/login-decrypt.js"></script>' . "\n";
     
     // E2EE Chat handler (loaded after crypto/key-manager)
-    echo '<script src="/Gatherly/public/assets/js/e2ee-chat.js"></script>' . "\n";
+    echo '<script src="/public/assets/js/e2ee-chat.js"></script>' . "\n";
     
     // PIN modal (for sensitive operations)
-    echo '<link rel="stylesheet" href="/Gatherly/public/assets/css/pin-modal.css">' . "\n";
-    echo '<script src="/Gatherly/public/assets/js/pin-modal.js"></script>' . "\n";
+    echo '<link rel="stylesheet" href="/public/assets/css/pin-modal.css">' . "\n";
+    echo '<script src="/public/assets/js/pin-modal.js"></script>' . "\n";
     
     // PIN Protection - only load on chat pages (loaded at end to check page type)
-    echo '<script src="/Gatherly/public/assets/js/pin-protection.js"></script>' . "\n";
+    echo '<script src="/public/assets/js/pin-protection.js"></script>' . "\n";
 }
 
 // Function to inject E2EE data attributes into body tag

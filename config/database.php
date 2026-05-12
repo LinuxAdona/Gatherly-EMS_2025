@@ -1,13 +1,12 @@
 <?php
-const DEPLOYMENT_ENV = 'development'; // Change to 'production' in production environment
+const DEPLOYMENT_ENV = 'production';
 
-// Database configuration - Check multiple sources with fallbacks
-define('DB_HOST', 'localhost');
-define('DB_USER', DEPLOYMENT_ENV === 'production' ? 'gatherly_sys' : 'root');
-define('DB_PASS', DEPLOYMENT_ENV === 'production' ? 'zeND{ATJuYIY' : '');
-define('DB_NAME', DEPLOYMENT_ENV === 'production' ? 'gatherly_sad_db' : 'sad_db');
+// ===== CPANEL DATABASE CONFIGURATION =====
+// Replace the values below with your cPanel database credentials
 
-// Debug: Log if values are not loaded (can be removed in production)
-if (empty(DB_HOST) || DB_HOST === 'localhost' && empty(DB_NAME)) {
-    error_log("DB_HOST: " . DB_HOST . ", DB_NAME: " . DB_NAME . ", DB_USER: " . DB_USER);
-}
+define('DB_HOST', 'localhost');           // Usually 'localhost' in cPanel
+define('DB_USER', 'YOUR_CPANEL_USERNAME'); // Your cPanel username
+define('DB_PASS', 'YOUR_DB_PASSWORD');     // Your database password
+define('DB_NAME', 'YOUR_DATABASE_NAME');   // Database name created in cPanel
+
+// =========================================
